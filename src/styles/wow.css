@@ -595,3 +595,6 @@ html.lang-swap::view-transition-new(root) { animation: langIn 0.45s cubic-bezier
 .cs-feat li span { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; background: color-mix(in srgb, var(--acc, var(--amber)) 18%, transparent); color: var(--acc, var(--amber)); font-size: 13px; font-weight: 700; }
 @media (max-width: 700px) { .cs-hl { grid-template-columns: 1fr; } }
 @media (min-width: 861px) { .b-lang { grid-column: span 4; } .b-lang .langs { max-width: 900px; } }
+
+.cf-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.cf-btn:disabled { opacity: 0.7; cursor: wait; }

@@ -44,19 +44,36 @@ function ContactForm() {
   const [f, setF] = useState(load);
   const [err, setErr] = useState({});
   const [sent, setSent] = useState("");
+  const [sending, setSending] = useState(false);
+  const [trap, setTrap] = useState(""); // champ piège invisible (anti-robots)
   useEffect(() => { try { localStorage.setItem(DRAFT, JSON.stringify(f)); } catch { /* stockage indisponible */ } }, [f]);
   const set = (k) => (e) => { setF({ ...f, [k]: e.target.value }); setErr({ ...err, [k]: "" }); };
 
-  const submit = (channel) => {
+  const submit = async (channel) => {
+    if (sending) return;
     const e = {};
     if (f.name.trim().length < 2) e.name = "errName";
-    if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) e.email = "errEmail";
+    if (channel === "email" && !f.email.trim()) e.email = "errEmailReq";
+    else if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) e.email = "errEmail";
     if (f.message.trim().length < 10) e.message = "errMsg";
     setErr(e);
     if (Object.keys(e).length) return;
     const subj = subjects[f.subject] || subjects[0];
     const sign = `${f.name.trim()}${f.email ? " · " + f.email.trim() : ""}`;
     if (channel === "email") {
+      // 1) Envoi direct par le serveur : le message arrive dans ma boîte, sans dépendre de l'app mail du visiteur.
+      setSending(true);
+      try {
+        const r = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ name: f.name, email: f.email, subject: subj, message: f.message, website: trap }),
+          signal: AbortSignal.timeout(12000),
+        });
+        if (r.ok) { setSent("api"); setF(EMPTY); return; }
+        if (r.status === 429) { setErr({ message: "errRate" }); return; }
+      } catch { /* serveur indisponible : on passe au plan B */ } finally { setSending(false); }
+      // 2) Plan B : ouvrir l'app mail du visiteur avec le message prêt.
       const subject = `[Portfolio] ${subj} · ${f.name.trim()}`;
       const body = `${t("contact.hi")}\n\n${f.message.trim()}\n\n${sign}`;
       location.href = `mailto:${PROFILE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -71,8 +88,10 @@ function ContactForm() {
     return (
       <div className="cf cf-done" id="contact-form">
         <span className="cf-check" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" /><path d="M15 27l7 7 15-16" /></svg></span>
-        <h3>{t("contact.doneT")}</h3>
-        <p>{sent === "email" ? t("contact.doneEmail") : t("contact.doneWa")} {t("contact.doneEnd1")} <b>{t("contact.doneSend")}</b>. {t("contact.doneEnd2")}</p>
+        <h3>{sent === "api" ? t("contact.doneApiT") : t("contact.doneT")}</h3>
+        {sent === "api"
+          ? <p>{t("contact.doneApi")}</p>
+          : <p>{sent === "email" ? t("contact.doneEmail") : t("contact.doneWa")} {t("contact.doneEnd1")} <b>{t("contact.doneSend")}</b>. {t("contact.doneEnd2")}</p>}
         <button className="pill light" onClick={() => { setSent(""); setF(EMPTY); }}>{t("contact.again")}</button>
       </div>
     );
@@ -101,8 +120,9 @@ function ContactForm() {
         <span>{t("contact.message")}</span>{err.message && <em>{t("contact." + err.message)}</em>}
         <small className="cf-count">{f.message.length} / 1500</small>
       </label>
+      <input className="cf-trap" tabIndex={-1} autoComplete="off" aria-hidden="true" value={trap} onChange={(e) => setTrap(e.target.value)} name="website" />
       <div className="cf-send">
-        <button type="submit" className="cf-btn"><Icon name="mail" size={18} />{t("contact.sendEmail")}</button>
+        <button type="submit" className="cf-btn" disabled={sending}><Icon name="send" size={18} />{sending ? t("contact.sending") : t("contact.sendEmail")}</button>
         <button type="button" className="cf-btn wa" onClick={() => submit("whatsapp")}><Icon name="chat" size={18} />{t("contact.sendWa")}</button>
       </div>
     </form>
