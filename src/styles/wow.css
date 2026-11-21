@@ -557,3 +557,41 @@ html.lang-swap::view-transition-new(root) { animation: langIn 0.45s cubic-bezier
 .egg-hint .caret { width: 0.5em; height: 1em; }
 .pal-tip { margin: 0; padding: 10px 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--mut); }
 .pal-tip code { font-family: var(--mono); color: var(--amber); }
+
+/* ---------- Études de cas : cartes en vitrine ---------- */
+.ct-wrap { margin: 0 0 56px; }
+.ct-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+.ct-head b { font: 500 13px var(--mono); color: var(--amber); text-transform: uppercase; letter-spacing: 0.08em; }
+.ct-head small { color: var(--mut); font-size: 15px; }
+.ct-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ct-grid > .rv { display: flex; }
+.ct-card { position: relative; overflow: hidden; display: flex; flex-direction: column; width: 100%; padding: 26px 24px 22px; border-radius: 26px; text-decoration: none;
+  background: #0D111B; color: #E7EEE9; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.6);
+  transition: transform 0.45s cubic-bezier(0.2, 0.75, 0.1, 1), box-shadow 0.45s, border-color 0.45s; }
+.ct-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(420px circle at var(--gx, 80%) var(--gy, 0%), color-mix(in srgb, var(--acc) 28%, transparent), transparent 60%); transition: opacity 0.4s; }
+.ct-card::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--acc); transform: scaleX(0.25); transform-origin: left; transition: transform 0.6s cubic-bezier(0.2, 0.75, 0.1, 1); }
+.ct-card:hover { transform: translateY(-8px); border-color: color-mix(in srgb, var(--acc) 50%, transparent); box-shadow: 0 40px 70px -30px color-mix(in srgb, var(--acc) 45%, #000); }
+.ct-card:hover::after { transform: scaleX(1); }
+.ct-card > * { position: relative; }
+.ct-n { font: 12px var(--mono); color: #8B97A8; }
+.ct-big { margin-top: 18px; font: 300 clamp(40px, 4.6vw, 60px) / 1 "Newsreader", Georgia, serif; color: var(--acc); }
+.ct-hl { color: #9DABBE; font-size: 13px; margin-top: 4px; }
+.ct-card h3 { font: 400 clamp(26px, 2.6vw, 32px) / 1.1 "Newsreader", Georgia, serif; margin: 22px 0 8px; }
+.ct-card p { margin: 0 0 18px; color: #B6C4BF; font-size: 15px; flex: 1; }
+.ct-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.ct-tags i { font: normal 11.5px var(--mono); padding: 3px 9px; border-radius: 99px; border: 1px solid rgba(255, 255, 255, 0.16); color: #D7E2DD; }
+.ct-go { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14.5px; color: var(--acc); }
+.ct-go span { transition: transform 0.35s; } .ct-card:hover .ct-go span { transform: translateX(6px); }
+@media (max-width: 900px) { .ct-grid { grid-template-columns: 1fr; } }
+
+/* Étude de cas : chiffres clés et fonctionnalités */
+.cs-kick, .cs-num { color: var(--acc, var(--amber)); }
+.cs-hl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 30px; }
+.cs-hl div { padding: 20px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--acc, var(--amber)); animation: cardIn 0.7s cubic-bezier(0.2, 0.75, 0.1, 1) var(--d) backwards; }
+.cs-hl b { display: block; font: 300 clamp(30px, 3.6vw, 46px) / 1.05 "Newsreader", Georgia, serif; color: var(--acc, var(--amber)); }
+.cs-hl small { color: var(--mut); font-size: 14px; }
+.cs-feat { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+.cs-feat li { display: flex; gap: 12px; align-items: center; padding: 16px 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); font-size: 15.5px; }
+.cs-feat li span { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; background: color-mix(in srgb, var(--acc, var(--amber)) 18%, transparent); color: var(--acc, var(--amber)); font-size: 13px; font-weight: 700; }
+@media (max-width: 700px) { .cs-hl { grid-template-columns: 1fr; } }
+@media (min-width: 861px) { .b-lang { grid-column: span 4; } .b-lang .langs { max-width: 900px; } }

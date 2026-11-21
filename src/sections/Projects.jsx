@@ -2,6 +2,7 @@ import { useState } from "react";
 import Icon from "../components/Icons.jsx";
 import SplitTitle from "../components/SplitTitle.jsx";
 import Reveal from "../components/Reveal.jsx";
+import CaseTeasers from "../components/CaseTeasers.jsx";
 import GitHubActivity from "../components/GitHubActivity.jsx";
 import { PROJECTS, PROJECT_KINDS } from "../data/content.js";
 import { CASES } from "../data/cases.js";
@@ -22,6 +23,7 @@ export default function Projects() {
     <section id="projets" style={{ paddingTop: 0 }}>
       <div className="wrap">
         <SplitTitle>{t("proj.title")}</SplitTitle>
+        <CaseTeasers />
         <div className="p-filter" role="tablist" aria-label={t("proj.filter")}>
           {PROJECT_KINDS.map(([k, label]) => (
             <button key={k} role="tab" aria-selected={kind === k} className={kind === k ? "on" : ""} onClick={() => setKind(k)}>

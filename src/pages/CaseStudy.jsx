@@ -34,7 +34,7 @@ export default function CaseStudy({ slug, theme, onTheme }) {
   const sec = (i, key) => <span className="cs-num">{String(i).padStart(2, "0")} · {t("cs." + key)}</span>;
 
   return (
-    <main className="cs">
+    <main className="cs" style={{ "--acc": c.accent }}>
       <header className="cs-bar">
         <button className="cs-back" onClick={back}><Icon name="arrow" size={16} />{t("cs.back")}</button>
         <div className="cs-bar-r"><LangSwitch /><ThemeToggle theme={theme} onToggle={onTheme} /></div>
@@ -51,18 +51,25 @@ export default function CaseStudy({ slug, theme, onTheme }) {
           {proj.repo && <div><dt>Code</dt><dd><a href={proj.repo} target="_blank" rel="noopener noreferrer"><Icon name="github" size={15} /> GitHub ↗</a></dd></div>}
         </dl>
         <div className="tags">{proj.tags.map((x) => <span key={x}>{x}</span>)}</div>
+        <div className="cs-hl">
+          {c.highlights.map((h, i) => <div key={i} style={{ "--d": i * 0.12 + "s" }}><b>{h.v}</b><small>{p(h.l)}</small></div>)}
+        </div>
       </section>
 
       <div className="wrap cs-body">
         <Reveal as="section" className="cs-sec">{sec(1, "problem")}<p className="cs-big">{p(c.problem)}</p></Reveal>
         <Reveal as="section" className="cs-sec">{sec(2, "solution")}<p className="cs-big">{p(c.solution)}</p></Reveal>
+        <section className="cs-sec">
+          {sec(3, "features")}
+          <ul className="cs-feat">{p(c.features).map((x, i) => <Reveal as="li" key={x} delay={i * 0.05}><span>✓</span>{x}</Reveal>)}</ul>
+        </section>
         <Reveal as="section" className="cs-sec cs-arch">
-          {sec(3, "architecture")}
+          {sec(4, "architecture")}
           <ArchDiagram arch={c.arch} label={t("cs.archLabel", { x: p(proj.title) })} />
           <p className="cs-legend"><i className="k-client" />{t("cs.kClient")}<i className="k-service" />{t("cs.kService")}<i className="k-data" />{t("cs.kData")}<i className="k-ext" />{t("cs.kExt")}</p>
         </Reveal>
         <section className="cs-sec">
-          {sec(4, "decisions")}
+          {sec(5, "decisions")}
           <div className="cs-dec">
             {c.decisions.map((d, i) => (
               <Reveal key={i} delay={i * 0.08} className="cs-card">
@@ -74,9 +81,9 @@ export default function CaseStudy({ slug, theme, onTheme }) {
           </div>
         </section>
         {c.shots.length > 0 && (
-          <section className="cs-sec">{sec(5, "shots")}<div className="cs-shots">{c.shots.map((s, i) => <img key={i} src={s} alt="" loading="lazy" />)}</div></section>
+          <section className="cs-sec">{sec(6, "shots")}<div className="cs-shots">{c.shots.map((s, i) => <img key={i} src={s} alt="" loading="lazy" />)}</div></section>
         )}
-        <Reveal as="section" className="cs-sec">{sec(c.shots.length ? 6 : 5, "learned")}<p className="cs-big">{p(c.learned)}</p></Reveal>
+        <Reveal as="section" className="cs-sec">{sec(c.shots.length ? 7 : 6, "learned")}<p className="cs-big">{p(c.learned)}</p></Reveal>
       </div>
 
       <footer className="cs-next wrap">

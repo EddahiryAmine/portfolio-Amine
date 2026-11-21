@@ -1,10 +1,8 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import Icon from "../components/Icons.jsx";
 import Marquee from "../components/Marquee.jsx";
-import Modal from "../components/Modal.jsx";
 import Nav from "../components/Nav.jsx";
 import Rise from "../components/Rise.jsx";
-import SpotifyEmbed from "../components/SpotifyEmbed.jsx";
 import TypeLine from "../components/TypeLine.jsx";
 import QuickContact from "../components/QuickContact.jsx";
 import About from "../sections/About.jsx";
@@ -13,7 +11,7 @@ import Contact from "../sections/Contact.jsx";
 import Education from "../sections/Education.jsx";
 import Experience from "../sections/Experience.jsx";
 import Projects from "../sections/Projects.jsx";
-import { COMPANY, PROFILE, ROLE, SPOTIFY } from "../data/content.js";
+import { COMPANY, PROFILE, ROLE } from "../data/content.js";
 import portrait from "../assets/amine.webp";
 import { useT } from "../i18n/lang.jsx";
 
@@ -28,7 +26,6 @@ const Testimonials = lazy(loaders.Testimonials), CvSection = lazy(loaders.CvSect
 const Lz = ({ id, h = 600, children }) => <Suspense fallback={<section id={id} style={{ minHeight: h }} aria-hidden="true" />}>{children}</Suspense>;
 
 export default function Home({ ready, onSwitch, theme, onTheme, onPalette }) {
-  const [player, setPlayer] = useState(false);
   const { t } = useT();
   useEffect(() => {
     const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1200));
@@ -54,10 +51,10 @@ export default function Home({ ready, onSwitch, theme, onTheme, onPalette }) {
           </div>
           <div className="bot-r">
             <Rise delay={0.76}>
-              <button className="np" onClick={() => setPlayer(true)}>
+              <button className="np" onClick={() => document.querySelector(".ct-wrap")?.scrollIntoView({ behavior: "smooth", block: "center" })}>
                 <span className="np-eq" aria-hidden="true"><i /><i /><i /></span>
-                <span><small>{t("hero.loop")}</small>{SPOTIFY.title} · {SPOTIFY.artist}</span>
-                <Icon name="music" size={16} />
+                <span><small>{t("hero.casesK")}</small>{t("hero.cases")}</span>
+                <Icon name="arrow" size={16} />
               </button>
             </Rise>
             <code className="snippet">{ready && <TypeLine start={1400} text={`const amine = { role: "${ROLE}", at: "${COMPANY}" };`} />}</code>
@@ -84,13 +81,6 @@ export default function Home({ ready, onSwitch, theme, onTheme, onPalette }) {
       </footer>
 
       <QuickContact />
-      {player && (
-        <Modal title={t("hero.soundtrack")} onClose={() => setPlayer(false)}>
-          <p className="modal-k">{t("hero.soundtrack")}</p>
-          <SpotifyEmbed height={152} auto />
-          <a className="modal-link" href={SPOTIFY.profile} target="_blank" rel="noopener noreferrer">{t("hero.spotify")}</a>
-        </Modal>
-      )}
     </main>
   );
 }

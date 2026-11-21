@@ -1,7 +1,6 @@
 import Clock from "../components/Clock.jsx";
 import Count from "../components/Count.jsx";
 import Reveal from "../components/Reveal.jsx";
-import SpotifyEmbed from "../components/SpotifyEmbed.jsx";
 import { CERT_TOTAL, LANGUAGES } from "../data/content.js";
 import { useT } from "../i18n/lang.jsx";
 import { useInView } from "../hooks/useInView.js";
@@ -54,11 +53,6 @@ export default function About() {
           <div className="b b-clock"><small>Casablanca</small><b><Clock /></b><span className="live"><i />{t("about.live")}</span></div>
           <div className="b b-pres"><img src={about2} alt={t("about.presAlt")} loading="lazy" /><span>{t("about.pres")}</span></div>
           <div className="b b-stat2"><b><Count to={CERT_TOTAL} /></b><small>{t("about.certs")}</small></div>
-          <div className="b b-music">
-            <small className="b-lab">{t("about.music")}</small>
-            <SpotifyEmbed height={80} compact />
-            <p>{t("about.musicTxt")}</p>
-          </div>
           <Languages />
         </Reveal>
       </div>

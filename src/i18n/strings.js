@@ -14,10 +14,10 @@ export const STR = {
       placeholder: "Aller à, changer de thème…", search: "Rechercher une commande", none: "Aucune commande", esc: "Échap", title: "Palette de commandes", tip: "Astuce : les vrais devs tapent",
     },
     intro: {
-      log: ["amine@portfolio:~$ ./boot --mode=pro", "[ ok ] runtime .NET chargé", "[ ok ] 4 expériences indexées", "[ ok ] Oracle Java SE 17 vérifiée", "[ ok ] bande-son : Before I Go · TalkinToys", "[ ok ] prêt"],
+      log: ["amine@portfolio:~$ ./boot --mode=pro", "[ ok ] runtime .NET chargé", "[ ok ] 4 expériences indexées", "[ ok ] Oracle Java SE 17 vérifiée", "[ ok ] prêt"],
       skip: "Passer", welcome: "Bienvenue",
     },
-    hero: { at: "Chez", city: "Casablanca", certified: "Certifié", loop: "En boucle", portrait: "Portrait de {name}", perso: "Côté perso", soundtrack: "Ma bande-son", spotify: "Mon profil Spotify ↗" },
+    hero: { casesK: "À découvrir", cases: "3 études de cas", at: "Chez", city: "Casablanca", certified: "Certifié", loop: "En boucle", portrait: "Portrait de {name}", perso: "Côté perso", soundtrack: "Ma bande-son", spotify: "Mon profil Spotify ↗" },
     about: {
       lead: "Je conçois des API REST fiables et des applications d’entreprise en C# et .NET.", leadEm: "Du code propre, pensé pour durer, et livré avec soin.",
       photoAlt: "Amine en costume, souriant", photoCap: "Software Engineer · Capgemini", exp: "expériences en entreprise", certPro: "Oracle Certified Professional",
@@ -88,7 +88,7 @@ export const STR = {
     cs: {
       kicker: "Étude de cas", back: "Projets", allProjects: "Tous les projets", next: "Étude suivante", missing: "Cette étude de cas n’existe pas.",
       role: "Rôle", duration: "Durée", year: "Année",
-      problem: "Le problème", solution: "La solution", architecture: "L’architecture", decisions: "Choix techniques", shots: "Captures", learned: "Ce que j’en retiens",
+      problem: "Le problème", solution: "La solution", architecture: "L’architecture", decisions: "Choix techniques", features: "Ce que fait l’application", read: "Lire l’étude de cas", featured: "Études de cas", featuredSub: "Trois projets racontés en détail : le problème, l’architecture, les choix techniques.", shots: "Captures", learned: "Ce que j’en retiens",
       archLabel: "Schéma d’architecture de {x}", kClient: "Interface", kService: "Service", kData: "Données", kExt: "Externe",
       open: "Étude de cas",
     },
@@ -121,10 +121,10 @@ export const STR = {
       placeholder: "Go to, change theme…", search: "Search a command", none: "No command found", esc: "Esc", title: "Command palette", tip: "Tip: real devs type",
     },
     intro: {
-      log: ["amine@portfolio:~$ ./boot --mode=pro", "[ ok ] .NET runtime loaded", "[ ok ] 4 experiences indexed", "[ ok ] Oracle Java SE 17 verified", "[ ok ] soundtrack: Before I Go · TalkinToys", "[ ok ] ready"],
+      log: ["amine@portfolio:~$ ./boot --mode=pro", "[ ok ] .NET runtime loaded", "[ ok ] 4 experiences indexed", "[ ok ] Oracle Java SE 17 verified", "[ ok ] ready"],
       skip: "Skip", welcome: "Welcome",
     },
-    hero: { at: "At", city: "Casablanca", certified: "Certified", loop: "On repeat", portrait: "Portrait of {name}", perso: "Personal side", soundtrack: "My soundtrack", spotify: "My Spotify profile ↗" },
+    hero: { casesK: "Explore", cases: "3 case studies", at: "At", city: "Casablanca", certified: "Certified", loop: "On repeat", portrait: "Portrait of {name}", perso: "Personal side", soundtrack: "My soundtrack", spotify: "My Spotify profile ↗" },
     about: {
       lead: "I build reliable REST APIs and enterprise applications with C# and .NET.", leadEm: "Clean code, built to last, delivered with care.",
       photoAlt: "Amine in a suit, smiling", photoCap: "Software Engineer · Capgemini", exp: "professional experiences", certPro: "Oracle Certified Professional",
@@ -195,7 +195,7 @@ export const STR = {
     cs: {
       kicker: "Case study", back: "Projects", allProjects: "All projects", next: "Next case study", missing: "This case study doesn’t exist.",
       role: "Role", duration: "Duration", year: "Year",
-      problem: "The problem", solution: "The solution", architecture: "Architecture", decisions: "Technical choices", shots: "Screenshots", learned: "Key takeaways",
+      problem: "The problem", solution: "The solution", architecture: "Architecture", decisions: "Technical choices", features: "What the app does", read: "Read the case study", featured: "Case studies", featuredSub: "Three projects told in depth: the problem, the architecture, the technical choices.", shots: "Screenshots", learned: "Key takeaways",
       archLabel: "Architecture diagram of {x}", kClient: "Interface", kService: "Service", kData: "Data", kExt: "External",
       open: "Case study",
     },
