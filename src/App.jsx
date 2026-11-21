@@ -39,6 +39,13 @@ export default function App() {
     document.body.style.overflow = (phase < 2 && !isPerso && !caseSlug) || trans || hire ? "hidden" : "";
   }, [phase, isPerso, caseSlug, trans, hire]);
 
+  // Easter egg déclenchable de partout (pied de page, Amine IA…) via un événement.
+  useEffect(() => {
+    const on = () => setHire(true);
+    addEventListener("hire-amine", on);
+    return () => removeEventListener("hire-amine", on);
+  }, []);
+
   // Code Konami -> easter egg.
   useEffect(() => {
     let k = 0;

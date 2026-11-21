@@ -11,7 +11,7 @@ export const STR = {
     pal: {
       goto: "Aller à : {x}", theme: "Changer de thème (clair / sombre)", lang: "Switch to English", cv: "Télécharger le CV",
       github: "Ouvrir mon GitHub", linkedin: "Ouvrir mon LinkedIn", email: "Copier mon email", vcard: "Ajouter Amine à mes contacts",
-      placeholder: "Aller à, changer de thème…", search: "Rechercher une commande", none: "Aucune commande", esc: "Échap", title: "Palette de commandes",
+      placeholder: "Aller à, changer de thème…", search: "Rechercher une commande", none: "Aucune commande", esc: "Échap", title: "Palette de commandes", tip: "Astuce : les vrais devs tapent",
     },
     intro: {
       log: ["amine@portfolio:~$ ./boot --mode=pro", "[ ok ] runtime .NET chargé", "[ ok ] 4 expériences indexées", "[ ok ] Oracle Java SE 17 vérifiée", "[ ok ] bande-son : Before I Go · TalkinToys", "[ ok ] prêt"],
@@ -52,7 +52,7 @@ export const STR = {
       hello: "Salut ! Je suis Amine IA. Choisis une question à gauche ou écris la tienne : parcours, compétences, projets, contact…",
       unknown: "Je n’ai pas la réponse à ça. Essaie : poste actuel, compétences, projets, certifications ou contact. Pour le reste, écris à Amine : eddahiryamine@gmail.com.",
       act: {
-        cv: "Télécharger le CV", email: "Écrire un email", whatsapp: "WhatsApp", linkedin: "LinkedIn", github: "GitHub", contact: "Formulaire de contact",
+        cv: "Télécharger le CV", email: "Écrire un email", whatsapp: "WhatsApp", linkedin: "LinkedIn", github: "GitHub", contact: "Formulaire de contact", egg: "Lancer sudo hire amine",
         projets: "Voir les projets", parcours: "Voir le parcours", competences: "Voir les compétences", certifs: "Voir les certifications", formation: "Voir les études", perso: "Découvrir le côté perso",
       },
     },
@@ -104,7 +104,7 @@ export const STR = {
     reco: { title: "Ils en parlent" },
     egg: {
       lines: ["[sudo] mot de passe pour recruiter : ********", "Vérification du profil… .NET ✓  Java SE 17 ✓  Oracle ✓", "Analyse de la motivation… 100 %", "Compatibilité avec ton équipe… excellente", "✓ Accès accordé. Amine est prêt à échanger."],
-      mail: "Lui écrire",
+      mail: "Lui écrire", hint: "Psst… clique pour voir",
     },
   },
 
@@ -118,7 +118,7 @@ export const STR = {
     pal: {
       goto: "Go to: {x}", theme: "Toggle theme (light / dark)", lang: "Passer en français", cv: "Download my resume",
       github: "Open my GitHub", linkedin: "Open my LinkedIn", email: "Copy my email", vcard: "Add Amine to my contacts",
-      placeholder: "Go to, change theme…", search: "Search a command", none: "No command found", esc: "Esc", title: "Command palette",
+      placeholder: "Go to, change theme…", search: "Search a command", none: "No command found", esc: "Esc", title: "Command palette", tip: "Tip: real devs type",
     },
     intro: {
       log: ["amine@portfolio:~$ ./boot --mode=pro", "[ ok ] .NET runtime loaded", "[ ok ] 4 experiences indexed", "[ ok ] Oracle Java SE 17 verified", "[ ok ] soundtrack: Before I Go · TalkinToys", "[ ok ] ready"],
@@ -159,7 +159,7 @@ export const STR = {
       hello: "Hi! I’m Amine AI. Pick a question on the left or type your own: career, skills, projects, contact…",
       unknown: "I don’t have the answer to that. Try: current role, skills, projects, certifications or contact. For anything else, email Amine: eddahiryamine@gmail.com.",
       act: {
-        cv: "Download resume", email: "Send an email", whatsapp: "WhatsApp", linkedin: "LinkedIn", github: "GitHub", contact: "Contact form",
+        cv: "Download resume", email: "Send an email", whatsapp: "WhatsApp", linkedin: "LinkedIn", github: "GitHub", contact: "Contact form", egg: "Run sudo hire amine",
         projets: "See projects", parcours: "See career", competences: "See skills", certifs: "See certifications", formation: "See education", perso: "Discover the personal side",
       },
     },
@@ -211,7 +211,7 @@ export const STR = {
     reco: { title: "What people say" },
     egg: {
       lines: ["[sudo] password for recruiter: ********", "Checking profile… .NET ✓  Java SE 17 ✓  Oracle ✓", "Measuring motivation… 100%", "Fit with your team… excellent", "✓ Access granted. Amine is ready to talk."],
-      mail: "Email him",
+      mail: "Email him", hint: "Psst… click to see",
     },
   },
 };

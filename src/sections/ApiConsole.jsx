@@ -21,11 +21,12 @@ function endpoints(p, lang) {
     { m: "GET", path: "/api/v1/certifications", status: 200, body: () => ({ total: CERT_TOTAL, featured: CERTIFICATIONS.slice(0, 3).map((c) => ({ title: p(c.title), issuer: c.issuer, date: p(c.year) })) }) },
     { m: "GET", path: "/api/v1/education", status: 200, body: () => EDUCATION.map((e) => ({ years: e.years, degree: p(e.title), school: e.place })) },
     { m: "GET", path: "/api/v1/contact", status: 200, body: () => ({ email: PROFILE.email, phone: PROFILE.phone, linkedin: PROFILE.linkedin, github: PROFILE.github }) },
+    { m: "POST", path: "/api/v1/hire", status: 403, body: () => ({ error: "Forbidden", detail: lang === "en" ? "Insufficient privileges. Hint: some commands need sudo… (Ctrl+K)" : "Droits insuffisants. Indice : certaines commandes demandent sudo… (Ctrl+K)" }) },
     { m: "POST", path: "/api/v1/coffee", status: 418, body: () => ({ error: "I'm a teapot", detail: lang === "en" ? "Amine prefers mint tea. Ask him about it over email." : "Amine préfère le thé à la menthe. Propose-lui par email." }) },
   ];
 }
 
-const STATUS = { 200: "OK", 418: "I'm a teapot" };
+const STATUS = { 200: "OK", 403: "Forbidden", 418: "I'm a teapot" };
 
 // Coloration JSON : découpe le texte en jetons rendus comme des <span> (aucun HTML injecté).
 function Json({ text }) {

@@ -35,6 +35,7 @@ export default function CommandPalette({ open, setOpen, actions }) {
           ))}
           {!list.length && <li className="none">{t("pal.none")}</li>}
         </ul>
+        {!q.trim().toLowerCase().startsWith("sudo") && <p className="pal-tip">{t("pal.tip")} <code>sudo</code>…</p>}
       </div>
     </div>
   );

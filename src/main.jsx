@@ -25,6 +25,10 @@ fonts.onload = () => (document.fonts?.ready || Promise.resolve()).then(ready);
 fonts.onerror = ready;
 setTimeout(ready, 1500);
 
+// Un mot pour les développeurs qui ouvrent la console.
+console.log("%c👋 Salut, dev curieux ! / Hi, curious dev!", "font: 600 15px system-ui; color: #5B8DEF");
+console.log("%cEssaie / Try:  sudo hire amine  (Ctrl+K)  ·  ou le code Konami ↑↑↓↓←→←→BA", "font: 13px monospace; color: #8B97A8");
+
 // Statistiques de visites anonymes (Vercel Web Analytics : sans cookies, aucune donnée personnelle).
 // Actif uniquement sur le site en ligne ; à activer dans le tableau de bord Vercel (onglet Analytics).
 if (location.protocol === "https:" && !/^(localhost|127\.)/.test(location.hostname)) inject({ framework: "react" });

@@ -79,6 +79,7 @@ export default function Home({ ready, onSwitch, theme, onTheme, onPalette }) {
       <Contact />
       <footer>
         <span>{PROFILE.name} · {PROFILE.city}</span>
+        <button className="egg-hint" onClick={() => dispatchEvent(new Event("hire-amine"))} title={t("egg.hint")}>$ sudo hire amine<span className="caret" /></button>
         <button onClick={onSwitch}>{t("hero.perso")} <Icon name="swap" size={14} /></button>
       </footer>
 

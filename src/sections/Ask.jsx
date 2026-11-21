@@ -26,6 +26,7 @@ const ACTIONS = {
   competences: { icon: "spark", run: scrollTo("competences") },
   certifs: { icon: "award", run: scrollTo("certifs") },
   formation: { icon: "cap", run: scrollTo("formation") },
+  egg: { icon: "spark", run: () => dispatchEvent(new Event("hire-amine")) },
   perso: { icon: "swap", run: () => { location.hash = "photographie"; window.scrollTo(0, 0); } },
 };
 
