@@ -1,0 +1,16 @@
+/* Écran de démarrage */
+.intro { position: fixed; inset: 0; z-index: 100; background: #07090F; color: var(--sand); display: grid; place-items: center; transition: transform 1s cubic-bezier(0.7, 0, 0.2, 1); border-radius: 0 0 50% 50% / 0 0 6vh 6vh; overflow: hidden; }
+.intro::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0 3px, rgba(255, 255, 255, 0.018) 3px 4px); pointer-events: none; }
+.intro.out { transform: translateY(-105%); }
+.boot { position: absolute; top: calc(24px + env(safe-area-inset-top, 0px)); left: 28px; margin: 0; font: 12px / 1.8 var(--mono); color: #6D7487; white-space: pre-wrap; }
+.boot .okl { color: #9AA6C2; }
+.boot span:last-child::after { content: "▍"; animation: blink 1s steps(1) infinite; color: var(--moon); }
+.intro h1 { font: 300 clamp(56px, 13vw, 160px) / 1 "Newsreader", Georgia, serif; margin: 0; letter-spacing: -0.03em; text-shadow: 0 0 50px rgba(183, 197, 227, 0.25); }
+.intro h1.fin { font-style: italic; animation: fin 1s cubic-bezier(0.2, 0.75, 0.1, 1); }
+@keyframes fin { from { letter-spacing: 0.2em; opacity: 0; filter: blur(10px); } to { letter-spacing: -0.03em; opacity: 1; filter: none; } }
+.ibar { position: absolute; left: 28px; right: 28px; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 16px; font: 12px var(--mono); color: #8D95A5; }
+.ibar i { flex: 1; height: 1px; background: var(--moon); transform-origin: left; transition: transform 0.3s; }
+.skip { position: absolute; top: calc(22px + env(safe-area-inset-top, 0px)); right: 28px; font: 12px var(--mono); color: #8D95A5; }
+.skip:hover { color: var(--sand); }
+@media (max-width: 600px) { .boot { font-size: 10.5px; left: 18px; right: 18px; } }
+@media (prefers-reduced-motion: reduce) { .intro, .intro h1 { transition: none; animation: none; } }

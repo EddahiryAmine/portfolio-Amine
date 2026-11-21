@@ -1,0 +1,25 @@
+{
+  "name": "portfolio-amine-eddahiry",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "prebuild": "node scripts/github-data.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:single": "vite build --config vite.single.config.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "@vercel/analytics": "^2.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "simple-icons": "^13.21.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "vite-plugin-singlefile": "^2.3.4"
+  }
+}

@@ -1,0 +1,40 @@
+/* Hero : minuit, pluie fine, portrait en clair de lune. */
+.hero { position: relative; height: 100svh; min-height: 660px; background: radial-gradient(120% 90% at 50% 100%, #1A2234 0%, #0E1320 45%, #090C14 100%); color: var(--sand); overflow: hidden; }
+.moon-glow { position: absolute; left: 54%; top: 6%; width: min(80vw, 900px); aspect-ratio: 1; transform: translateX(-50%); background: radial-gradient(circle, rgba(183, 197, 227, 0.18), transparent 60%); z-index: 1; animation: breathe 9s ease-in-out infinite; }
+@keyframes breathe { 50% { opacity: 0.6; transform: translateX(-50%) scale(1.06); } }
+.mq { position: absolute; left: 0; white-space: nowrap; }
+.mqt { display: inline-block; will-change: transform; }
+.mqt span { display: inline-block; padding-right: 0.25em; }
+.m1 { top: 10%; z-index: 1; }
+.m1 span { font: 400 clamp(140px, 25vw, 400px) / 1 "Newsreader", Georgia, serif; letter-spacing: -0.035em; background: linear-gradient(180deg, #F1EEE9 30%, #8794AE); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.m2 { top: 56%; z-index: 1; }
+.m2 span { font: 300 italic clamp(70px, 13vw, 210px) / 1 "Newsreader", Georgia, serif; color: transparent; -webkit-text-stroke: 1px rgba(183, 197, 227, 0.45); }
+/* Portrait : bords fondus, légèrement désaturé, éclairage froid */
+.me { position: absolute; left: 54%; bottom: 0; height: 86%; max-width: 96vw; object-fit: contain; z-index: 2; opacity: 0; transform: translate(-50%, 50px);
+  filter: grayscale(0.2) contrast(1.06) brightness(0.96) drop-shadow(0 0 60px rgba(120, 140, 190, 0.25)); transition: opacity 1.4s 0.25s, transform 1.4s 0.25s cubic-bezier(0.2, 0.75, 0.1, 1);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to top, transparent 2%, #000 30%); -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to top, transparent 2%, #000 30%); mask-composite: intersect; }
+.go .me { opacity: 1; transform: translateX(-50%); }
+.fade { position: absolute; left: 0; right: 0; bottom: 0; height: 220px; background: linear-gradient(transparent, rgba(9, 12, 20, 0.95)); z-index: 2; }
+.hline { position: absolute; left: 28px; right: 28px; bottom: 128px; z-index: 3; height: 1px; background: rgba(233, 230, 225, 0.35); transform: scaleX(0); transform-origin: left; transition: transform 1.6s 0.5s cubic-bezier(0.7, 0, 0.2, 1); }
+.go .hline { transform: none; }
+.bot { position: absolute; left: 28px; right: 28px; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); z-index: 4; display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; font-size: 13.5px; line-height: 1.45; }
+.bot b { font-weight: 600; color: var(--moon); }
+.bot-r { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.np { display: inline-flex; align-items: center; gap: 12px; padding: 8px 14px 8px 10px; border-radius: 99px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14); backdrop-filter: blur(10px); text-align: left; font-size: 13px; transition: background 0.3s; }
+.np:hover { background: rgba(255, 255, 255, 0.12); }
+.np small { display: block; font-size: 10.5px; opacity: 0.6; }
+.np-eq { display: flex; gap: 2px; align-items: flex-end; height: 14px; width: 14px; }
+.np-eq i { flex: 1; height: 100%; background: var(--moon); border-radius: 2px; transform-origin: bottom; animation: bar 1s ease-in-out infinite alternate; }
+.np-eq i:nth-child(2) { animation-delay: -0.4s; } .np-eq i:nth-child(3) { animation-delay: -0.7s; }
+@keyframes bar { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }
+.snippet { font: 12px / 1.5 var(--mono); color: rgba(233, 230, 225, 0.7); text-align: right; max-width: 40ch; min-height: 1.5em; }
+.rise { display: block; overflow: hidden; }
+.rise > span { display: block; transform: translateY(115%); transition: transform 0.9s cubic-bezier(0.2, 0.75, 0.1, 1); transition-delay: var(--d, 0s); }
+.go .rise > span { transform: none; }
+@media (max-width: 860px) {
+  .me { height: 64%; left: 50%; } .moon-glow { left: 50%; } .snippet { display: none; } .m2 { top: 50%; }
+  .bot { bottom: calc(100px + env(safe-area-inset-bottom, 0px)); flex-direction: column; align-items: flex-start; }
+  .bot-r { align-items: flex-start; } .hline { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .rise > span, .me, .hline { transition: none; } .moon-glow, .np-eq i { animation: none; } }

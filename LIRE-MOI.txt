@@ -1,0 +1,18 @@
+PORTFOLIO AMINE EDDAHIRY
+
+OPTION 1 - La plus simple (sans rien installer)
+  Double-clique sur  portfolio-pret.html  -> le site s'ouvre dans ton navigateur.
+  (Internet est necessaire pour charger les polices.)
+
+OPTION 2 - Pour modifier le code (Node.js requis : https://nodejs.org)
+  Double-clique sur  lancer.bat
+  ou, dans un terminal ouvert DANS CE DOSSIER :
+      npm install
+      npm run dev
+  puis ouvre http://localhost:5173
+
+IMPORTANT : le dossier doit contenir directement  index.html, package.json et src/
+Si tu vois un dossier "portfolio-amine" a l'interieur, entre dedans d'abord.
+
+Apres une modification du code, pour regenerer le fichier a double-clic :
+      npm run build:single   puis copie dist-single/index.html -> portfolio-pret.html

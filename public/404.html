@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>404 · Amine Eddahiry</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,300&family=JetBrains+Mono:wght@400&family=Inter+Tight:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    html, body { margin: 0; height: 100%; background: #090C14; color: #DCE3F1; font: 16px/1.5 "Inter Tight", system-ui, sans-serif; overflow: hidden; }
+    canvas { position: fixed; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+    .ui { position: fixed; left: 0; right: 0; bottom: max(36px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 0 20px; text-align: center; pointer-events: none; }
+    .ui p { margin: 0; font: 13px "JetBrains Mono", monospace; color: rgba(220, 227, 241, 0.6); }
+    .ui a { pointer-events: auto; display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 99px; background: #DCE3F1; color: #0B0F19; text-decoration: none; font-weight: 500; transition: transform 0.25s; }
+    .ui a:hover { transform: translateY(-3px); }
+    .top { position: fixed; top: 22px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 24px; font: 12px "JetBrains Mono", monospace; color: rgba(220, 227, 241, 0.45); }
+  </style>
+</head>
+<body>
+  <div class="top"><span id="path">GET /</span><span>404 · Not Found</span></div>
+  <canvas id="c" aria-label="404 dessiné par des particules" role="img"></canvas>
+  <div class="ui">
+    <p id="msg">Cette page s’est perdue dans la nuit. Passe la souris sur les particules.</p>
+    <a href="/" id="home">← Retour au portfolio</a>
+  </div>
+  <script src="/404.js"></script>
+</body>
+</html>

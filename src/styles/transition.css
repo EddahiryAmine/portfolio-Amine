@@ -1,0 +1,12 @@
+/* Rideau circulaire Pro <-> Perso, avec une ligne de terminal. */
+.trans { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; clip-path: circle(0 at var(--x) var(--y)); }
+.trans.to-perso { background: #0C0B0F; color: #E8A33D; }
+.trans.to-pro { background: #0B0F19; color: #B7C5E3; }
+.trans.in { animation: grow 0.65s cubic-bezier(0.7, 0, 0.2, 1) forwards; }
+.trans.hold { clip-path: circle(150vmax at var(--x) var(--y)); }
+.trans.out { clip-path: circle(150vmax at var(--x) var(--y)); animation: shrink 0.8s cubic-bezier(0.7, 0, 0.2, 1) forwards; }
+.trans-term { font: clamp(20px, 4vw, 42px) / 1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; min-height: 1.3em; }
+.trans.out .trans-term { opacity: 0; transition: opacity 0.2s; }
+@keyframes grow { from { clip-path: circle(0 at var(--x) var(--y)); } to { clip-path: circle(150vmax at var(--x) var(--y)); } }
+@keyframes shrink { from { clip-path: circle(150vmax at var(--x) var(--y)); } to { clip-path: circle(0 at var(--x) var(--y)); } }
+@media (prefers-reduced-motion: reduce) { .trans, .trans.in, .trans.out { animation: none; } }
