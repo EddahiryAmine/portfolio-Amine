@@ -4,11 +4,9 @@ import { EXPERIENCE } from "../data/content.js";
 import { useT } from "../i18n/lang.jsx";
 import capgemini from "../assets/logos/capgemini.png";
 import eqdom from "../assets/logos/eqdom.png";
-import randstad from "../assets/logos/randstad.png";
 
 // Logos des entreprises (clé = champ `logo` dans content.js). Sans logo : monogramme aux couleurs choisies.
 const LOGOS = { capgemini, eqdom };
-const CLIENT_LOGOS = { randstad };
 
 export default function Experience() {
   const { t, p } = useT();
@@ -28,7 +26,6 @@ export default function Experience() {
                     <h3>{p(x.title)}</h3>
                     <small className="tl-where">
                       <b>{x.company}</b> · {p(x.where)}
-                      {x.client && <span className="tl-client">{CLIENT_LOGOS[x.client.logo] && <img src={CLIENT_LOGOS[x.client.logo]} alt="" />}{t("exp.client")} {x.client.name}</span>}
                     </small>
                   </span>
                   <span className="tl-date">{x.current && <i className="tl-live" />}{p(x.date)}</span>

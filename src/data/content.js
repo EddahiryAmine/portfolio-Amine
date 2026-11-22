@@ -53,7 +53,7 @@ export const EXPERIENCE = [
     text: { fr: "Développement et maintenance d’API REST en .NET, conception de fonctionnalités backend, documentation Swagger et tests Postman.",
       en: "Building and maintaining .NET REST APIs, designing backend features, Swagger documentation and Postman testing." },
     tags: ["C#", ".NET", "API REST", "Swagger", "Postman", "Oracle", "Azure DevOps"] },
-  { title: "Software Engineer Intern (PFE)", company: "Capgemini", logo: "capgemini", where: { fr: "Casablanca · stage", en: "Casablanca · internship" }, client: { name: "Randstad France", logo: "randstad" }, place: { fr: "Capgemini · client Randstad France", en: "Capgemini · client Randstad France" }, date: { fr: "Mars à août 2026", en: "Mar. to Aug. 2026" },
+  { title: "Software Engineer Intern (PFE)", company: "Capgemini", logo: "capgemini", where: { fr: "Casablanca · stage", en: "Casablanca · internship" }, place: { fr: "Capgemini, Casablanca", en: "Capgemini, Casablanca" }, date: { fr: "Mars à août 2026", en: "Mar. to Aug. 2026" },
     text: { fr: "Applications web en TMA, backend et frontend en .NET, Oracle Database, en Agile via Azure DevOps. Projet de fin d’études soutenu avec succès.",
       en: "Web application maintenance (TMA), .NET backend and frontend, Oracle Database, Agile with Azure DevOps. Final-year project successfully defended." },
     tags: [".NET", "C#", "VB.NET", "Oracle", "Agile/Scrum"] },
