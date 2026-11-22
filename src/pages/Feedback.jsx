@@ -8,6 +8,9 @@ import { PROFILE } from "../data/content.js";
 import { TESTIMONIALS } from "../data/testimonials.js";
 import { useT } from "../i18n/lang.jsx";
 
+// Passe à true pour ouvrir la page (mur des avis + formulaire). En attendant : page « en construction ».
+export const FEEDBACK_READY = false;
+
 const RELATIONS = ["colleague", "manager", "mentor", "client", "classmate", "other"];
 const EMPTY = { name: "", role: "", email: "", linkedin: "", relation: "colleague", rating: 5, message: "", consent: true };
 const back = () => { location.hash = ""; setTimeout(() => document.getElementById("recos")?.scrollIntoView({ block: "start" }), 80); };
@@ -43,6 +46,31 @@ export default function Feedback({ theme, onTheme }) {
     location.href = `mailto:${PROFILE.email}?subject=${encodeURIComponent("[Avis portfolio] " + f.name.trim())}&body=${encodeURIComponent(body)}`;
     setState("mail");
   };
+
+  if (!FEEDBACK_READY) {
+    return (
+      <main className="fbp">
+        <header className="cs-bar">
+          <button className="cs-back" onClick={back}><Icon name="arrow" size={16} /><span>Portfolio</span></button>
+          <div className="cs-bar-r"><LangSwitch /><ThemeToggle theme={theme} onToggle={onTheme} /></div>
+        </header>
+        <section className="wip wrap">
+          <div className="wip-art" aria-hidden="true">
+            <span className="wip-ring" /><span className="wip-ring r2" />
+            <span className="wip-ico">🚧</span>
+          </div>
+          <span className="h2-pill wip-pill"><i />{t("fb.wipPill")}</span>
+          <h1>{t("fb.wipT1")} <em>{t("fb.wipT2")}</em></h1>
+          <p className="cs-sum">{t("fb.wip")}</p>
+          <div className="wip-bar" aria-hidden="true"><i /></div>
+          <div className="wip-ctas">
+            <button className="ios-btn wip-primary" onClick={back}><Icon name="arrow" size={15} />{t("fb.wipBack")}</button>
+            <a className="ios-btn wip-ghost" href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer"><Icon name="linkedin" size={15} />{t("fb.wipLinkedin")}</a>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="fbp">

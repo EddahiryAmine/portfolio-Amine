@@ -43,7 +43,7 @@ export default function Testimonials() {
             <b>{t("reco.inviteT")}</b>
             <small>{t("reco.invite")}</small>
           </span>
-          <a className="ios-btn primary" href="#avis">{t("reco.cta")}<Icon name="arrow" size={15} /></a>
+          <a className="ios-btn primary" href="#avis">{t("reco.cta")}<span className="soon-tag">{t("reco.soon")}</span></a>
         </Reveal>
       </div>
     </section>

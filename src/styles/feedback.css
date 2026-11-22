@@ -69,3 +69,23 @@
   .rv-track .rv-card { width: 290px; }
 }
 @media (prefers-reduced-motion: reduce) { .rv-track, .rv-bubbles i, .fb-ghosts span { animation: none; } }
+
+/* Page avis « en construction » */
+.wip { min-height: calc(100svh - 70px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 30px; padding-bottom: 60px; font-family: var(--ios-font); }
+.wip-art { position: relative; display: grid; place-items: center; width: 150px; height: 150px; margin-bottom: 26px; }
+.wip-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed color-mix(in srgb, #FF9F0A 55%, transparent); animation: orbSpin 18s linear infinite; }
+.wip-ring.r2 { inset: 22px; border-style: solid; border-color: color-mix(in srgb, #FF9F0A 22%, transparent); border-top-color: #FF9F0A; animation-duration: 2.4s; }
+.wip-ico { font-size: 52px; animation: bob 3s ease-in-out infinite; }
+.wip-pill { color: var(--ink); background: color-mix(in srgb, #FF9F0A 14%, transparent); border-color: color-mix(in srgb, #FF9F0A 35%, transparent); margin-bottom: 18px; }
+.wip-pill i { background: #FF9F0A; box-shadow: 0 0 0 4px rgba(255, 159, 10, 0.22); animation: pulse 2s ease-in-out infinite; }
+.wip h1 { font: 300 clamp(40px, 6.5vw, 80px) / 1 "Newsreader", Georgia, serif; letter-spacing: -0.02em; margin: 0 0 18px; }
+.wip h1 em { color: #FF9F0A; }
+.wip .cs-sum { margin: 0 auto 26px; }
+.wip-bar { width: min(320px, 80%); height: 6px; border-radius: 99px; overflow: hidden; background: color-mix(in srgb, var(--ink) 8%, transparent); margin-bottom: 30px; }
+.wip-bar i { display: block; height: 100%; width: 40%; border-radius: 99px; background: linear-gradient(90deg, #FF9F0A, #FFD60A); animation: wipLoad 2.2s ease-in-out infinite; }
+@keyframes wipLoad { 0% { transform: translateX(-110%); } 100% { transform: translateX(260%); } }
+.wip-ctas { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.wip-primary { background: var(--ink); color: var(--bg); } .wip-primary svg { transform: rotate(-135deg); }
+.wip-ghost { border: 1px solid var(--line); color: var(--ink); }
+.soon-tag { padding: 3px 8px; border-radius: 999px; font: 700 10.5px var(--ios-font); text-transform: uppercase; letter-spacing: 0.04em; background: #FF9F0A; color: #1a1208; }
+@media (prefers-reduced-motion: reduce) { .wip-ring, .wip-ico, .wip-bar i, .wip-pill i { animation: none; } }
