@@ -45,6 +45,7 @@ function ContactForm() {
   const [err, setErr] = useState({});
   const [sent, setSent] = useState("");
   const [sending, setSending] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [trap, setTrap] = useState(""); // champ piège invisible (anti-robots)
   useEffect(() => { try { localStorage.setItem(DRAFT, JSON.stringify(f)); } catch { /* stockage indisponible */ } }, [f]);
   const set = (k) => (e) => { setF({ ...f, [k]: e.target.value }); setErr({ ...err, [k]: "" }); };
@@ -92,7 +93,18 @@ function ContactForm() {
         {sent === "api"
           ? <p>{t("contact.doneApi")}</p>
           : <p>{sent === "email" ? t("contact.doneEmail") : t("contact.doneWa")} {t("contact.doneEnd1")} <b>{t("contact.doneSend")}</b>. {t("contact.doneEnd2")}</p>}
-        <button className="pill light" onClick={() => { setSent(""); setF(EMPTY); }}>{t("contact.again")}</button>
+        {sent === "email" && (
+          <div className="cf-fallback">
+            <small>{t("contact.noApp")}</small>
+            <div>
+              <button type="button" onClick={() => navigator.clipboard?.writeText(PROFILE.email).then(() => setCopied(true)).catch(() => {})}>
+                <Icon name="copy" size={15} />{copied ? t("ui.copied") : PROFILE.email}
+              </button>
+              <a href={PROFILE.whatsapp} target="_blank" rel="noopener noreferrer"><Icon name="chat" size={15} />WhatsApp</a>
+            </div>
+          </div>
+        )}
+        <button className="pill light" onClick={() => { setSent(""); setF(EMPTY); setCopied(false); }}>{t("contact.again")}</button>
       </div>
     );
   }

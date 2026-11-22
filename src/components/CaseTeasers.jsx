@@ -22,6 +22,11 @@ export default function CaseTeasers() {
           return (
             <Reveal key={slug} delay={i * 0.1}>
               <a className="ct-card" href={`#projet/${slug}`} style={{ "--acc": c.accent }} onPointerMove={glow}>
+                {c.shots[0] && (
+                  <span className={"ct-img " + c.shots[0].kind} aria-hidden="true">
+                    {c.shots.slice(0, c.shots[0].kind === "phone" ? 3 : 1).map((s, k) => <img key={k} src={s.src} alt="" loading="lazy" />)}
+                  </span>
+                )}
                 <span className="ct-n">N° {String(i + 1).padStart(2, "0")}</span>
                 <span className="ct-big">{h.v}</span>
                 <small className="ct-hl">{p(h.l)}</small>

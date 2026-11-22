@@ -491,58 +491,9 @@ html.lang-swap::view-transition-new(root) { animation: langIn 0.45s cubic-bezier
 .egg-cta { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 0 22px 22px; animation: fadeIn 0.5s; }
 .egg-cta .btn.solid { background: #E7EEE9; color: #0D111B; } .egg-cta .btn.ghost { border-color: rgba(255, 255, 255, 0.25); color: #E7EEE9; }
 .egg-x { margin-left: auto; color: #8B97A8; font-size: 14px; }
-
-/* ---------- Étude de cas ---------- */
-.cs { min-height: 100svh; padding-bottom: 40px; }
-.cs-bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 28px;
-  background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
-.cs-back { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 99px; border: 1px solid var(--line); font-size: 14px; }
-.cs-back svg { transform: rotate(-135deg); } .cs-back:hover { border-color: var(--amber); }
-.cs-bar-r { display: flex; gap: 10px; align-items: center; }
-.cs-hero { padding-top: 70px; padding-bottom: 40px; }
-.cs-kick { font: 13px var(--mono); color: var(--amber); margin: 0 0 14px; }
-.cs-hero h1 { font: 300 clamp(44px, 8vw, 104px) / 0.98 "Newsreader", Georgia, serif; letter-spacing: -0.02em; margin: 0 0 26px; animation: csIn 0.9s cubic-bezier(0.2, 0.75, 0.1, 1); }
 @keyframes csIn { from { opacity: 0; transform: translateY(30px); filter: blur(6px); } }
-.cs-sum { max-width: 60ch; font: 300 clamp(20px, 2.2vw, 26px) / 1.4 "Newsreader", Georgia, serif; color: var(--mut); margin: 0 0 34px; }
-.cs-meta { display: flex; flex-wrap: wrap; gap: 14px 40px; margin: 0 0 22px; padding: 18px 0; border-block: 1px solid var(--line); }
-.cs-meta dt { font: 12px var(--mono); color: var(--mut); text-transform: uppercase; letter-spacing: 0.06em; }
-.cs-meta dd { margin: 4px 0 0; font-weight: 500; } .cs-meta a { text-decoration: none; color: var(--amber); }
-.cs-body { display: grid; gap: 70px; padding-top: 40px; }
-.cs-num { display: block; font: 13px var(--mono); color: var(--amber); margin-bottom: 16px; }
-.cs-big { margin: 0; max-width: 64ch; font: 300 clamp(20px, 2.3vw, 28px) / 1.45 "Newsreader", Georgia, serif; }
-.cs-dec { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-.cs-card { padding: 24px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); }
-.cs-card b { font: 400 34px "Newsreader", Georgia, serif; color: var(--amber); }
-.cs-card h3 { font: 600 17px "Inter Tight", sans-serif; margin: 10px 0 8px; } .cs-card p { margin: 0; color: var(--mut); }
-.cs-shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; } .cs-shots img { width: 100%; border-radius: 14px; border: 1px solid var(--line); }
-.cs-next { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-top: 90px; padding-top: 30px; border-top: 1px solid var(--line); }
-.cs-next button { color: var(--mut); } .cs-next button:hover { color: var(--ink); }
-.cs-next a { display: flex; flex-direction: column; align-items: flex-end; text-decoration: none; }
-.cs-next small { color: var(--mut); font-size: 13px; } .cs-next b { font: 400 clamp(26px, 3.4vw, 42px) "Newsreader", Georgia, serif; transition: color 0.3s; } .cs-next a:hover b { color: var(--amber); }
-.cs-missing { display: grid; place-items: center; align-content: center; gap: 20px; }
 
-/* Schéma d'architecture */
-.arch { overflow-x: auto; padding: 24px; border-radius: 24px; background: var(--card); border: 1px solid var(--line); }
-.arch svg { display: block; width: 100%; height: auto; }
-.arch-node rect { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
-.arch-node text { font: 600 13px "Inter Tight", system-ui, sans-serif; fill: var(--ink); }
-.arch-node.k-client rect { stroke: #5B8DEF; fill: color-mix(in srgb, #5B8DEF 12%, var(--bg)); }
-.arch-node.k-service rect { stroke: var(--amber); fill: color-mix(in srgb, var(--amber) 12%, var(--bg)); }
-.arch-node.k-data rect { stroke: #3FB950; fill: color-mix(in srgb, #3FB950 12%, var(--bg)); }
-.arch-node.k-ext rect { stroke: #D6457F; fill: color-mix(in srgb, #D6457F 10%, var(--bg)); stroke-dasharray: 5 4; }
-.arch-node { opacity: 0; transition: opacity 0.6s calc(var(--i) * 0.1s), transform 0.6s; }
-.arch.in .arch-node { opacity: 1; }
-.arch-line { fill: none; stroke: color-mix(in srgb, var(--ink) 35%, transparent); stroke-width: 1.5; stroke-dasharray: 600; stroke-dashoffset: 600; transition: stroke-dashoffset 1.2s calc(0.4s + var(--i) * 0.12s) ease-out; }
-.arch.in .arch-line { stroke-dashoffset: 0; }
-.arch-head { fill: color-mix(in srgb, var(--ink) 45%, transparent); }
-.arch-flow { fill: none; stroke: var(--amber); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 2 18; opacity: 0; animation: flow 1.4s linear infinite; }
-.arch.in .arch-flow { opacity: 0.9; transition: opacity 0.6s 1.6s; }
 @keyframes flow { to { stroke-dashoffset: -40; } }
-.arch-lab { font: 11.5px var(--mono); fill: var(--mut); paint-order: stroke; stroke: var(--card); stroke-width: 5px; }
-.cs-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 14px 0 0; font-size: 13px; color: var(--mut); }
-.cs-legend i { width: 14px; height: 14px; border-radius: 4px; margin-right: -8px; border: 1.5px solid; }
-.cs-legend .k-client { border-color: #5B8DEF; } .cs-legend .k-service { border-color: var(--amber); } .cs-legend .k-data { border-color: #3FB950; } .cs-legend .k-ext { border-color: #D6457F; border-style: dashed; }
-@media (prefers-reduced-motion: reduce) { .arch-flow, .arch-line, .arch-node, .gh-bar i { animation: none !important; transition: none !important; opacity: 1; stroke-dashoffset: 0; } }
 
 /* Contraste (audit Lighthouse) */
 .p-filter button small { opacity: 0.85; }
@@ -584,17 +535,46 @@ html.lang-swap::view-transition-new(root) { animation: langIn 0.45s cubic-bezier
 .ct-go span { transition: transform 0.35s; } .ct-card:hover .ct-go span { transform: translateX(6px); }
 @media (max-width: 900px) { .ct-grid { grid-template-columns: 1fr; } }
 
-/* Étude de cas : chiffres clés et fonctionnalités */
-.cs-kick, .cs-num { color: var(--acc, var(--amber)); }
-.cs-hl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 30px; }
-.cs-hl div { padding: 20px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--acc, var(--amber)); animation: cardIn 0.7s cubic-bezier(0.2, 0.75, 0.1, 1) var(--d) backwards; }
-.cs-hl b { display: block; font: 300 clamp(30px, 3.6vw, 46px) / 1.05 "Newsreader", Georgia, serif; color: var(--acc, var(--amber)); }
-.cs-hl small { color: var(--mut); font-size: 14px; }
-.cs-feat { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
-.cs-feat li { display: flex; gap: 12px; align-items: center; padding: 16px 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); font-size: 15.5px; }
-.cs-feat li span { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; background: color-mix(in srgb, var(--acc, var(--amber)) 18%, transparent); color: var(--acc, var(--amber)); font-size: 13px; font-weight: 700; }
-@media (max-width: 700px) { .cs-hl { grid-template-columns: 1fr; } }
 @media (min-width: 861px) { .b-lang { grid-column: span 4; } .b-lang .langs { max-width: 900px; } }
 
 .cf-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .cf-btn:disabled { opacity: 0.7; cursor: wait; }
+
+/* Orbite : seuls les logos captent les clics (les cercles laissent passer), zone tactile agrandie, pause au toucher */
+.oring { pointer-events: none; }
+.sat { pointer-events: auto; }
+.sat::before { content: ""; position: absolute; inset: -8px; border-radius: 50%; }
+.orbit.paused .oring, .orbit.paused .sat > span { animation-play-state: paused; }
+
+/* Barre du haut sur téléphone : logo + recherche + menu (langue, thème, Pro/Perso) */
+.nav-opts { display: flex; gap: 10px; align-items: center; }
+.nav-menu { display: none; }
+.nav-sheet { position: fixed; inset: 0; z-index: 60; background: rgba(5, 7, 12, 0.5); backdrop-filter: blur(4px); animation: fadeIn 0.2s; }
+.nav-sheet-in { position: absolute; top: calc(60px + env(safe-area-inset-top, 0px)); right: 12px; left: 12px; max-width: 380px; margin-left: auto; padding: 8px 16px 16px; border-radius: 22px;
+  background: var(--card); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6); animation: pop 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2); }
+.ns-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.ns-row .lsw, .ns-row .mode, .ns-row .tt { color: var(--ink); }
+.ns-search { width: 100%; display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); color: var(--mut); font-size: 14.5px; }
+@media (max-width: 860px) {
+  .nav-opts { display: none; }
+  .nav-menu { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid currentColor; }
+  .nav-r .kbar { display: grid !important; place-items: center; width: 38px; height: 38px; padding: 0; border-radius: 50%; }
+  .nav-r .kbar kbd { display: none; }
+  /* Dock du bas : les 7 entrées tiennent dans l'écran */
+  .links { width: calc(100vw - 20px); max-width: 480px; justify-content: space-between; }
+  .links button { flex: 1 1 0; min-width: 0; padding: 7px 2px; font-size: 9.5px; }
+  .links button span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+.cf-fallback { margin: 0 auto 22px; max-width: 420px; padding: 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14); }
+.cf-fallback small { display: block; margin-bottom: 10px; color: rgba(241, 233, 219, 0.75); font-size: 13px; }
+.cf-fallback div { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.cf-fallback button, .cf-fallback a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 99px; font-size: 13.5px; text-decoration: none; background: var(--sand); color: var(--petrol); font-weight: 600; }
+.cf-fallback a { background: #25D366; color: #062B14; }
+
+/* Débordements horizontaux sur téléphone : orbite en rotation, sceau du CV. Le menu caché du bouton Contact ne capte plus les clics. */
+.pro > section, .pro > div > section { overflow-x: clip; }
+.qc-list { pointer-events: none; }
+@media (max-width: 700px) { .seal { right: -8px; top: -20px; width: 86px; height: 86px; } }
+.qc.show { pointer-events: none; }
+.qc.show .qc-fab, .qc.open .qc-list li { pointer-events: auto; }
+@media (max-width: 860px) { .nav { transform: none !important; } }

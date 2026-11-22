@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SplitTitle from "../components/SplitTitle.jsx";
 import Reveal from "../components/Reveal.jsx";
 import TechLogo from "../components/TechLogo.jsx";
@@ -25,6 +25,10 @@ export default function Skills() {
   const L = LVL_LABEL[lang];
   const [sel, setSel] = useState(TECH[0]);
   const [cat, setCat] = useState("all");
+  const [paused, setPaused] = useState(false);
+  const hold = useRef(0);
+  // Au toucher, l'orbite se fige 5 s pour laisser le temps de viser une planète.
+  const freeze = () => { setPaused(true); clearTimeout(hold.current); hold.current = setTimeout(() => setPaused(false), 5000); };
   const list = cat === "all" ? TECH : TECH.filter((t) => t.cat === cat);
 
   return (
@@ -34,7 +38,7 @@ export default function Skills() {
         <p className="lead sk-lead">{tr("skills.lead", { n: TECH.length })}</p>
 
         <div className="sk-top">
-          <Reveal className="orbit" aria-label={tr("skills.orbit")}>
+          <Reveal className={"orbit" + (paused ? " paused" : "")} aria-label={tr("skills.orbit")} onPointerDown={freeze}>
             <div className="core">
               <img src={portrait} alt="" />
             </div>

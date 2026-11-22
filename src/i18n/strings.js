@@ -5,7 +5,7 @@ export const STR = {
     ui: {
       langLabel: "Langue du site", close: "Fermer", copy: "Copier", copied: "Copié ✓", backTop: "Retour en haut",
       themeToLight: "Passer en mode clair", themeToDark: "Passer en mode sombre", toPerso: "Découvrir le côté perso", toPro: "Revenir au côté pro",
-      mainNav: "Navigation principale", palette: "Ouvrir la palette de commandes",
+      mainNav: "Navigation principale", palette: "Ouvrir la palette de commandes", menu: "Menu", theme: "Thème", side: "Univers",
     },
     nav: { about: "Moi", parcours: "Parcours", projets: "Projets", certifs: "Certifs", formation: "Études", ask: "Amine IA", contact: "Contact" },
     pal: {
@@ -62,7 +62,7 @@ export const STR = {
       subjects: ["Opportunité", "Collaboration", "Question technique", "Autre"],
       name: "Ton nom", email: "Ton email", message: "Ton message",
       errEmailReq: "Ton email, pour que je puisse te répondre.", errRate: "Trop de messages d’affilée : réessaie dans quelques minutes.",
-      sending: "Envoi…", doneApiT: "Message envoyé !", doneApi: "Je l’ai bien reçu dans ma boîte mail. Je te réponds en général sous 24 à 48 h.",
+      sending: "Envoi…", noApp: "Rien ne s’est ouvert ? Copie mon adresse ou écris-moi sur WhatsApp :", doneApiT: "Message envoyé !", doneApi: "Je l’ai bien reçu dans ma boîte mail. Je te réponds en général sous 24 à 48 h.",
       errName: "Ton nom, s’il te plaît.", errEmail: "Cet email ne semble pas valide.", errMsg: "Quelques mots de plus (10 caractères minimum).",
       sendEmail: "Envoyer le message", sendWa: "Envoyer sur WhatsApp",
       doneT: "Message prêt !", doneEmail: "Ton application mail s’est ouverte avec le message rédigé.", doneWa: "WhatsApp s’est ouvert avec ton message.",
@@ -89,6 +89,9 @@ export const STR = {
     },
     cs: {
       kicker: "Étude de cas", back: "Projets", allProjects: "Tous les projets", next: "Étude suivante", missing: "Cette étude de cas n’existe pas.",
+      type: "Type", toc: "Sommaire", challenges: "Défis rencontrés", swipe: "Glisse pour voir les autres captures · touche pour agrandir",
+      step: "Étape", simulate: "Simuler une requête", stop: "Arrêter", archHint: "Touche un bloc pour voir son rôle",
+      archEmpty: "Touche un bloc du schéma, ou lance la simulation pour suivre une requête de bout en bout.",
       role: "Rôle", duration: "Durée", year: "Année",
       problem: "Le problème", solution: "La solution", architecture: "L’architecture", decisions: "Choix techniques", features: "Ce que fait l’application", read: "Lire l’étude de cas", featured: "Études de cas", featuredSub: "Trois projets racontés en détail : le problème, l’architecture, les choix techniques.", shots: "Captures", learned: "Ce que j’en retiens",
       archLabel: "Schéma d’architecture de {x}", kClient: "Interface", kService: "Service", kData: "Données", kExt: "Externe",
@@ -114,7 +117,7 @@ export const STR = {
     ui: {
       langLabel: "Site language", close: "Close", copy: "Copy", copied: "Copied ✓", backTop: "Back to top",
       themeToLight: "Switch to light mode", themeToDark: "Switch to dark mode", toPerso: "Discover the personal side", toPro: "Back to the professional side",
-      mainNav: "Main navigation", palette: "Open the command palette",
+      mainNav: "Main navigation", palette: "Open the command palette", menu: "Menu", theme: "Theme", side: "World",
     },
     nav: { about: "About", parcours: "Career", projets: "Projects", certifs: "Certs", formation: "Education", ask: "Amine AI", contact: "Contact" },
     pal: {
@@ -171,7 +174,7 @@ export const STR = {
       subjects: ["Opportunity", "Collaboration", "Technical question", "Other"],
       name: "Your name", email: "Your email", message: "Your message",
       errEmailReq: "Your email, so I can reply.", errRate: "Too many messages in a row: try again in a few minutes.",
-      sending: "Sending…", doneApiT: "Message sent!", doneApi: "It landed in my inbox. I usually reply within 24–48 hours.",
+      sending: "Sending…", noApp: "Nothing opened? Copy my address or message me on WhatsApp:", doneApiT: "Message sent!", doneApi: "It landed in my inbox. I usually reply within 24–48 hours.",
       errName: "Your name, please.", errEmail: "This email doesn’t look valid.", errMsg: "A few more words, please (10 characters minimum).",
       sendEmail: "Send message", sendWa: "Send on WhatsApp",
       doneT: "Message ready!", doneEmail: "Your mail app opened with the message written.", doneWa: "WhatsApp opened with your message.",
@@ -198,6 +201,9 @@ export const STR = {
     },
     cs: {
       kicker: "Case study", back: "Projects", allProjects: "All projects", next: "Next case study", missing: "This case study doesn’t exist.",
+      type: "Type", toc: "Contents", challenges: "Challenges", swipe: "Swipe to see more screenshots · tap to enlarge",
+      step: "Step", simulate: "Simulate a request", stop: "Stop", archHint: "Tap a block to see its role",
+      archEmpty: "Tap a block in the diagram, or run the simulation to follow a request end to end.",
       role: "Role", duration: "Duration", year: "Year",
       problem: "The problem", solution: "The solution", architecture: "Architecture", decisions: "Technical choices", features: "What the app does", read: "Read the case study", featured: "Case studies", featuredSub: "Three projects told in depth: the problem, the architecture, the technical choices.", shots: "Screenshots", learned: "Key takeaways",
       archLabel: "Architecture diagram of {x}", kClient: "Interface", kService: "Service", kData: "Data", kExt: "External",

@@ -13,6 +13,7 @@ export default function Nav({ theme, onTheme, onSwitch, onPalette }) {
   const { t, lang } = useT();
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const [menu, setMenu] = useState(false);
   const bar = useRef(null), links = useRef(null), ind = useRef(null);
 
   useEffect(() => {
@@ -55,12 +56,27 @@ export default function Nav({ theme, onTheme, onSwitch, onPalette }) {
         </nav>
         <div className="nav-r">
           <button className="kbar" onClick={onPalette} aria-label={t("ui.palette")}><Icon name="search" size={15} /><kbd>Ctrl K</kbd></button>
-          <LangSwitch />
-          <ThemeToggle theme={theme} onToggle={onTheme} />
-          <ModeSwitch onSwitch={onSwitch} />
+          <div className="nav-opts">
+            <LangSwitch />
+            <ThemeToggle theme={theme} onToggle={onTheme} />
+            <ModeSwitch onSwitch={onSwitch} />
+          </div>
+          <button className="nav-menu" onClick={() => setMenu(!menu)} aria-expanded={menu} aria-label={t("ui.menu")}>
+            <Icon name={menu ? "close" : "grid"} size={18} />
+          </button>
         </div>
       </div>
       <div className="prog" ref={bar} />
+      {menu && (
+        <div className="nav-sheet" onClick={() => setMenu(false)}>
+          <div className="nav-sheet-in" onClick={(e) => e.stopPropagation()}>
+            <div className="ns-row"><span>{t("ui.langLabel")}</span><LangSwitch /></div>
+            <div className="ns-row"><span>{t("ui.theme")}</span><ThemeToggle theme={theme} onToggle={onTheme} /></div>
+            <div className="ns-row"><span>{t("ui.side")}</span><ModeSwitch onSwitch={(e) => { setMenu(false); onSwitch(e); }} /></div>
+            <button className="ns-search" onClick={() => { setMenu(false); onPalette(); }}><Icon name="search" size={16} />{t("pal.placeholder")}</button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

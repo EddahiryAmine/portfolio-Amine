@@ -11,6 +11,7 @@ import "./styles/transition.css";
 import "./styles/photography.css";
 import "./styles/extra.css";
 import "./styles/wow.css";
+import "./styles/cases.css";
 
 // Polices chargées sans bloquer le premier affichage (le texte apparaît tout de suite, puis la police s'applique).
 const fonts = document.createElement("link");
