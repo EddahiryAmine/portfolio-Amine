@@ -36,7 +36,7 @@ export const STR = {
       aria: "Œuvre générative : le mot {w} dessiné par des particules",
       hint1: "Passe la souris", hint2: "pour disperser", hint3: "clique", hint4: "pour faire exploser", hint5: "elles reviennent toujours.",
     },
-    certs: { title: "Certifications", verified: "✓ Vérifiée", all: "Voir toutes mes certifications sur LinkedIn" },
+    certs: { title: "Certifications", verified: "✓ Vérifiée", proof: "Voir la preuve", all: "Voir toutes mes certifications sur LinkedIn" },
     edu: { title: "Formation" },
     cv: {
       title: "Mon CV", lead: "Tout mon parcours sur une page. Survole la carte, puis télécharge-la ou ouvre-la en grand.",
@@ -155,7 +155,7 @@ export const STR = {
       aria: "Generative artwork: the word {w} drawn by particles",
       hint1: "Move your mouse", hint2: "to scatter", hint3: "click", hint4: "to make them explode", hint5: "they always come back.",
     },
-    certs: { title: "Certifications", verified: "✓ Verified", all: "See all my certifications on LinkedIn" },
+    certs: { title: "Certifications", verified: "✓ Verified", proof: "See proof", all: "See all my certifications on LinkedIn" },
     edu: { title: "Education" },
     cv: {
       title: "My resume", lead: "My whole journey on one page. Hover the card, then download it or open it full screen.",

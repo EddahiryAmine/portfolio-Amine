@@ -31,6 +31,7 @@ export default function Certifications() {
                 <span>{c.issuer}{c.id && <code> · ID {c.id}</code>}</span>
               </div>
               {c.featured && <span className="verified">{t("certs.verified")}</span>}
+              <a className="cert-proof" href={PROFILE.linkedinCerts} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}><Icon name="linkedin" size={14} />{t("certs.proof")} ↗</a>
             </Reveal>
           ))}
           <Reveal delay={0.4}>

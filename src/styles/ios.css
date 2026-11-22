@@ -174,3 +174,9 @@
 .core { width: 22%; }
 .orbit-plane, .core, .orbit::before { pointer-events: none; }
 .orbit-plane .sat { pointer-events: auto; }
+/* Certifications : lien vers la preuve */
+.cert { padding-bottom: 52px; }
+.cert-proof { position: absolute; right: 16px; bottom: 14px; }
+.cert-proof { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font: 600 12.5px var(--ios-font); text-decoration: none; color: #0A66C2; background: rgba(10, 102, 194, 0.1); transition: background 0.25s; }
+.cert-proof:hover { background: rgba(10, 102, 194, 0.2); }
+[data-theme="dark"] .cert-proof { color: #70B5F9; background: rgba(112, 181, 249, 0.12); }
