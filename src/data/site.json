@@ -1,0 +1,461 @@
+{
+  "profile": {
+    "name": "Amine Eddahiry",
+    "email": "eddahiryamine@gmail.com",
+    "phone": "+212 724546394",
+    "city": "Casablanca",
+    "linkedin": "https://www.linkedin.com/in/eddahiry-amine/",
+    "linkedinCerts": "https://www.linkedin.com/in/eddahiry-amine/details/certifications/",
+    "instagram": "https://www.instagram.com/edd_amine_/",
+    "handle": "@edd_amine_",
+    "whatsapp": "https://wa.me/212724546394",
+    "github": "https://github.com/EddahiryAmine",
+    "githubHandle": "EddahiryAmine"
+  },
+  "role": "Software Engineer",
+  "company": "Capgemini",
+  "certTotal": 21,
+  "languages": [
+    {
+      "code": "ar",
+      "native": "العربية",
+      "name": {
+        "fr": "Arabe",
+        "en": "Arabic"
+      },
+      "level": 100,
+      "label": {
+        "fr": "Langue maternelle",
+        "en": "Native"
+      }
+    },
+    {
+      "code": "fr",
+      "native": "Français",
+      "name": {
+        "fr": "Français",
+        "en": "French"
+      },
+      "level": 90,
+      "label": {
+        "fr": "Avancé",
+        "en": "Advanced"
+      }
+    },
+    {
+      "code": "en",
+      "native": "English",
+      "name": {
+        "fr": "Anglais",
+        "en": "English"
+      },
+      "level": 75,
+      "label": {
+        "fr": "Professionnel",
+        "en": "Professional"
+      }
+    }
+  ],
+  "experience": [
+    {
+      "title": "Software Engineer",
+      "company": "Capgemini",
+      "logo": "capgemini",
+      "where": {
+        "fr": "Casablanca · temps plein",
+        "en": "Casablanca · Full-time"
+      },
+      "place": "Capgemini, Casablanca",
+      "date": {
+        "fr": "Depuis sept. 2026",
+        "en": "Since Sep. 2026"
+      },
+      "current": true,
+      "text": {
+        "fr": "Développement et maintenance d’API REST en .NET, conception de fonctionnalités backend, documentation Swagger et tests Postman.",
+        "en": "Building and maintaining .NET REST APIs, designing backend features, Swagger documentation and Postman testing."
+      },
+      "tags": [
+        "C#",
+        ".NET",
+        "API REST",
+        "Swagger",
+        "Postman",
+        "Oracle",
+        "Azure DevOps"
+      ]
+    },
+    {
+      "title": "Software Engineer Intern (PFE)",
+      "company": "Capgemini",
+      "logo": "capgemini",
+      "where": {
+        "fr": "Casablanca · stage",
+        "en": "Casablanca · internship"
+      },
+      "place": {
+        "fr": "Capgemini, Casablanca",
+        "en": "Capgemini, Casablanca"
+      },
+      "date": {
+        "fr": "Mars à août 2026",
+        "en": "Mar. to Aug. 2026"
+      },
+      "text": {
+        "fr": "Applications web en TMA, backend et frontend en .NET, Oracle Database, en Agile via Azure DevOps. Projet de fin d’études soutenu avec succès.",
+        "en": "Web application maintenance (TMA), .NET backend and frontend, Oracle Database, Agile with Azure DevOps. Final-year project successfully defended."
+      },
+      "tags": [
+        ".NET",
+        "C#",
+        "VB.NET",
+        "Oracle",
+        "Agile/Scrum"
+      ]
+    },
+    {
+      "title": {
+        "fr": "Stagiaire développeur mobile",
+        "en": "Mobile Developer Intern"
+      },
+      "company": "EQDOM",
+      "logo": "eqdom",
+      "where": {
+        "fr": "Casablanca · sur site",
+        "en": "Casablanca · on-site"
+      },
+      "place": {
+        "fr": "EQDOM, Casablanca · sur site",
+        "en": "EQDOM, Casablanca · on-site"
+      },
+      "date": {
+        "fr": "Juil. à août 2025",
+        "en": "Jul. to Aug. 2025"
+      },
+      "text": {
+        "fr": "Application mobile de détection des CNIE frauduleuses : intégration du SDK Mon eID via un bridge Kotlin pour authentifier les clients par leur CNIE, accès gérés par Keycloak.",
+        "en": "Mobile app detecting fraudulent national ID cards (CNIE): integrated the Mon eID SDK through a Kotlin bridge to authenticate customers by their ID, with access managed by Keycloak."
+      },
+      "tags": [
+        "Spring Boot",
+        "React Native",
+        "Kotlin",
+        "Keycloak",
+        "PostgreSQL"
+      ]
+    },
+    {
+      "title": {
+        "fr": "Stagiaire développeur backend",
+        "en": "Backend Developer Intern"
+      },
+      "company": "BS-Link",
+      "mono": {
+        "text": "BS",
+        "bg": "linear-gradient(135deg,#1F3A68,#3A6EA5)",
+        "fg": "#fff"
+      },
+      "where": {
+        "fr": "à distance",
+        "en": "remote"
+      },
+      "place": {
+        "fr": "BS-Link · à distance",
+        "en": "BS-Link · remote"
+      },
+      "date": {
+        "fr": "Juil. à août 2024",
+        "en": "Jul. to Aug. 2024"
+      },
+      "text": {
+        "fr": "Application web .NET de suivi des demandes d’achat dans un contexte ERP, inspirée d’une fonctionnalité de Dynamics.",
+        "en": ".NET web application to track purchase requests in an ERP context, inspired by a Dynamics feature."
+      },
+      "tags": [
+        ".NET",
+        "Dynamics 365 Business Central",
+        "SQL Server"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "slug": "cnie-check",
+      "title": {
+        "fr": "Détection des CNIE frauduleuses",
+        "en": "Fraudulent ID Card Detection"
+      },
+      "status": {
+        "fr": "Stage · EQDOM · 2025",
+        "en": "Internship · EQDOM · 2025"
+      },
+      "kind": "stage",
+      "text": {
+        "fr": "Application mobile qui vérifie l’identité des clients à partir de leur CNIE grâce au SDK Mon eID, intégré dans React Native via un bridge Kotlin. Backend Spring Boot, authentification et rôles gérés par Keycloak.",
+        "en": "Mobile app that verifies customers’ identity from their national ID card using the Mon eID SDK, integrated into React Native through a Kotlin bridge. Spring Boot backend, authentication and roles managed by Keycloak."
+      },
+      "tags": [
+        "React Native",
+        "Kotlin",
+        "Spring Boot",
+        "Keycloak",
+        "PostgreSQL"
+      ]
+    },
+    {
+      "slug": "achats-erp",
+      "title": {
+        "fr": "Suivi des demandes d’achat",
+        "en": "Purchase Request Tracking"
+      },
+      "status": {
+        "fr": "Stage · BS-Link · 2024",
+        "en": "Internship · BS-Link · 2024"
+      },
+      "kind": "stage",
+      "text": {
+        "fr": "Application web .NET de suivi des demandes d’achat dans un contexte ERP, inspirée d’une fonctionnalité de Dynamics 365 Business Central : création, validation et suivi de l’état de chaque demande.",
+        "en": ".NET web app to track purchase requests in an ERP context, inspired by a Dynamics 365 Business Central feature: creating, approving and following the status of each request."
+      },
+      "tags": [
+        ".NET",
+        "C#",
+        "SQL Server",
+        "Dynamics 365 BC"
+      ]
+    },
+    {
+      "slug": "dar-vision",
+      "title": "Dar Vision",
+      "status": {
+        "fr": "Projet de fin d’année (PFA) · IA",
+        "en": "End-of-year project · AI"
+      },
+      "kind": "academique",
+      "text": {
+        "fr": "Application mobile de design intérieur par IA : un modèle EfficientNet-B0 entraîné from scratch détecte le type de pièce (78 % de précision), puis un modèle image-to-image génère un nouveau design selon le style et la palette choisis. Microservices Spring Boot + FastAPI.",
+        "en": "AI interior design mobile app: an EfficientNet-B0 model trained from scratch detects the room type (78% accuracy), then an image-to-image model generates a new design from the chosen style and palette. Spring Boot + FastAPI microservices."
+      },
+      "tags": [
+        "Deep Learning",
+        "EfficientNet-B0",
+        "FastAPI",
+        "Spring Boot",
+        "Flutter",
+        "MongoDB",
+        "n8n"
+      ]
+    },
+    {
+      "slug": "smartfun-2030",
+      "title": "SmartFun 2030",
+      "status": {
+        "fr": "Projet académique · microservices",
+        "en": "Academic project · microservices"
+      },
+      "kind": "academique",
+      "text": {
+        "fr": "Plateforme de billetterie d’événements sportifs en microservices : API Gateway, Eureka, OpenFeign, Spring Security + JWT, RabbitMQ pour les emails et l’envoi des tickets, une base MongoDB par service, front Angular.",
+        "en": "Sports event ticketing platform built on microservices: API Gateway, Eureka, OpenFeign, Spring Security + JWT, RabbitMQ for emails and ticket delivery, one MongoDB database per service, Angular front-end."
+      },
+      "tags": [
+        "Spring Cloud Gateway",
+        "Eureka",
+        "OpenFeign",
+        "Spring Security",
+        "JWT",
+        "RabbitMQ",
+        "MongoDB",
+        "Angular"
+      ]
+    },
+    {
+      "slug": "emsi-study-space",
+      "title": "EMSI Study Space",
+      "status": {
+        "fr": "Projet académique",
+        "en": "Academic project"
+      },
+      "kind": "academique",
+      "repo": "https://github.com/EddahiryAmine/EmsiStudySpace",
+      "text": {
+        "fr": "Plateforme académique en ASP.NET : les enseignants partagent cours et TP et réservent des salles d’étude, l’administrateur accepte ou refuse les réservations.",
+        "en": "Academic platform in ASP.NET: teachers share courses and lab work and book study rooms, while the administrator approves or rejects bookings."
+      },
+      "tags": [
+        "C#",
+        "ASP.NET",
+        "SQL Server",
+        "Bootstrap",
+        "JavaScript"
+      ]
+    },
+    {
+      "slug": "job-portal",
+      "title": "Job Portal",
+      "status": {
+        "fr": "Projet de fin d’année (PFA)",
+        "en": "End-of-year project"
+      },
+      "kind": "academique",
+      "repo": "https://github.com/EddahiryAmine/ProjetPFA",
+      "text": {
+        "fr": "Plateforme d’offres d’emploi : gestion des offres, profils candidats avec CV, candidature en ligne avec suivi en temps réel et messagerie employeurs-candidats.",
+        "en": "Job platform: job offer management, candidate profiles with resumes, online applications with real-time tracking, and employer-candidate messaging."
+      },
+      "tags": [
+        "Laravel",
+        "React",
+        "MySQL",
+        "Postman"
+      ]
+    },
+    {
+      "slug": "portfolio",
+      "title": {
+        "fr": "Ce portfolio",
+        "en": "This portfolio"
+      },
+      "status": {
+        "fr": "Projet perso",
+        "en": "Personal project"
+      },
+      "kind": "perso",
+      "text": {
+        "fr": "Le site que tu regardes : deux univers (pro et perso), assistant Amine IA, deux langues, palette de commandes Ctrl+K, thème clair/sombre et en-têtes de sécurité stricts.",
+        "en": "The site you’re looking at: two worlds (pro and personal), the Amine AI assistant, two languages, a Ctrl+K command palette, light/dark theme and strict security headers."
+      },
+      "tags": [
+        "React",
+        "Vite",
+        "CSS",
+        "Vercel"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "title": "Oracle Certified Professional, Java SE 17 Developer",
+      "issuer": "Oracle",
+      "year": {
+        "fr": "Janv. 2026",
+        "en": "Jan. 2026"
+      },
+      "mono": "Oracle",
+      "color": "#C74634",
+      "kind": {
+        "fr": "Certification professionnelle",
+        "en": "Professional certification"
+      },
+      "featured": true
+    },
+    {
+      "title": {
+        "fr": "Apprentissage automatique avec Python",
+        "en": "Machine Learning with Python"
+      },
+      "issuer": "IBM",
+      "year": {
+        "fr": "Déc. 2025",
+        "en": "Dec. 2025"
+      },
+      "mono": "IBM",
+      "color": "#0F62FE",
+      "kind": {
+        "fr": "Certificat",
+        "en": "Certificate"
+      },
+      "id": "04JT1A94JN4G"
+    },
+    {
+      "title": "Advanced React",
+      "issuer": "Meta · Coursera",
+      "year": "2025",
+      "mono": "Meta",
+      "color": "#0866FF",
+      "kind": {
+        "fr": "Certificat",
+        "en": "Certificate"
+      }
+    },
+    {
+      "title": "Introduction to Java and Object-Oriented Programming",
+      "issuer": "University of Pennsylvania",
+      "year": "2025",
+      "mono": "Penn",
+      "color": "#011F5B",
+      "kind": {
+        "fr": "Certificat",
+        "en": "Certificate"
+      }
+    },
+    {
+      "title": "Containers with Docker, Kubernetes & OpenShift",
+      "issuer": "IBM · Coursera",
+      "year": "2024",
+      "mono": "IBM",
+      "color": "#0F62FE",
+      "kind": {
+        "fr": "Certificat",
+        "en": "Certificate"
+      }
+    },
+    {
+      "title": {
+        "fr": "Villes africaines : environnement et développement durable",
+        "en": "African Cities: Environment and Sustainable Development"
+      },
+      "issuer": "EPFL",
+      "year": {
+        "fr": "Mai 2024",
+        "en": "May 2024"
+      },
+      "mono": "EPFL",
+      "color": "#E2001A",
+      "kind": {
+        "fr": "Certificat",
+        "en": "Certificate"
+      },
+      "id": "LKSF9M682BAR"
+    }
+  ],
+  "education": [
+    {
+      "years": "2023—26",
+      "title": {
+        "fr": "Cycle ingénieur MIAGE",
+        "en": "Engineering degree, MIAGE"
+      },
+      "place": "EMSI, Casablanca",
+      "text": {
+        "fr": "Ingénierie informatique et réseaux. PFE chez Capgemini, soutenu avec succès.",
+        "en": "Computer and network engineering. Final-year project at Capgemini, successfully defended."
+      }
+    },
+    {
+      "years": "2021—23",
+      "title": {
+        "fr": "Technicien spécialisé",
+        "en": "Specialized Technician diploma"
+      },
+      "place": "ISFO, Casablanca",
+      "text": {
+        "fr": "Développement digital, option Web Full Stack.",
+        "en": "Digital development, Full Stack Web track."
+      }
+    },
+    {
+      "years": "2021",
+      "title": {
+        "fr": "Baccalauréat",
+        "en": "Baccalaureate"
+      },
+      "place": "Lycée Ibn Al Khatib, Casablanca",
+      "text": {
+        "fr": "Sciences physiques, option française.",
+        "en": "Physical sciences, French track."
+      }
+    }
+  ],
+  "testimonials": []
+}

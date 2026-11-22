@@ -55,3 +55,19 @@ Pour ajouter lieu et réglages, complète `src/data/photoInfo.js`.
 
 ## Déployer
 Vercel ou Netlify : connecte le dépôt GitHub, commande `npm run build`, dossier `dist`.
+
+## Espace admin (/admin)
+Page secrète pour modifier le contenu sans toucher au code : profil, parcours, projets, certifications, études, langues, avis et photos (ajout, suppression, titres, tags).
+Les modifications sont enregistrées sur GitHub (`src/data/site.json`, `src/data/photos.json`, `src/assets/photos/`) puis le site se redéploie tout seul.
+
+**Sécurité** : mot de passe haché (scrypt), code à 6 chiffres (Google Authenticator), session signée en cookie HttpOnly / Secure / SameSite=Strict (2 h),
+blocage après 5 échecs, requêtes refusées si elles ne viennent pas du site, validation stricte des données (liens `https://` uniquement, images vérifiées), page non indexée.
+
+**Mise en place (une seule fois)**
+1. `node scripts/admin-setup.mjs` : choisis ton mot de passe, le script affiche les valeurs à copier (rien n'est enregistré).
+2. Ajoute le code dans Google Authenticator avec la clé affichée.
+3. Crée un jeton GitHub : github.com → Settings → Developer settings → Fine-grained tokens → accès au seul dépôt `portfolio-Amine`, permission **Contents : Read and write**.
+4. Vercel → projet → Settings → Environment Variables : `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, `ADMIN_TOTP_SECRET`, `GITHUB_TOKEN`, `GITHUB_REPO`.
+5. Vercel → Settings → Git : connecte le dépôt GitHub (pour que chaque modification soit mise en ligne automatiquement).
+
+⚠️ Après des modifications depuis /admin, fais `git pull` avant de modifier le code sur ton ordinateur.

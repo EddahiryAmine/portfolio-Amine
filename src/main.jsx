@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { inject } from "@vercel/analytics";
 import App from "./App.jsx";
@@ -39,8 +39,15 @@ console.log("%cEssaie / Try:  sudo hire amine  (Ctrl+K)  ·  ou le code Konami �
 // Actif uniquement sur le site en ligne ; à activer dans le tableau de bord Vercel (onglet Analytics).
 if (location.protocol === "https:" && !/^(localhost|127\.)/.test(location.hostname)) inject({ framework: "react" });
 
+// /admin : espace d'administration, chargé à part (rien n'est inclus dans le site public).
+const isAdmin = location.pathname.replace(/\/+$/, "") === "/admin";
+const Admin = lazy(() => import("./pages/admin/Admin.jsx"));
+if (isAdmin) import("./styles/admin.css");
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <LangProvider><App /></LangProvider>
+    {isAdmin
+      ? <Suspense fallback={null}><Admin /></Suspense>
+      : <LangProvider><App /></LangProvider>}
   </StrictMode>
 );
