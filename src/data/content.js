@@ -49,19 +49,19 @@ export const LANGUAGES = [
 ];
 
 export const EXPERIENCE = [
-  { title: "Software Engineer", place: "Capgemini, Casablanca", date: { fr: "Depuis sept. 2026", en: "Since Sep. 2026" }, current: true,
+  { title: "Software Engineer", company: "Capgemini", logo: "capgemini", where: { fr: "Casablanca · temps plein", en: "Casablanca · Full-time" }, place: "Capgemini, Casablanca", date: { fr: "Depuis sept. 2026", en: "Since Sep. 2026" }, current: true,
     text: { fr: "Développement et maintenance d’API REST en .NET, conception de fonctionnalités backend, documentation Swagger et tests Postman.",
       en: "Building and maintaining .NET REST APIs, designing backend features, Swagger documentation and Postman testing." },
     tags: ["C#", ".NET", "API REST", "Swagger", "Postman", "Oracle", "Azure DevOps"] },
-  { title: "Software Engineer Intern (PFE)", place: { fr: "Capgemini · client Randstad France", en: "Capgemini · client Randstad France" }, date: { fr: "Mars à août 2026", en: "Mar. to Aug. 2026" },
+  { title: "Software Engineer Intern (PFE)", company: "Capgemini", logo: "capgemini", where: { fr: "Casablanca · stage", en: "Casablanca · internship" }, client: { name: "Randstad France", logo: "randstad" }, place: { fr: "Capgemini · client Randstad France", en: "Capgemini · client Randstad France" }, date: { fr: "Mars à août 2026", en: "Mar. to Aug. 2026" },
     text: { fr: "Applications web en TMA, backend et frontend en .NET, Oracle Database, en Agile via Azure DevOps. Projet de fin d’études soutenu avec succès.",
       en: "Web application maintenance (TMA), .NET backend and frontend, Oracle Database, Agile with Azure DevOps. Final-year project successfully defended." },
     tags: [".NET", "C#", "VB.NET", "Oracle", "Agile/Scrum"] },
-  { title: { fr: "Stagiaire développeur mobile", en: "Mobile Developer Intern" }, place: { fr: "EQDOM, Casablanca · sur site", en: "EQDOM, Casablanca · on-site" }, date: { fr: "Juil. à août 2025", en: "Jul. to Aug. 2025" },
+  { title: { fr: "Stagiaire développeur mobile", en: "Mobile Developer Intern" }, company: "EQDOM", logo: "eqdom", where: { fr: "Casablanca · sur site", en: "Casablanca · on-site" }, place: { fr: "EQDOM, Casablanca · sur site", en: "EQDOM, Casablanca · on-site" }, date: { fr: "Juil. à août 2025", en: "Jul. to Aug. 2025" },
     text: { fr: "Application mobile de détection des CNIE frauduleuses : intégration du SDK Mon eID via un bridge Kotlin pour authentifier les clients par leur CNIE, accès gérés par Keycloak.",
       en: "Mobile app detecting fraudulent national ID cards (CNIE): integrated the Mon eID SDK through a Kotlin bridge to authenticate customers by their ID, with access managed by Keycloak." },
     tags: ["Spring Boot", "React Native", "Kotlin", "Keycloak", "PostgreSQL"] },
-  { title: { fr: "Stagiaire développeur backend", en: "Backend Developer Intern" }, place: { fr: "BS-Link · à distance", en: "BS-Link · remote" }, date: { fr: "Juil. à août 2024", en: "Jul. to Aug. 2024" },
+  { title: { fr: "Stagiaire développeur backend", en: "Backend Developer Intern" }, company: "BS-Link", mono: { text: "BS", bg: "linear-gradient(135deg,#1F3A68,#3A6EA5)", fg: "#fff" }, where: { fr: "à distance", en: "remote" }, place: { fr: "BS-Link · à distance", en: "BS-Link · remote" }, date: { fr: "Juil. à août 2024", en: "Jul. to Aug. 2024" },
     text: { fr: "Application web .NET de suivi des demandes d’achat dans un contexte ERP, inspirée d’une fonctionnalité de Dynamics.",
       en: ".NET web application to track purchase requests in an ERP context, inspired by a Dynamics feature." },
     tags: [".NET", "Dynamics 365 Business Central", "SQL Server"] },

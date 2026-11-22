@@ -21,6 +21,7 @@ const L = (fr, en) => ({ fr, en });
 
 export const CASES = {
   "dar-vision": {
+    type: L("App mobile · IA", "Mobile app · AI"), teaser: L("Photo de ta pièce → nouveau design par IA, selon ton style et ta palette.", "Photo of your room → a new AI design in your style and palette."),
     year: "2025–2026", role: L("Projet de fin d’année (PFA) · EMSI", "End-of-year project · EMSI"), duration: L("Application mobile + backend + IA", "Mobile app + backend + AI"),
     accent: "#E3A04A",
     highlights: [
@@ -106,6 +107,7 @@ export const CASES = {
   },
 
   "smartfun-2030": {
+    type: L("Plateforme web · Microservices", "Web platform · Microservices"), teaser: L("Billetterie Coupe du Monde 2030 : achat, paiement simulé, ticket PDF avec QR code.", "2030 World Cup ticketing: purchase, simulated payment, PDF ticket with QR code."),
     year: "2025", role: L("Projet académique · EMSI", "Academic project · EMSI"), duration: L("Plateforme web en microservices", "Microservices web platform"),
     accent: "#22C55E",
     highlights: [
@@ -192,6 +194,7 @@ export const CASES = {
   },
 
   "cnie-check": {
+    type: L("App mobile · Sécurité", "Mobile app · Security"), teaser: L("Vérification de la carte d’identité (CNIE) via Mon eID pour limiter la fraude.", "ID card (CNIE) verification through Mon eID to reduce fraud."),
     year: "2025", role: L("Stagiaire développeur mobile · EQDOM", "Mobile developer intern · EQDOM"), duration: L("Stage de 2 mois", "2-month internship"),
     accent: "#5B8DEF",
     highlights: [

@@ -193,3 +193,35 @@
 .cs-sec, .cs-split > * { min-width: 0; }
 .arch .arch-play svg { display: inline-block; width: 14px; height: 14px; }
 .arch-bar small { flex: 1 1 160px; }
+
+/* ---------- Galerie : carrousel 3D (coverflow) ---------- */
+.cf3 { position: relative; outline: none; padding: 10px 0 0; border-radius: 28px; overflow: hidden;
+  background: radial-gradient(90% 70% at 50% 40%, color-mix(in srgb, var(--acc) 22%, transparent), transparent 70%), linear-gradient(180deg, color-mix(in srgb, var(--ink) 3%, transparent), transparent); }
+.cf3-stage { position: relative; height: 520px; perspective: 1400px; }
+.cf3.browser .cf3-stage { height: 440px; }
+.cf3-item { position: absolute; left: 50%; top: 50%; overflow: hidden; cursor: pointer;
+  transform: translate(-50%, -50%) translateX(calc(var(--d) * var(--step))) translateZ(calc(var(--ab) * -180px)) rotateY(calc(var(--d) * -32deg)) scale(calc(1 - var(--ab) * 0.08));
+  transition: transform 0.75s cubic-bezier(0.2, 0.75, 0.1, 1), opacity 0.5s, filter 0.5s; filter: brightness(calc(1 - var(--ab) * 0.25)) saturate(calc(1 - var(--ab) * 0.2)); -webkit-tap-highlight-color: transparent; }
+.cf3.phone .cf3-item { --step: 62%; width: 230px; border-radius: 30px; padding: 8px; background: #050507; border: 1px solid rgba(255, 255, 255, 0.16); box-shadow: 0 40px 70px -30px rgba(0, 0, 0, 0.8); }
+.cf3.phone .cf3-item img { display: block; width: 100%; border-radius: 23px; }
+.cf3.browser .cf3-item { --step: 46%; width: min(70%, 640px); border-radius: 14px; background: #111622; border: 1px solid rgba(255, 255, 255, 0.14); box-shadow: 0 40px 70px -30px rgba(0, 0, 0, 0.8); }
+.cf3.browser .cf3-item img { display: block; width: 100%; }
+.cf3-item.on { cursor: zoom-in; box-shadow: 0 50px 90px -30px color-mix(in srgb, var(--acc) 55%, #000), 0 0 0 1px color-mix(in srgb, var(--acc) 35%, transparent); }
+.cf3-shine { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.12) 48%, transparent 60%); opacity: 0; transition: opacity 0.4s; }
+.cf3-item.on:hover .cf3-shine { opacity: 1; }
+.cf3-item .fr-notch { top: 14px; }
+.cf3-ui { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 8px 16px 0; }
+.cf3-ui button { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; font-size: 26px; line-height: 1; background: var(--card); border: 1px solid var(--line); color: var(--ink); transition: transform 0.2s, border-color 0.3s; }
+.cf3-ui button:hover { border-color: var(--acc); } .cf3-ui button:active { transform: scale(0.92); }
+.cf3-cap { display: flex; flex-direction: column; align-items: center; min-width: 200px; text-align: center; }
+.cf3-cap b { font: 600 15px var(--ios-font); } .cf3-cap small { color: var(--mut); font: 12px var(--mono); }
+.cf3-dots { display: flex; justify-content: center; gap: 6px; padding: 12px 0 18px; }
+.cf3-dots i { width: 7px; height: 7px; border-radius: 99px; background: var(--line); cursor: pointer; transition: width 0.35s, background 0.35s; }
+.cf3-dots i.on { width: 22px; background: var(--acc); }
+@media (max-width: 640px) {
+  .cf3-stage { height: 430px; } .cf3.browser .cf3-stage { height: 250px; }
+  .cf3.phone .cf3-item { --step: 58%; width: 190px; }
+  .cf3.browser .cf3-item { --step: 30%; width: 82%; }
+  .cf3-cap { min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .cf3-item { transition: none; } }

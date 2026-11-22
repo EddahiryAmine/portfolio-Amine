@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Coverflow from "../components/Coverflow.jsx";
 import ArchDiagram from "../components/ArchDiagram.jsx";
 import Icon from "../components/Icons.jsx";
 import LangSwitch from "../components/LangSwitch.jsx";
@@ -139,11 +140,7 @@ export default function CaseStudy({ slug, theme, onTheme }) {
         {c.shots.length > 0 && (
           <section id="cs-shots" className="cs-sec">
             {head("shots")}
-            <div className={"cs-gal " + c.shots[0].kind}>
-              {c.shots.map((s, i) => (
-                <figure key={i}><Frame shot={s} onClick={() => setView(i)} /><figcaption>{p(s.cap)}</figcaption></figure>
-              ))}
-            </div>
+            <Coverflow shots={c.shots} onOpen={setView} />
             <p className="cs-swipe">{t("cs.swipe")}</p>
           </section>
         )}

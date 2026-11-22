@@ -2,9 +2,13 @@ import SplitTitle from "../components/SplitTitle.jsx";
 import Reveal from "../components/Reveal.jsx";
 import { EXPERIENCE } from "../data/content.js";
 import { useT } from "../i18n/lang.jsx";
+import capgemini from "../assets/logos/capgemini.png";
+import eqdom from "../assets/logos/eqdom.png";
+import randstad from "../assets/logos/randstad.png";
 
-// Hash décoratif façon git, stable pour un titre donné.
-const hash = (s) => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h.toString(16).padStart(8, "0").slice(0, 7); };
+// Logos des entreprises (clé = champ `logo` dans content.js). Sans logo : monogramme aux couleurs choisies.
+const LOGOS = { capgemini, eqdom };
+const CLIENT_LOGOS = { randstad };
 
 export default function Experience() {
   const { t, p } = useT();
@@ -12,15 +16,26 @@ export default function Experience() {
     <section id="parcours" style={{ paddingTop: 0 }}>
       <div className="wrap">
         <Reveal><SplitTitle>{t("exp.title")}</SplitTitle><p className="cmd">$ git log --oneline --graph</p></Reveal>
-        <ol className="log">
+        <ol className="tl">
           {EXPERIENCE.map((x, i) => (
-            <Reveal as="li" key={i} delay={i * 0.08} className={x.current ? "cur" : ""}>
-              <span className="node" />
-              <div className="meta"><code>{hash((x.title.fr ?? x.title) + (x.date.fr ?? x.date))}</code>{x.current && <em className="head">HEAD → main</em>}<small>{p(x.date)}</small></div>
-              <h3>{p(x.title)}</h3>
-              <small className="where">{p(x.place)}</small>
-              <p>{p(x.text)}</p>
-              <div className="tags">{x.tags.map((t) => <span key={t}>{t}</span>)}</div>
+            <Reveal as="li" key={i} delay={i * 0.08} className={"tl-item" + (x.current ? " cur" : "")}>
+              <span className="tl-logo" style={x.mono ? { background: x.mono.bg, color: x.mono.fg } : undefined}>
+                {LOGOS[x.logo] ? <img src={LOGOS[x.logo]} alt={x.company} loading="lazy" /> : <b>{x.mono?.text}</b>}
+              </span>
+              <article className="tl-card">
+                <header className="tl-head">
+                  <span>
+                    <h3>{p(x.title)}</h3>
+                    <small className="tl-where">
+                      <b>{x.company}</b> · {p(x.where)}
+                      {x.client && <span className="tl-client">{CLIENT_LOGOS[x.client.logo] && <img src={CLIENT_LOGOS[x.client.logo]} alt="" />}{t("exp.client")} {x.client.name}</span>}
+                    </small>
+                  </span>
+                  <span className="tl-date">{x.current && <i className="tl-live" />}{p(x.date)}</span>
+                </header>
+                <p>{p(x.text)}</p>
+                <div className="tags">{x.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+              </article>
             </Reveal>
           ))}
         </ol>

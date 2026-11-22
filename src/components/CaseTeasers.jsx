@@ -1,15 +1,10 @@
+import Icon from "./Icons.jsx";
 import Reveal from "./Reveal.jsx";
 import { CASES } from "../data/cases.js";
 import { PROJECTS } from "../data/content.js";
 import { useT } from "../i18n/lang.jsx";
 
-// Grandes cartes en tête de la section Projets : donnent envie d'ouvrir les études de cas.
-const glow = (e) => {
-  const r = e.currentTarget.getBoundingClientRect();
-  e.currentTarget.style.setProperty("--gx", e.clientX - r.left + "px");
-  e.currentTarget.style.setProperty("--gy", e.clientY - r.top + "px");
-};
-
+// Cartes compactes en tête de la section Projets : aperçu, type, titre, résumé court, stack, flèche.
 export default function CaseTeasers() {
   const { t, p } = useT();
   return (
@@ -18,22 +13,22 @@ export default function CaseTeasers() {
       <div className="ct-grid">
         {Object.entries(CASES).map(([slug, c], i) => {
           const proj = PROJECTS.find((x) => x.slug === slug);
-          const h = c.highlights[0];
+          const shots = c.shots.slice(0, c.shots[0]?.kind === "phone" ? 3 : 1);
           return (
-            <Reveal key={slug} delay={i * 0.1}>
-              <a className="ct-card" href={`#projet/${slug}`} style={{ "--acc": c.accent }} onPointerMove={glow}>
-                {c.shots[0] && (
-                  <span className={"ct-img " + c.shots[0].kind} aria-hidden="true">
-                    {c.shots.slice(0, c.shots[0].kind === "phone" ? 3 : 1).map((s, k) => <img key={k} src={s.src} alt="" loading="lazy" />)}
+            <Reveal key={slug} delay={i * 0.08}>
+              <a className="ct-card2" href={`#projet/${slug}`} style={{ "--acc": c.accent }}>
+                <span className={"ct2-img " + (shots[0]?.kind || "none")} aria-hidden="true">
+                  {shots.length ? shots.map((s, k) => <img key={k} src={s.src} alt="" loading="lazy" />) : <span className="ct2-glyph">{proj.tags.slice(0, 2).join(" · ")}</span>}
+                </span>
+                <span className="ct2-body">
+                  <span className="ct2-type">{p(c.type)}</span>
+                  <b className="ct2-title">{p(proj.title)}</b>
+                  <span className="ct2-sum">{p(c.teaser)}</span>
+                  <span className="ct2-foot">
+                    <span className="ct2-tags">{proj.tags.slice(0, 3).join(" · ")}</span>
+                    <span className="ct2-go" aria-label={t("cs.read")}><Icon name="arrow" size={16} /></span>
                   </span>
-                )}
-                <span className="ct-n">N° {String(i + 1).padStart(2, "0")}</span>
-                <span className="ct-big">{h.v}</span>
-                <small className="ct-hl">{p(h.l)}</small>
-                <h3>{p(proj.title)}</h3>
-                <p>{p(c.summary)}</p>
-                <span className="ct-tags">{proj.tags.slice(0, 4).map((x) => <i key={x}>{x}</i>)}</span>
-                <span className="ct-go">{t("cs.read")} <span aria-hidden="true">→</span></span>
+                </span>
               </a>
             </Reveal>
           );

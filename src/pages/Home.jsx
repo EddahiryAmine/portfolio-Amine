@@ -1,9 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import Icon from "../components/Icons.jsx";
-import Marquee from "../components/Marquee.jsx";
 import Nav from "../components/Nav.jsx";
-import Rise from "../components/Rise.jsx";
-import TypeLine from "../components/TypeLine.jsx";
+import Hero from "../components/Hero.jsx";
 import QuickContact from "../components/QuickContact.jsx";
 import About from "../sections/About.jsx";
 import Certifications from "../sections/Certifications.jsx";
@@ -11,15 +9,15 @@ import Contact from "../sections/Contact.jsx";
 import Education from "../sections/Education.jsx";
 import Experience from "../sections/Experience.jsx";
 import Projects from "../sections/Projects.jsx";
-import { COMPANY, PROFILE, ROLE } from "../data/content.js";
-import portrait from "../assets/amine.webp";
+import { PROFILE } from "../data/content.js";
 import { useT } from "../i18n/lang.jsx";
 
 // Sections plus bas dans la page : chargées à part (premier affichage plus léger), préchargées dès que le navigateur est libre.
 const loaders = {
-  Skills: () => import("../sections/Skills.jsx"), ApiConsole: () => import("../sections/ApiConsole.jsx"), ArtInterlude: () => import("../sections/ArtInterlude.jsx"),
+  Skills: () => import("../sections/Skills.jsx"), ApiConsole: () => import("../sections/ApiConsole.jsx"), Pipeline: () => import("../sections/Pipeline.jsx"), Approach: () => import("../sections/Approach.jsx"), ArtInterlude: () => import("../sections/ArtInterlude.jsx"),
   Testimonials: () => import("../sections/Testimonials.jsx"), CvSection: () => import("../sections/CvSection.jsx"), Ask: () => import("../sections/Ask.jsx"),
 };
+const Pipeline = lazy(loaders.Pipeline), Approach = lazy(loaders.Approach);
 const Skills = lazy(loaders.Skills), ApiConsole = lazy(loaders.ApiConsole), ArtInterlude = lazy(loaders.ArtInterlude);
 const Testimonials = lazy(loaders.Testimonials), CvSection = lazy(loaders.CvSection), Ask = lazy(loaders.Ask);
 // Emplacement réservé (garde l'ancre de navigation) le temps que la section arrive.
@@ -36,37 +34,15 @@ export default function Home({ ready, onSwitch, theme, onTheme, onPalette }) {
       <div className="stars" aria-hidden="true" />
       <Nav theme={theme} onTheme={onTheme} onSwitch={onSwitch} onPalette={onPalette} />
 
-      <header className="hero">
-        <div className="moon-glow" />
-        <Marquee text={`${PROFILE.name} — `} className="m1" speed={0.6} />
-        <Marquee text={`${ROLE} .NET — `} className="m2" dir={-1} speed={0.45} />
-        <img className="me" src={portrait} alt={t("hero.portrait", { name: PROFILE.name })} />
-        <div className="fade" />
-        <div className="hline" />
-        <div className="bot">
-          <div>
-            <Rise delay={0.55}>{ROLE} <b>.NET</b></Rise>
-            <Rise delay={0.62}>{t("hero.at")} <b>{COMPANY}</b>, Casablanca</Rise>
-            <Rise delay={0.69}>{t("hero.certified")} <b>Oracle Java SE 17</b></Rise>
-          </div>
-          <div className="bot-r">
-            <Rise delay={0.76}>
-              <button className="np" onClick={() => document.querySelector(".ct-wrap")?.scrollIntoView({ behavior: "smooth", block: "center" })}>
-                <span className="np-eq" aria-hidden="true"><i /><i /><i /></span>
-                <span><small>{t("hero.casesK")}</small>{t("hero.cases")}</span>
-                <Icon name="arrow" size={16} />
-              </button>
-            </Rise>
-            <code className="snippet">{ready && <TypeLine start={1400} text={`const amine = { role: "${ROLE}", at: "${COMPANY}" };`} />}</code>
-          </div>
-        </div>
-      </header>
+      <Hero ready={ready} />
 
       <About />
       <Experience />
       <Projects />
       <Lz id="competences" h={1400}><Skills /></Lz>
+      <Lz id="approche" h={700}><Approach onSwitch={onSwitch} /></Lz>
       <Lz id="api" h={700}><ApiConsole /></Lz>
+      <Lz id="pipeline" h={600}><Pipeline /></Lz>
       <Lz h={640}><ArtInterlude /></Lz>
       <Certifications />
       <Education />

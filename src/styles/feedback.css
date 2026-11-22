@@ -1,0 +1,71 @@
+/* ---------- Avis : section d'accueil + page #avis ---------- */
+.rv-marquee { overflow: hidden; padding: 6px 0 22px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.rv-track { display: flex; gap: 14px; width: max-content; animation: tick 60s linear infinite; }
+.rv-marquee:hover .rv-track { animation-play-state: paused; }
+.rv-track .rv-card { width: 360px; }
+.rv-card { margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 24px; background: var(--card); border: 1px solid var(--line); font-family: var(--ios-font); }
+.rv-stars { color: #FF9F0A; letter-spacing: 2px; font-size: 15px; } .rv-stars i { font-style: normal; color: var(--line); }
+.rv-card blockquote { margin: 0; font: 300 19px / 1.45 "Newsreader", Georgia, serif; }
+.rv-card figcaption { margin-top: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rv-card figcaption > span:nth-child(2) { display: flex; flex-direction: column; line-height: 1.25; } .rv-card small { color: var(--mut); font-size: 13px; }
+.rv-card em { margin-left: auto; font-style: normal; font-size: 12px; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--mut); }
+.rv-card a { color: #0A66C2; }
+.rv-av { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(145deg, #A78BFA, #0A84FF); color: #fff; font-weight: 700; font-size: 14px; }
+.rv-invite { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; padding: 26px 28px; border-radius: 28px; font-family: var(--ios-font);
+  background: radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, #A78BFA 18%, transparent), transparent 55%), radial-gradient(120% 140% at 100% 100%, color-mix(in srgb, #0A84FF 16%, transparent), transparent 55%), var(--card); border: 1px solid var(--line); }
+.rv-invite.small { padding: 18px 22px; }
+.rv-bubbles { display: flex; } .rv-bubbles i { display: grid; place-items: center; width: 46px; height: 46px; margin-right: -10px; border-radius: 50%; font-style: normal; font-size: 20px; background: var(--bg); border: 2px solid var(--card); box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.4); animation: bob 3s ease-in-out infinite; }
+.rv-bubbles i:nth-child(2) { animation-delay: -1s; } .rv-bubbles i:nth-child(3) { animation-delay: -2s; }
+@keyframes bob { 50% { transform: translateY(-5px); } }
+.rv-invite-t { flex: 1 1 260px; display: flex; flex-direction: column; } .rv-invite-t b { font: 400 26px / 1.15 "Newsreader", Georgia, serif; } .rv-invite-t small { color: var(--mut); font-size: 14.5px; }
+.rv-invite .ios-btn.primary { background: var(--ink); color: var(--bg); box-shadow: none; }
+
+/* Page #avis */
+.fbp { min-height: 100svh; padding-bottom: 60px; overflow-x: clip; }
+.fb-hero { padding-top: 60px; padding-bottom: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.fb-hero h1 { font: 300 clamp(44px, 7vw, 90px) / 1 "Newsreader", Georgia, serif; letter-spacing: -0.02em; margin: 0 0 18px; animation: csIn 0.9s cubic-bezier(0.2, 0.75, 0.1, 1); }
+.fb-hero h1 em { color: var(--amber); }
+.fb-hero .cs-sum { margin-left: auto; margin-right: auto; }
+.fb-grid { columns: 3 300px; column-gap: 14px; } .fb-grid > * { break-inside: avoid; margin-bottom: 14px; }
+.fb-empty { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 40px 20px 20px; text-align: center; font-family: var(--ios-font); }
+.fb-empty b { font: 400 26px "Newsreader", Georgia, serif; } .fb-empty small { color: var(--mut); font-size: 15px; max-width: 46ch; }
+.fb-ghosts { display: flex; gap: 12px; margin-bottom: 16px; }
+.fb-ghosts span { width: 150px; height: 96px; border-radius: 20px; border: 1.5px dashed var(--line); background: color-mix(in srgb, var(--ink) 2%, transparent); animation: bob 4s ease-in-out infinite; }
+.fb-ghosts span:nth-child(2) { animation-delay: -1.3s; transform: translateY(-8px); } .fb-ghosts span:nth-child(3) { animation-delay: -2.6s; }
+.fb-form-wrap { margin-top: 30px; display: flex; justify-content: center; }
+.fb-card { width: min(100%, 720px); padding: 32px; border-radius: 32px; background: var(--card); border: 1px solid var(--line); box-shadow: 0 50px 90px -60px rgba(0, 0, 0, 0.55); font-family: var(--ios-font); }
+.fb-card h2 { margin: 0 0 4px; font: 400 34px "Newsreader", Georgia, serif; }
+.fb-hint { margin: 0 0 22px; color: var(--mut); }
+.fb-stars { display: flex; align-items: center; gap: 4px; margin-bottom: 18px; }
+.fb-stars button { font-size: 34px; line-height: 1; color: var(--line); transition: transform 0.2s cubic-bezier(0.3, 1.5, 0.5, 1), color 0.2s; }
+.fb-stars button.on { color: #FF9F0A; } .fb-stars button:hover { transform: scale(1.18); }
+.fb-stars small { margin-left: 10px; color: var(--mut); font-size: 14px; }
+.fb-rel { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.fb-rel button { padding: 8px 14px; border-radius: 999px; font: 500 13.5px var(--ios-font); background: color-mix(in srgb, var(--ink) 6%, transparent); transition: background 0.25s, color 0.25s; }
+.fb-rel button.on { background: #0A84FF; color: #fff; }
+.fb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ios-field { position: relative; display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.ios-field > span { font: 600 13px var(--ios-font); color: var(--mut); }
+.ios-field input, .ios-field textarea { width: 100%; padding: 13px 15px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: 16px var(--ios-font); outline: 0; resize: vertical; transition: border-color 0.25s, box-shadow 0.25s; }
+.ios-field input:focus, .ios-field textarea:focus { border-color: #0A84FF; box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.18); }
+.ios-field.bad input, .ios-field.bad textarea { border-color: #FF453A; }
+.ios-field em { font-style: normal; font-size: 13px; color: #FF453A; }
+.fb-count { position: absolute; right: 12px; top: 2px; font-size: 11.5px; color: var(--mut); }
+.fb-consent { display: flex; align-items: center; gap: 12px; margin: 6px 0 20px; font-size: 14.5px; cursor: pointer; }
+.fb-consent input { position: absolute; opacity: 0; pointer-events: none; }
+.ios-switch { position: relative; flex: none; width: 51px; height: 31px; border-radius: 999px; background: rgba(120, 120, 128, 0.32); transition: background 0.3s; }
+.ios-switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #fff; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 3px 1px rgba(0, 0, 0, 0.06); transition: transform 0.35s cubic-bezier(0.3, 1.3, 0.5, 1); }
+.fb-consent input:checked + .ios-switch { background: #34C759; } .fb-consent input:checked + .ios-switch::after { transform: translateX(20px); }
+.fb-consent input:focus-visible + .ios-switch { outline: 2px solid #0A84FF; outline-offset: 2px; }
+.fb-send { width: 100%; padding: 16px; background: #0A84FF; color: #fff; font-size: 16px; }
+.fb-send:disabled { opacity: 0.7; }
+.fb-privacy { margin: 12px 0 0; text-align: center; font-size: 12.5px; color: var(--mut); }
+.fb-done { text-align: center; padding: 20px 0; } .fb-done p { color: var(--mut); max-width: 44ch; margin: 8px auto 22px; }
+.fb-done .ios-btn.primary { background: var(--ink); color: var(--bg); }
+@media (max-width: 640px) {
+  .fb-card { padding: 22px 18px; border-radius: 26px; }
+  .fb-row { grid-template-columns: 1fr; gap: 0; }
+  .fb-ghosts span { width: 90px; height: 70px; }
+  .rv-track .rv-card { width: 290px; }
+}
+@media (prefers-reduced-motion: reduce) { .rv-track, .rv-bubbles i, .fb-ghosts span { animation: none; } }

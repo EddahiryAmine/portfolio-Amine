@@ -1,0 +1,176 @@
+/* =========================================================
+   Langage iOS : boutons en pilule, contrôles segmentés,
+   interrupteurs, verre dépoli. + Hero (notifications iPhone).
+   ========================================================= */
+:root { --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Tight", system-ui, sans-serif; --ios-green: #34C759; --ios-blue: #0A84FF; }
+
+/* Boutons */
+.ios-btn, .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 22px; border-radius: 999px; font: 600 15px/1 var(--ios-font); letter-spacing: -0.01em;
+  text-decoration: none; transition: transform 0.18s cubic-bezier(0.3, 0.7, 0.4, 1), background 0.3s, box-shadow 0.3s, opacity 0.2s; -webkit-tap-highlight-color: transparent; }
+.ios-btn:active, .btn:active, .cf-btn:active, .arch-play:active, .pm-send:active { transform: scale(0.96); }
+.ios-btn.primary { background: #F5F5F7; color: #0B0F19; box-shadow: 0 10px 30px -12px rgba(245, 245, 247, 0.6); }
+.ios-btn.primary:hover { box-shadow: 0 14px 36px -10px rgba(245, 245, 247, 0.75); }
+.ios-btn.glass { color: #F5F5F7; background: rgba(255, 255, 255, 0.1); border: 0.5px solid rgba(255, 255, 255, 0.28); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
+.ios-btn.glass:hover { background: rgba(255, 255, 255, 0.18); }
+
+/* Contrôle segmenté iOS (langue, filtres) */
+.lsw { padding: 2px; border: 0; background: rgba(120, 120, 128, 0.24); font: 600 12px var(--ios-font); }
+.lsw button { height: 28px; width: 36px; opacity: 0.75; }
+.lsw button[aria-pressed="true"] { opacity: 1; color: #0B0F19; }
+.lsw-ind { top: 2px; left: 2px; width: 36px; height: 28px; background: #F5F5F7; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04); transition: transform 0.35s cubic-bezier(0.3, 1.3, 0.5, 1); }
+.lsw.is-en .lsw-ind { transform: translateX(36px); }
+.nav.sc .lsw, .cs-bar .lsw, .ns-row .lsw { background: rgba(120, 120, 128, 0.16); }
+.p-filter, .cf-subj, .viewsw { gap: 2px; padding: 3px; border-radius: 12px; background: rgba(120, 120, 128, 0.14); width: fit-content; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.p-filter button, .cf-subj button { border: 0 !important; border-radius: 9px; padding: 7px 14px; font: 500 13.5px var(--ios-font); white-space: nowrap; }
+.p-filter button.on { background: var(--card); color: var(--ink); box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04); }
+.p-filter button.on small { color: var(--mut); }
+.cf-subj { background: rgba(255, 255, 255, 0.08); } .cf-subj button.on { background: #F5F5F7; color: #0B0F19; }
+
+/* Interrupteur iOS (Pro / Perso) */
+.mode { border: 0; padding: 4px 4px 4px 12px; gap: 9px; background: rgba(120, 120, 128, 0.2); font: 600 13px var(--ios-font); }
+.mode i { width: 46px; height: 28px; border: 0; background: rgba(120, 120, 128, 0.32); transition: background 0.3s; }
+.mode i::after { top: 2px; left: 2px; width: 24px; height: 24px; background: #fff; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18), 0 1px 1px rgba(0, 0, 0, 0.12); }
+.mode.is-perso i { background: #FF9F0A; } .mode.is-perso i::after { transform: translateX(18px); }
+.tt, .nav-menu, .kbar { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+
+/* ---------- Hero ---------- */
+.hero2 { --px: 0; --py: 0; }
+.hero2 .m1 { transform: translate(calc(var(--px) * 24px), calc(var(--py) * 12px)); transition: transform 0.6s ease-out; }
+.me-wrap { position: absolute; inset: 0; z-index: 2; transform: translate(calc(var(--px) * -16px), calc(var(--py) * -10px)); transition: transform 0.6s ease-out; pointer-events: none; }
+.hero2 .me { filter: contrast(1.04) saturate(1.04) brightness(1.02) drop-shadow(-18px 0 40px rgba(110, 140, 220, 0.28)) drop-shadow(18px 0 50px rgba(227, 160, 74, 0.12)); }
+.me-halo { position: absolute; left: 54%; bottom: 20%; width: min(48vw, 600px); aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; opacity: 0; transition: opacity 2s 0.6s;
+  background: radial-gradient(circle at 50% 45%, rgba(140, 165, 230, 0.32), rgba(140, 165, 230, 0.08) 45%, transparent 68%); }
+.me-halo::after { content: ""; position: absolute; inset: 12%; border-radius: 50%; border: 1px solid rgba(183, 197, 227, 0.18); box-shadow: inset 0 0 60px rgba(183, 197, 227, 0.08); }
+.go .me-halo { opacity: 1; }
+.h2-left { position: absolute; left: max(28px, calc((100vw - 1200px) / 2 + 28px)); bottom: calc(52px + env(safe-area-inset-bottom, 0px)); z-index: 4; max-width: 520px; color: #F5F5F7; }
+.h2-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; font: 500 13px var(--ios-font); background: rgba(255, 255, 255, 0.08); border: 0.5px solid rgba(255, 255, 255, 0.22); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.h2-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--ios-green); box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.2); }
+.h2-title { margin: 16px 0 22px; font: 300 clamp(26px, 3vw, 42px) / 1.15 "Newsreader", Georgia, serif; letter-spacing: -0.01em; }
+.h2-title em { color: #B7C5E3; }
+.h2-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+.h2-notes { position: absolute; right: max(28px, calc((100vw - 1200px) / 2 + 28px)); bottom: calc(52px + env(safe-area-inset-bottom, 0px)); z-index: 4; width: 340px; display: grid; gap: 8px; }
+.hn { display: flex; gap: 11px; align-items: flex-start; padding: 12px 14px; border-radius: 22px; color: #F5F5F7; text-align: left;
+  background: rgba(38, 42, 56, 0.55); border: 0.5px solid rgba(255, 255, 255, 0.16); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%);
+  box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.7); opacity: 0; transform: translateY(18px) scale(0.96); transition: opacity 0.7s, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.15), background 0.3s; transition-delay: calc(1.2s + var(--i) * 0.35s); }
+.h2-notes.in .hn { opacity: 1; transform: none; }
+.hn:hover { background: rgba(50, 55, 72, 0.7); transition-delay: 0s; }
+.hn-app { flex: none; width: 38px; height: 38px; border-radius: 9px; overflow: hidden; background: #fff; display: grid; place-items: center; }
+.hn-app img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+.hn-ico { width: 100%; height: 100%; display: grid; place-items: center; font: 800 18px var(--ios-font); color: #fff; }
+.hn-ico.oracle { background: #C74634; } .hn-ico.gh { background: #181717; }
+.hn-body { display: flex; flex-direction: column; min-width: 0; font: 13.5px / 1.3 var(--ios-font); }
+.hn-top { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: rgba(245, 245, 247, 0.65); text-transform: uppercase; letter-spacing: 0.02em; }
+.hn-top b { font-weight: 600; } .hn-top small { text-transform: none; font-size: 12px; }
+.hn-body strong { font-weight: 600; margin-top: 1px; }
+.hn-body > span:last-child { color: rgba(245, 245, 247, 0.82); }
+.h2-scroll { position: absolute; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 4; transform: translateX(-50%); width: 24px; height: 38px; border-radius: 12px; border: 1.5px solid rgba(245, 245, 247, 0.45); }
+.h2-scroll span { position: absolute; left: 50%; top: 7px; width: 3px; height: 7px; margin-left: -1.5px; border-radius: 2px; background: #F5F5F7; animation: scrollDot 1.8s ease-in-out infinite; }
+@keyframes scrollDot { 50% { transform: translateY(9px); opacity: 0.3; } }
+@media (max-width: 1100px) { .h2-notes { width: 290px; } .h2-notes .hn:nth-child(3) { display: none; } }
+@media (max-width: 860px) {
+  .h2-notes { display: none; }
+  .h2-left { left: 20px; right: 20px; bottom: calc(108px + env(safe-area-inset-bottom, 0px)); }
+  .h2-title { font-size: 25px; margin: 12px 0 16px; text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7); }
+  .h2-scroll { display: none; }
+  .me-halo { left: 50%; width: 92vw; bottom: 26%; }
+  .ios-btn { padding: 12px 18px; font-size: 14.5px; }
+}
+@media (prefers-reduced-motion: reduce) { .hn, .me-halo { transition: none; opacity: 1; transform: none; } .h2-scroll span { animation: none; } }
+
+/* ---------- Compétences : système planétaire en 3D (sans portrait) ---------- */
+.orbit { --tilt: 64deg; height: calc(var(--W) * 0.66); perspective: 1400px; perspective-origin: 50% 30%; }
+.orbit::before { inset: 22% 18%; background: radial-gradient(ellipse, color-mix(in srgb, var(--amber) 26%, transparent), transparent 70%); }
+.orbit-plane { position: absolute; left: 0; right: 0; top: 50%; height: var(--W); margin-top: calc(var(--W) / -2); transform-style: preserve-3d; transform: rotateX(var(--tilt)); }
+.orbit-plane .oring { transform-style: preserve-3d; border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--amber) 6%, transparent), inset 0 0 40px color-mix(in srgb, var(--amber) 6%, transparent); }
+.orbit-plane .sat, .orbit-plane .sat > span { transform-style: preserve-3d; }
+.orbit-plane .sat > span { background: none; border: 0; box-shadow: none; }
+.sat .face { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; transform: rotateX(calc(var(--tilt) * -1));
+  background: color-mix(in srgb, var(--card) 88%, transparent); border: 1px solid var(--line); box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.55); backdrop-filter: blur(8px); transition: box-shadow 0.3s, border-color 0.3s, scale 0.3s; }
+.sat:hover .face, .sat.on .face { scale: 1.25; border-color: var(--c); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 22%, transparent), 0 0 30px color-mix(in srgb, var(--c) 55%, transparent); }
+.sat:hover > span, .sat.on > span { scale: 1; box-shadow: none; }
+.core { width: 26%; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; top: 46%;
+  background: radial-gradient(circle at 35% 30%, #FFFFFF 0%, color-mix(in srgb, var(--amber) 60%, #fff) 18%, var(--amber) 48%, color-mix(in srgb, var(--amber) 40%, #05070c) 100%);
+  box-shadow: 0 0 0 10px color-mix(in srgb, var(--amber) 10%, transparent), 0 0 80px color-mix(in srgb, var(--amber) 55%, transparent), inset -14px -18px 40px rgba(0, 0, 0, 0.35);
+  color: #fff; animation: corePulse 5s ease-in-out infinite; }
+.core b { font: 300 clamp(34px, 4.6vw, 58px) / 1 "Newsreader", Georgia, serif; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); }
+.core small { font: 600 10.5px var(--ios-font); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.9; }
+@keyframes corePulse { 50% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--amber) 6%, transparent), 0 0 110px color-mix(in srgb, var(--amber) 65%, transparent), inset -14px -18px 40px rgba(0, 0, 0, 0.35); } }
+.orbit-plane { z-index: 2; }
+@media (max-width: 900px) { .orbit { --tilt: 60deg; } }
+@media (prefers-reduced-motion: reduce) { .core { animation: none; } }
+
+/* ---------- Parcours : frise avec logos ---------- */
+.tl { list-style: none; margin: 0; padding: 0; position: relative; display: grid; gap: 18px; }
+.tl::before { content: ""; position: absolute; left: 27px; top: 30px; bottom: 30px; width: 2px; border-radius: 2px; background: linear-gradient(var(--amber), color-mix(in srgb, var(--amber) 15%, transparent)); }
+.tl-item { position: relative; display: grid; grid-template-columns: 56px 1fr; gap: 20px; align-items: start; }
+.tl-logo { position: relative; z-index: 1; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 16px; overflow: hidden; background: #fff;
+  box-shadow: 0 0 0 5px var(--bg), 0 10px 24px -10px rgba(0, 0, 0, 0.45); }
+.tl-logo img { width: 100%; height: 100%; object-fit: contain; padding: 7px; }
+.tl-logo b { font: 700 18px var(--ios-font); letter-spacing: -0.02em; }
+.tl-item.cur .tl-logo { box-shadow: 0 0 0 5px var(--bg), 0 0 0 7px color-mix(in srgb, var(--amber) 55%, transparent), 0 12px 30px -10px color-mix(in srgb, var(--amber) 60%, #000); }
+.tl-card { padding: 22px 24px; border-radius: 24px; background: var(--card); border: 1px solid var(--line); transition: transform 0.35s cubic-bezier(0.2, 0.75, 0.1, 1), box-shadow 0.35s, border-color 0.35s; }
+.tl-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--amber) 35%, transparent); box-shadow: 0 24px 50px -30px rgba(0, 0, 0, 0.45); }
+.tl-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+.tl-card h3 { font: 400 clamp(22px, 2.4vw, 30px) / 1.15 "Newsreader", Georgia, serif; margin: 0 0 4px; }
+.tl-where { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; color: var(--mut); font: 14px var(--ios-font); }
+.tl-where b { color: var(--ink); font-weight: 600; }
+.tl-client { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px 2px 3px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 6%, transparent); font-size: 12.5px; }
+.tl-client img { width: 18px; height: 18px; border-radius: 5px; }
+.tl-date { flex: none; display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; font: 600 12.5px var(--ios-font); background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--ink); }
+.tl-live { width: 7px; height: 7px; border-radius: 50%; background: var(--ios-green); box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.22); animation: pulse 2s ease-in-out infinite; }
+.tl-card p { margin: 12px 0 14px; color: var(--mut); max-width: 70ch; }
+@media (max-width: 640px) {
+  .tl::before { left: 21px; }
+  .tl-item { grid-template-columns: 44px 1fr; gap: 12px; }
+  .tl-logo { width: 44px; height: 44px; border-radius: 13px; } .tl-logo b { font-size: 15px; }
+  .tl-card { padding: 18px; border-radius: 20px; }
+}
+
+/* ---------- Projets : cartes compactes ---------- */
+.ct-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.ct-card2 { --acc: var(--amber); display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 24px; text-decoration: none; color: var(--ink);
+  background: var(--card); border: 1px solid var(--line); transition: transform 0.45s cubic-bezier(0.2, 0.75, 0.1, 1), box-shadow 0.45s, border-color 0.45s; }
+.ct-card2:hover { transform: translateY(-6px); border-color: color-mix(in srgb, var(--acc) 45%, transparent); box-shadow: 0 30px 60px -34px color-mix(in srgb, var(--acc) 60%, #000); }
+.ct2-img { position: relative; display: flex; justify-content: center; align-items: flex-end; gap: 8px; height: 176px; padding: 20px 18px 0; overflow: hidden;
+  background: radial-gradient(120% 100% at 50% 100%, color-mix(in srgb, var(--acc) 34%, #0B0F19), #0B0F19 75%); }
+.ct2-img img { display: block; object-fit: cover; object-position: top; box-shadow: 0 18px 30px -14px rgba(0, 0, 0, 0.85); transition: transform 0.7s cubic-bezier(0.2, 0.75, 0.1, 1); }
+.ct2-img.phone img { width: 27%; height: 120%; border-radius: 16px 16px 0 0; border: 4px solid #050507; border-bottom: 0; }
+.ct2-img.phone img:nth-child(1) { transform: translateY(16px) rotate(-5deg); } .ct2-img.phone img:nth-child(2) { z-index: 1; } .ct2-img.phone img:nth-child(3) { transform: translateY(16px) rotate(5deg); }
+.ct2-img.browser img { width: 94%; height: 125%; border-radius: 10px 10px 0 0; border: 1px solid rgba(255, 255, 255, 0.14); border-bottom: 0; }
+.ct2-img.none { align-items: center; padding: 20px; }
+.ct2-glyph { font: 500 13px var(--mono); color: rgba(255, 255, 255, 0.75); padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.18); }
+.ct-card2:hover .ct2-img img { transform: translateY(-6px); }
+.ct-card2:hover .ct2-img.phone img:nth-child(1) { transform: translateY(6px) rotate(-8deg); } .ct-card2:hover .ct2-img.phone img:nth-child(3) { transform: translateY(6px) rotate(8deg); }
+.ct2-body { display: flex; flex-direction: column; gap: 6px; flex: 1; padding: 18px 20px 18px; }
+.ct2-type { font: 600 11.5px var(--ios-font); letter-spacing: 0.06em; text-transform: uppercase; color: var(--acc); }
+.ct2-title { font: 400 24px / 1.15 "Newsreader", Georgia, serif; }
+.ct2-sum { color: var(--mut); font-size: 14.5px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ct2-foot { margin-top: auto; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.ct2-tags { font: 12px var(--mono); color: var(--mut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ct2-go { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: color-mix(in srgb, var(--acc) 16%, transparent); color: var(--acc); transition: background 0.3s, color 0.3s, transform 0.4s; }
+.ct-card2:hover .ct2-go { background: var(--acc); color: #0B0F19; transform: rotate(45deg); }
+@media (max-width: 900px) {
+  .ct-grid { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(78vw, 300px); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; scrollbar-width: none; }
+  .ct-grid::-webkit-scrollbar { display: none; } .ct-grid > * { scroll-snap-align: start; }
+  .ct2-img { height: 150px; }
+}
+
+/* ---------- Projets : fenêtres de code plus compactes ---------- */
+.term-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 14px; }
+.term { border-radius: 20px; }
+.tbar { padding: 10px 14px; font-size: 11.5px; } .tbar i { width: 10px; height: 10px; }
+.tbody { padding: 18px 20px 18px; display: flex; flex-direction: column; height: calc(100% - 38px); }
+.tbody h3 { font-size: 22px; margin-bottom: 8px; }
+.tbody p { font-size: 14px; line-height: 1.5; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.term .tags { gap: 6px; } .term .tags span { font-size: 11px; padding: 3px 9px; }
+.t-foot { margin-top: auto; } .st { margin-top: 14px; font-size: 12px; }
+.t-repo { font-size: 12px; padding: 5px 11px; }
+/* Orbite 3D : moins de chevauchements (inclinaison plus douce, anneaux plus espacés, zone tactile ajustée) */
+.orbit { --tilt: 56deg; height: calc(var(--W) * 0.74); }
+.orbit-plane .oring.r0 { --D: calc(var(--W) * 0.50); }
+.orbit-plane .oring.r1 { --D: calc(var(--W) * 0.76); }
+.orbit-plane .oring.r2 { --D: calc(var(--W) * 1.02); }
+.orbit-plane .sat::before { inset: -3px; }
+.core { width: 22%; }
+.orbit-plane, .core, .orbit::before { pointer-events: none; }
+.orbit-plane .sat { pointer-events: auto; }

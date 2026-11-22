@@ -16,6 +16,7 @@ import { downloadVCard } from "./sections/Contact.jsx";
 const loadPhoto = () => import("./pages/Photography.jsx");
 const Photography = lazy(loadPhoto);
 const CaseStudy = lazy(() => import("./pages/CaseStudy.jsx"));
+const Feedback = lazy(() => import("./pages/Feedback.jsx"));
 const HireMe = lazy(() => import("./components/HireMe.jsx"));
 if (typeof window !== "undefined") (window.requestIdleCallback || ((f) => setTimeout(f, 2500)))(() => loadPhoto());
 
@@ -28,15 +29,16 @@ export default function App() {
   const route = useHashRoute();
   const isPerso = route === "photographie";
   const caseSlug = route.startsWith("projet/") ? route.slice(7) : null;
+  const isFeedback = route === "avis";
   const { theme, toggle } = useTheme();
   const { t, p, lang, setLang } = useT();
-  const [phase, setPhase] = useState(caseSlug ? 2 : 0);
+  const [phase, setPhase] = useState(caseSlug || isFeedback ? 2 : 0);
   const [trans, setTrans] = useState(null); // { to: "perso" | "pro", x, y }
   const [palette, setPalette] = useState(false);
   const [hire, setHire] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = (phase < 2 && !isPerso && !caseSlug) || trans || hire ? "hidden" : "";
+    document.body.style.overflow = (phase < 2 && !isPerso && !caseSlug && !isFeedback) || trans || hire ? "hidden" : "";
   }, [phase, isPerso, caseSlug, trans, hire]);
 
   // Easter egg déclenchable de partout (pied de page, Amine IA…) via un événement.
@@ -63,7 +65,7 @@ export default function App() {
   const onMid = () => { location.hash = trans.to === "perso" ? "photographie" : ""; scrollTo(0, 0); };
 
   const actions = useMemo(() => {
-    const away = isPerso || caseSlug;
+    const away = isPerso || caseSlug || isFeedback;
     const goTo = (id) => () => { if (away) location.hash = ""; setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), away ? 250 : 0); };
     return [
       ...NAV.map(([id, icon]) => ({ label: t("pal.goto", { x: t("nav." + id) }), icon, run: goTo(id) })),
@@ -76,12 +78,14 @@ export default function App() {
       { label: t("pal.linkedin"), icon: "linkedin", run: () => window.open(PROFILE.linkedin, "_blank", "noopener") },
       { label: t("pal.email"), icon: "copy", hint: PROFILE.email, run: () => navigator.clipboard?.writeText(PROFILE.email).catch(() => {}) },
       { label: t("pal.vcard"), icon: "card", run: downloadVCard },
+      { label: t("reco.cta"), icon: "chat", run: () => { location.hash = "avis"; } },
       { label: "sudo hire amine", icon: "spark", hint: "🥚", secret: true, run: () => setHire(true) },
     ];
-  }, [isPerso, caseSlug, theme, trans, lang]);
+  }, [isPerso, caseSlug, isFeedback, theme, trans, lang]);
 
   let page;
-  if (caseSlug) page = <CaseStudy slug={caseSlug} theme={theme} onTheme={toggle} />;
+  if (isFeedback) page = <Feedback theme={theme} onTheme={toggle} />;
+  else if (caseSlug) page = <CaseStudy slug={caseSlug} theme={theme} onTheme={toggle} />;
   else if (isPerso) page = <Photography onSwitch={switchMode} />;
   else page = <Home ready={phase >= 1} onSwitch={switchMode} theme={theme} onTheme={toggle} onPalette={() => setPalette(true)} />;
 
@@ -89,7 +93,7 @@ export default function App() {
     <>
       <Cursor />
       <Suspense fallback={<div className="page-load" aria-hidden="true" />}>{page}</Suspense>
-      {!isPerso && !caseSlug && <Intro phase={phase} setPhase={setPhase} />}
+      {!isPerso && !caseSlug && !isFeedback && <Intro phase={phase} setPhase={setPhase} />}
       {trans && <Transition {...trans} onMid={onMid} onDone={() => setTrans(null)} />}
       <CommandPalette open={palette} setOpen={setPalette} actions={actions} />
       {hire && <Suspense fallback={null}><HireMe onClose={() => setHire(false)} /></Suspense>}

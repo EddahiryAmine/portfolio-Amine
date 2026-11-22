@@ -12,6 +12,12 @@ import "./styles/photography.css";
 import "./styles/extra.css";
 import "./styles/wow.css";
 import "./styles/cases.css";
+import "./styles/ios.css";
+import "./styles/api.css";
+import "./styles/pipeline.css";
+import "./styles/approach.css";
+import "./styles/ai.css";
+import "./styles/feedback.css";
 
 // Polices chargées sans bloquer le premier affichage (le texte apparaît tout de suite, puis la police s'applique).
 const fonts = document.createElement("link");

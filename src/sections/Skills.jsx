@@ -4,7 +4,6 @@ import Reveal from "../components/Reveal.jsx";
 import TechLogo from "../components/TechLogo.jsx";
 import { CAT_LABEL, LVL_LABEL, TECH, TECH_CATS, techColor, techCtx } from "../data/tech.js";
 import { useT } from "../i18n/lang.jsx";
-import portrait from "../assets/amine.webp";
 
 const RINGS = [0, 1, 2].map((r) => TECH.filter((t) => t.ring === r));
 const DUR = [38, 56, 80]; // secondes par tour
@@ -39,19 +38,19 @@ export default function Skills() {
 
         <div className="sk-top">
           <Reveal className={"orbit" + (paused ? " paused" : "")} aria-label={tr("skills.orbit")} onPointerDown={freeze}>
-            <div className="core">
-              <img src={portrait} alt="" />
-            </div>
+            <div className="core" aria-hidden="true"><b>{TECH.length}</b><small>{tr("skills.coreLabel")}</small></div>
+            <div className="orbit-plane">
             {RINGS.map((ring, r) => (
               <div key={r} className={"oring r" + r} style={{ "--n": ring.length, "--dur": DUR[r] + "s" }}>
                 {ring.map((t, i) => (
                   <button key={t.name} className={"sat" + (sel.name === t.name ? " on" : "")} style={{ "--i": i, "--c": techColor(t) }}
                     onClick={() => setSel(t)} onPointerEnter={() => setSel(t)} aria-label={t.name}>
-                    <span><TechLogo tech={t} size={r === 0 ? 30 : 24} /></span>
+                    <span><i className="face"><TechLogo tech={t} size={r === 0 ? 30 : 24} /></i></span>
                   </button>
                 ))}
               </div>
             ))}
+            </div>
           </Reveal>
 
           <Reveal delay={0.1} className="focus-card" style={{ "--c": techColor(sel) }} aria-live="polite">

@@ -1,0 +1,38 @@
+/* ---------- « Ma façon de travailler » : widgets façon iOS ---------- */
+.how { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+.hw { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 28px; background: var(--card); border: 1px solid var(--line);
+  transition: transform 0.4s cubic-bezier(0.2, 0.75, 0.1, 1), box-shadow 0.4s; font-family: var(--ios-font); }
+.hw:hover { transform: translateY(-4px); box-shadow: 0 26px 50px -30px rgba(0, 0, 0, 0.5); }
+.hw h3 { margin: 4px 0 0; font: 600 19px / 1.2 var(--ios-font); letter-spacing: -0.01em; }
+.hw p { margin: 0; color: var(--mut); font-size: 15px; line-height: 1.5; }
+.hw-ico { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; color: #fff; box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+.g1 { background: linear-gradient(145deg, #A78BFA, #6D28D9); } .g2 { background: linear-gradient(145deg, #FB7185, #E11D48); } .g3 { background: linear-gradient(145deg, #38BDF8, #1D4ED8); }
+.g4 { background: linear-gradient(145deg, #34D399, #059669); } .g5 { background: linear-gradient(145deg, #FBBF24, #D97706); } .g6 { background: linear-gradient(145deg, #94A3B8, #334155); }
+.hw-ai { grid-column: span 3; grid-row: span 2; }
+.hw-ai::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: conic-gradient(from var(--a), #A78BFA, transparent 30%, #38BDF8, transparent 65%, #FB7185, #A78BFA); animation: rot 6s linear infinite;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+.hw-ai::after { content: ""; position: absolute; right: -60px; bottom: -60px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(167, 139, 250, 0.28), transparent 70%); pointer-events: none; }
+.hw-ai h3 { font: 400 clamp(26px, 2.8vw, 34px) / 1.1 "Newsreader", Georgia, serif; }
+.hw-flow { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.hw-flow span { padding: 7px 13px; border-radius: 999px; font: 600 13px var(--ios-font); background: color-mix(in srgb, var(--ink) 6%, transparent); animation: flowPulse 4s ease-in-out infinite; animation-delay: calc(var(--i) * 0.6s); }
+.hw-flow span:not(:last-child)::after { content: " →"; color: var(--mut); font-weight: 400; }
+@keyframes flowPulse { 0%, 30%, 100% { background: color-mix(in srgb, var(--ink) 6%, transparent); } 12% { background: color-mix(in srgb, #A78BFA 30%, transparent); } }
+.hw-vibe { grid-column: span 3; }
+.hw-chip { align-self: flex-start; margin-top: auto; padding: 6px 12px; border-radius: 999px; font: 600 12.5px var(--ios-font); color: #E11D48; background: rgba(251, 113, 133, 0.14); }
+.hw-prompt { grid-column: span 3; }
+.how-prompt { margin: 2px 0 0; padding: 12px 14px; min-height: 78px; border-radius: 14px; background: #0D111B; color: #C9D3E0; font: 12.5px / 1.6 var(--mono); white-space: pre-wrap; }
+.hp-u { color: #38BDF8; font-weight: 700; }
+.hw-watch, .hw-values, .hw-life { grid-column: span 2; }
+.hw-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.hw-tags span { padding: 5px 11px; border-radius: 999px; font: 500 12.5px var(--ios-font); background: rgba(52, 211, 153, 0.14); color: color-mix(in srgb, #059669 75%, var(--ink)); }
+.hw-values ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.hw-values li { display: flex; align-items: center; gap: 8px; font-size: 15px; } .hw-values li::before { content: "✓"; color: #D97706; font-weight: 700; }
+.hw-link { align-self: flex-start; margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font: 600 14px var(--ios-font); color: var(--amber); }
+@media (max-width: 900px) {
+  .how { grid-template-columns: 1fr 1fr; }
+  .hw-ai, .hw-vibe, .hw-prompt { grid-column: span 2; grid-row: auto; }
+  .hw-watch, .hw-values, .hw-life { grid-column: span 1; }
+}
+@media (max-width: 560px) { .how { grid-template-columns: 1fr; } .hw-watch, .hw-values, .hw-life { grid-column: auto; } .hw { padding: 18px; border-radius: 24px; } }
+@media (prefers-reduced-motion: reduce) { .hw-ai::before, .hw-flow span { animation: none; } }

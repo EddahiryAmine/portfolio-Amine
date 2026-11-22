@@ -127,11 +127,14 @@ export default function Ask() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.12} className="chat ai-chat">
+        <Reveal delay={0.12} className="iph-wrap">
+        <div className="iph">
+          <span className="iph-island" aria-hidden="true">{talking >= 0 && <span className="wave"><i /><i /><i /><i /><i /></span>}</span>
+          <div className="iph-status" aria-hidden="true"><b>9:41</b><span>●●●● ᯤ ▮</span></div>
+        <div className="chat ai-chat">
           <div className="chat-h">
             <span className={"ai-mini" + state}><img src={portrait} alt="" /></span>
-            <span className="ai-who"><b>{NAME}</b><small>{busy ? t("ai.thinking") : talking >= 0 ? t("ai.talking") : t("ai.online")}</small></span>
-            {talking >= 0 && <span className="wave" aria-hidden="true"><i /><i /><i /><i /><i /></span>}
+            <span className="ai-who"><b>{NAME}</b><small>{busy ? t("ai.thinking") : talking >= 0 ? t("ai.talking") : "iMessage · " + t("ai.online")}</small></span>
             <span className="ai-tools">
               {canSpeak && (
                 <button onClick={() => { setVoice(!voice); if (voice) { speechSynthesis.cancel(); setTalking(-1); } }} aria-pressed={voice}
@@ -172,8 +175,11 @@ export default function Ask() {
           </div>
           <form className="chat-f" onSubmit={(e) => { e.preventDefault(); send(q); }}>
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("ai.placeholder")} maxLength={MAX_LEN} aria-label={t("ai.your")} autoComplete="off" />
-            <button type="submit" disabled={!q.trim() || busy} aria-label={t("ai.send")}><Icon name="send" size={18} /></button>
+            <button type="submit" disabled={!q.trim() || busy} aria-label={t("ai.send")}><Icon name="arrow" size={18} /></button>
           </form>
+          <span className="iph-home" aria-hidden="true" />
+        </div>
+        </div>
         </Reveal>
       </div>
     </section>

@@ -1,0 +1,34 @@
+/* ---------- Terminal + pipeline GitLab ---------- */
+.api-switch .dot { display: inline-block; }
+.pipe { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; align-items: stretch; }
+.pipe-term { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #0D111B; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.7); }
+.pipe-term .tbar span { color: #9DB0AD; }
+.pipe-term pre { flex: 1; margin: 0; padding: 16px 18px; height: 340px; overflow-y: auto; font: 13px / 1.7 var(--mono); color: #C9D3E0; white-space: pre-wrap; word-break: break-word; scrollbar-width: thin; }
+.pl-cmd b { color: #7FD99A; } .pl-cmd { color: #F5F5F7; }
+.pl-out { color: #8B97A8; } .pl-ok { color: #7FD99A; } .pl-out.dim { color: #6B7586; }
+.pipe-gl { display: flex; flex-direction: column; gap: 14px; padding: 20px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); font-family: var(--ios-font); }
+.gl-head { display: flex; align-items: center; gap: 10px; }
+.gl-logo { width: 26px; height: 26px; border-radius: 7px; background: conic-gradient(from 200deg, #FC6D26, #E24329, #FCA326, #FC6D26); clip-path: polygon(50% 100%, 0 38%, 12% 0, 26% 38%, 74% 38%, 88% 0, 100% 38%); }
+.gl-head b { font-size: 15px; }
+.gl-badge { margin-left: auto; padding: 3px 10px; border-radius: 999px; font: 600 12px var(--ios-font); background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--mut); text-transform: lowercase; }
+.gl-badge.running { background: rgba(31, 117, 203, 0.14); color: #1F75CB; } .gl-badge.passed { background: rgba(16, 133, 72, 0.14); color: #108548; }
+.gl-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.gl-stage { position: relative; display: flex; flex-direction: column; gap: 8px; }
+.gl-stage small { font-size: 11.5px; color: var(--mut); text-transform: uppercase; letter-spacing: 0.05em; }
+.gl-job { display: flex; align-items: center; gap: 7px; padding: 8px 10px; border-radius: 999px; font: 500 13px var(--mono); border: 1px solid var(--line); background: var(--bg); transition: border-color 0.3s, background 0.3s; }
+.gl-ico { display: grid; place-items: center; width: 18px; height: 18px; flex: none; border-radius: 50%; font-size: 11px; font-weight: 700; color: #fff; background: #BFBFC3; }
+.gl-stage.passed .gl-ico { background: #108548; } .gl-stage.passed .gl-job { border-color: rgba(16, 133, 72, 0.45); }
+.gl-stage.running .gl-ico { background: transparent; border: 2px solid #1F75CB; border-right-color: transparent; animation: orbSpin 0.8s linear infinite; }
+.gl-stage.running .gl-job { border-color: #1F75CB; background: rgba(31, 117, 203, 0.08); }
+.gl-stage.cur small { color: #1F75CB; font-weight: 600; }
+.gl-link { position: absolute; top: 38px; right: -10px; width: 10px; height: 2px; background: var(--line); }
+.gl-plain { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; background: color-mix(in srgb, var(--amber) 8%, transparent); border: 1px solid color-mix(in srgb, var(--amber) 25%, transparent); animation: fadeIn 0.4s; min-height: 76px; }
+.gl-step { flex: none; display: grid; place-items: center; min-width: 38px; height: 26px; padding: 0 8px; border-radius: 999px; background: var(--amber); color: var(--on-acc); font: 700 12px var(--ios-font); }
+.gl-plain p { margin: 0; font-size: 15px; line-height: 1.45; }
+.gl-run { align-self: flex-start; margin-top: auto; background: var(--ink); color: var(--bg); }
+@media (max-width: 900px) {
+  .pipe { grid-template-columns: 1fr; }
+  .pipe-term pre { height: 260px; font-size: 12px; }
+  .gl-stages { grid-template-columns: repeat(2, 1fr); }
+  .gl-link { display: none; }
+}
