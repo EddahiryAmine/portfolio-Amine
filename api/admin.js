@@ -14,8 +14,23 @@ export const config = { api: { bodyParser: { sizeLimit: "4mb" } } };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const send = (res, status, body) => { res.setHeader("Cache-Control", "no-store"); res.setHeader("X-Robots-Tag", "noindex"); return res.status(status).json(body); };
 
+// Tolère les erreurs de copier-coller dans Vercel (ligne entière « NOM = valeur », espaces, guillemets).
+const lastToken = (v) => String(v || "").trim().replace(/^["']|["']$/g, "").split(/[\s=]+/).filter(Boolean).pop() || "";
+function cleanEnv(raw) {
+  const hash = String(raw.ADMIN_PASSWORD_HASH || "").match(/scrypt\$\d+\$\d+\$\d+\$[A-Za-z0-9+/=]+\$[A-Za-z0-9+/=]+/)?.[0] || "";
+  return {
+    ...raw,
+    ADMIN_PASSWORD_HASH: hash,
+    ADMIN_SESSION_SECRET: lastToken(raw.ADMIN_SESSION_SECRET),
+    ADMIN_TOTP_SECRET: raw.ADMIN_TOTP_SECRET ? lastToken(raw.ADMIN_TOTP_SECRET).toUpperCase() : "",
+    GITHUB_TOKEN: lastToken(raw.GITHUB_TOKEN),
+    GITHUB_REPO: lastToken(raw.GITHUB_REPO),
+  };
+}
+
 export default async function handler(req, res, deps = {}) {
-  const env = deps.env || process.env;
+  const raw = deps.env || process.env;
+  const env = cleanEnv(raw);
   const gh = () => (deps.github || github)(env);
   const action = String(req.query?.action || "");
   const secret = env.ADMIN_SESSION_SECRET;
@@ -42,6 +57,18 @@ export default async function handler(req, res, deps = {}) {
   // ----- État de session (indique aussi si le code à 6 chiffres est demandé) -----
   if (action === "session") {
     return send(res, 200, { authenticated: checkSession(readCookie(req, "adm"), secret), needCode: !!env.ADMIN_TOTP_SECRET });
+  }
+
+  // ----- Diagnostic de configuration : uniquement « format correct ou non », aucune valeur révélée -----
+  if (action === "check") {
+    return send(res, 200, {
+      passwordHash: !!env.ADMIN_PASSWORD_HASH,
+      sessionSecret: secret.length >= 32,
+      totpSecret: !env.ADMIN_TOTP_SECRET || /^[A-Z2-7]{16,64}$/.test(env.ADMIN_TOTP_SECRET),
+      githubToken: /^(github_pat_|ghp_)[A-Za-z0-9_]{20,}$/.test(env.GITHUB_TOKEN),
+      githubRepo: /^[\w.-]+\/[\w.-]+$/.test(env.GITHUB_REPO),
+      serverTime: new Date().toISOString(),
+    });
   }
 
   // ----- Toutes les autres actions exigent une session valide -----
