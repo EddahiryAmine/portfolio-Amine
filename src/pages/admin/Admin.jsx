@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Icon from "../../components/Icons.jsx";
 import { SECTIONS } from "./schema.js";
 import { Field, Photos, api, label18 } from "./parts.jsx";
+import Buddy from "./Buddy.jsx";
 import portrait from "../../assets/amine.webp";
 
 // Espace admin (/admin). Toute la sécurité est côté serveur (api/admin.js) : cette page n'est qu'une interface.
@@ -40,46 +41,71 @@ function Avatar({ state, size = 132 }) {
   );
 }
 
-// ---------- Connexion ----------
+// ---------- Connexion (version ludique : personnage qui réagit) ----------
+const CONFETTI = Array.from({ length: 26 }, (_, k) => ({ x: (k * 37) % 100, d: (k % 6) * 0.06, c: ["#FF6B6B", "#FFD93D", "#6BCB77", "#4D96FF", "#C77DFF"][k % 5], r: (k * 47) % 360 }));
 function Login({ needCode, onDone, notice }) {
   const [pass, setPass] = useState(""), [code, setCode] = useState(""), [show, setShow] = useState(false);
   const [state, setState] = useState("idle"), [err, setErr] = useState(notice || "");
+  const [focus, setFocus] = useState(""), [look, setLook] = useState({ x: 0, y: 0 });
+  const buddyRef = useRef(null);
   const submit = async (e) => {
     e.preventDefault(); if (state === "scan") return;
     setErr(""); setState("scan");
     const [r] = await Promise.all([api("login", { method: "POST", body: { password: pass, code } }), sleep(reduced() ? 0 : 1400)]);
-    if (r.ok) { setState("ok"); await sleep(reduced() ? 0 : 900); setPass(""); return onDone(); }
+    if (r.ok) { setState("ok"); await sleep(reduced() ? 0 : 1500); setPass(""); return onDone(); }
     setState("err"); setPass(""); setCode("");
-    setErr(r.status === 429 ? "Trop de tentatives. Réessaie dans 15 minutes." : r.status === 503 ? "Espace admin non configuré." : r.status === 502 ? "Service momentanément indisponible." : "Accès refusé. Vérifie le mot de passe et le code.");
-    setTimeout(() => setState("idle"), 1600);
+    setErr(r.status === 429 ? "Trop de tentatives. Réessaie dans 15 minutes." : r.status === 503 ? "Espace admin non configuré." : r.status === 502 ? "Service momentanément indisponible." : "Oups ! Mot de passe ou code incorrect.");
+    setTimeout(() => setState("idle"), 2200);
   };
-  const time = new Date().getHours(), hello = time < 5 ? "Bonsoir" : time < 18 ? "Bonjour" : "Bonsoir";
+  // Le regard suit la souris.
+  const track = (e) => {
+    const r = buddyRef.current?.getBoundingClientRect(); if (!r) return;
+    setLook({ x: (e.clientX - (r.left + r.width / 2)) / (innerWidth / 2), y: (e.clientY - (r.top + r.height / 2)) / (innerHeight / 2) });
+  };
+  const mood = state === "ok" ? "happy" : state === "err" ? "sad" : state === "scan" ? "think"
+    : focus === "pass" ? (show ? "peek" : "cover") : focus === "code" ? "look" : "idle";
+  const bubble = { idle: "Salut Amine ! 👋", cover: "Promis, je ne regarde pas 🙈", peek: "Hmm… je vois tout ! 👀", look: "Le code de ton appli 📱", think: "Je vérifie…", happy: "C’est bien toi ! 🎉", sad: "Ce n’est pas le bon… 😢" }[mood];
+  const busy = state === "scan" || state === "ok";
   return (
-    <div className="ax-stage">
-      <Backdrop />
-      <form className={"ax-card" + (state === "err" ? " shake" : "")} onSubmit={submit} noValidate>
-        <Avatar state={state} />
-        <p className="ax-hello">{hello}, {NAME}</p>
-        <h1>Espace sécurisé</h1>
-        <p className="ax-sub"><span className="ax-dot" />Connexion chiffrée · double authentification</p>
-        <label className="ax-input">
-          <Icon name="card" size={17} />
-          <input type={show ? "text" : "password"} value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Mot de passe" autoComplete="current-password" autoFocus required maxLength={200} aria-label="Mot de passe" disabled={state === "scan" || state === "ok"} />
-          <button type="button" className="ax-eye" onClick={() => setShow(!show)} aria-label={show ? "Masquer" : "Afficher"}>{show ? "Masquer" : "Afficher"}</button>
-        </label>
-        {needCode && (
-          <div className="ax-otp" aria-label="Code à 6 chiffres">
-            <input inputMode="numeric" autoComplete="one-time-code" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))} aria-label="Code à 6 chiffres" disabled={state === "scan" || state === "ok"} />
-            {Array.from({ length: 6 }, (_, k) => <span key={k} className={code.length === k ? "cur" : code[k] ? "on" : ""}>{code[k] || ""}</span>)}
-          </div>
-        )}
-        <p className={"ax-err" + (err ? " show" : "")} role="alert">{err || " "}</p>
-        <button className="ax-go" disabled={state === "scan" || state === "ok" || !pass || (needCode && code.length < 6)}>
-          <span>{state === "scan" ? "Vérification…" : state === "ok" ? "Accès autorisé" : "Déverrouiller"}</span>
-          {state === "scan" ? <i className="ax-mini-spin" /> : <Icon name="arrow" size={16} />}
-        </button>
-        <p className="ax-foot">🔒 Session de 2 h · tentatives limitées · page non indexée</p>
-      </form>
+    <div className="fx-stage" onPointerMove={track}>
+      <div className="fx-doodles" aria-hidden="true">
+        <svg className="dd d1" viewBox="0 0 60 20"><path d="M2 10 q7 -12 14 0 t14 0 t14 0 t14 0" /></svg>
+        <svg className="dd d2" viewBox="0 0 60 20"><path d="M2 10 q7 -12 14 0 t14 0 t14 0 t14 0" /></svg>
+        <i className="dc c1" /><i className="dc c2" /><i className="dc c3" /><i className="dc c4" /><i className="dc c5" />
+        <b className="fst fst1">✦</b><b className="fst fst2">✦</b><b className="fst fst3">+</b>
+      </div>
+      <div className={"fx-wrap" + (state === "err" ? " shake" : "") + (state === "ok" ? " win" : "")}>
+        <div className="fx-buddy" ref={buddyRef}>
+          <span className="fx-bubble" key={mood}>{bubble}</span>
+          <Buddy mood={mood} look={look} />
+        </div>
+        <form className="fx-card" onSubmit={submit} noValidate>
+          <h1>LOGIN</h1>
+          <p className="fx-sub"><img src={portrait} alt="" />Espace admin d’{NAME}</p>
+          <label className="fx-input">
+            <span>Mot de passe</span>
+            <span className="fx-row">
+              <input type={show ? "text" : "password"} value={pass} onChange={(e) => setPass(e.target.value)} onFocus={() => setFocus("pass")} onBlur={() => setFocus("")}
+                autoComplete="current-password" autoFocus required maxLength={200} disabled={busy} />
+              <button type="button" className="fx-eye" onMouseDown={(e) => e.preventDefault()} onClick={() => setShow(!show)} aria-label={show ? "Masquer" : "Afficher"}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" />{show && <path d="M4 4l16 16" />}</svg></button>
+            </span>
+          </label>
+          {needCode && (
+            <label className="fx-input">
+              <span>Code à 6 chiffres</span>
+              <span className="fx-otp">
+                <input inputMode="numeric" autoComplete="one-time-code" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  onFocus={() => setFocus("code")} onBlur={() => setFocus("")} aria-label="Code à 6 chiffres" disabled={busy} />
+                {Array.from({ length: 6 }, (_, k) => <i key={k} className={code.length === k && focus === "code" ? "cur" : code[k] ? "on" : ""}>{code[k] || ""}</i>)}
+              </span>
+            </label>
+          )}
+          <p className={"fx-err" + (err ? " show" : "")} role="alert">{err || " "}</p>
+          <button className="fx-go" disabled={busy || !pass || (needCode && code.length < 6)}>{state === "scan" ? "Vérification…" : state === "ok" ? "Bienvenue !" : "sign in"}</button>
+          <p className="fx-foot">🔒 Connexion chiffrée · double authentification</p>
+        </form>
+        {state === "ok" && <div className="fx-confetti" aria-hidden="true">{CONFETTI.map((p, i) => <i key={i} style={{ "--x": p.x + "%", "--d": p.d + "s", "--c": p.c, "--r": p.r + "deg" }} />)}</div>}
+      </div>
     </div>
   );
 }

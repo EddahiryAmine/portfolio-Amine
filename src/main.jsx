@@ -42,7 +42,7 @@ if (location.protocol === "https:" && !/^(localhost|127\.)/.test(location.hostna
 // /admin : espace d'administration, chargé à part (rien n'est inclus dans le site public).
 const isAdmin = location.pathname.replace(/\/+$/, "") === "/admin";
 const Admin = lazy(() => import("./pages/admin/Admin.jsx"));
-if (isAdmin) { import("./styles/admin.css"); import("./styles/admin-wow.css"); }
+if (isAdmin) { import("./styles/admin.css"); import("./styles/admin-wow.css"); import("./styles/admin-fun.css"); }
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

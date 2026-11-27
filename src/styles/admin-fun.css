@@ -1,0 +1,105 @@
+/* ---------- Connexion ludique : personnage animé + doodles ---------- */
+.fx-stage { position: relative; min-height: 100svh; display: grid; place-items: center; padding: 120px 18px 30px; overflow: hidden;
+  background: radial-gradient(120% 90% at 80% 10%, #F3E8FF, transparent 60%), radial-gradient(100% 80% at 10% 90%, #E0F2FE, transparent 60%), #EDE7F6;
+  font-family: "Inter Tight", system-ui, -apple-system, sans-serif; color: #1E1B4B; }
+body:has(.fx-stage) { background: #EDE7F6; }
+
+/* Doodles qui flottent */
+.fx-doodles > * { position: absolute; animation: fxFloat 7s ease-in-out infinite; }
+.dd { width: 80px; fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round; }
+.dd.d1 { left: 12%; top: 18%; transform: rotate(-15deg); } .dd.d2 { right: 10%; top: 62%; transform: rotate(20deg); animation-delay: -3s; }
+.dc { width: 14px; height: 14px; border-radius: 50%; border: 3px solid; }
+.dc.c1 { left: 20%; top: 70%; border-color: #6BCB77; } .dc.c2 { right: 18%; top: 22%; border-color: #4D96FF; animation-delay: -2s; }
+.dc.c3 { left: 8%; top: 45%; border-color: #FF6B6B; animation-delay: -4s; } .dc.c4 { right: 26%; bottom: 10%; border-color: #C77DFF; animation-delay: -1s; }
+.dc.c5 { left: 36%; top: 12%; border-color: #FFB703; animation-delay: -5s; width: 10px; height: 10px; }
+.fst { font-size: 22px; font-weight: 400; color: #8B5CF6; } .fst.fst1 { left: 28%; bottom: 18%; } .fst.fst2 { right: 8%; top: 40%; color: #F472B6; animation-delay: -2.5s; } .fst.fst3 { left: 14%; top: 28%; color: #22C55E; font-size: 28px; animation-delay: -4.5s; }
+@keyframes fxFloat { 50% { translate: 0 -14px; rotate: 8deg; } }
+
+/* Carte + personnage */
+.fx-wrap { position: relative; width: min(100%, 380px); animation: fxIn 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+@keyframes fxIn { from { opacity: 0; transform: translateY(40px) scale(0.95); } }
+.fx-wrap.shake .fx-card { animation: fxShake 0.5s; }
+@keyframes fxShake { 20%, 60% { transform: translateX(-10px) rotate(-1deg); } 40%, 80% { transform: translateX(10px) rotate(1deg); } }
+.fx-buddy { position: absolute; left: 50%; bottom: calc(100% - 46px); width: 230px; transform: translateX(-50%); z-index: 2; pointer-events: none; }
+.fx-bubble { position: absolute; left: 80%; top: 6px; width: max-content; max-width: 240px; white-space: nowrap; padding: 9px 13px; border-radius: 16px 16px 16px 4px; background: #fff; color: #1E1B4B;
+  font-size: 13.5px; font-weight: 600; box-shadow: 0 10px 24px -10px rgba(30, 27, 75, 0.35); animation: fxBubble 0.45s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+@keyframes fxBubble { from { opacity: 0; transform: scale(0.6) translateY(8px); transform-origin: bottom left; } }
+.fx-card { position: relative; z-index: 1; padding: 46px 28px 22px; border-radius: 28px; text-align: center; color: #fff;
+  background: linear-gradient(160deg, #4F6BD8, #3A4FB0); box-shadow: 0 30px 60px -24px rgba(58, 79, 176, 0.65), inset 0 2px 0 rgba(255, 255, 255, 0.25); }
+.fx-card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.2px, transparent 1.2px); background-size: 14px 14px; pointer-events: none; }
+.fx-card > * { position: relative; }
+.fx-card h1 { margin: 0; font: 900 44px / 1 "Inter Tight", system-ui, sans-serif; letter-spacing: 0.06em; font-style: italic; text-shadow: 3px 3px 0 #1E1B4B; }
+.fx-sub { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 18px; font-size: 13.5px; opacity: 0.92; }
+.fx-sub img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; object-position: 50% 8%; background: #DCE3F1; border: 2px solid #fff; }
+.fx-input { display: block; text-align: left; margin-bottom: 12px; }
+.fx-input > span:first-child { display: block; margin: 0 0 6px 4px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; opacity: 0.9; }
+.fx-row { display: flex; align-items: center; height: 48px; padding: 0 6px 0 14px; border-radius: 14px; background: #DCE6FF; border: 3px solid #1E1B4B; box-shadow: 0 4px 0 #1E1B4B; transition: transform 0.15s, box-shadow 0.15s; }
+.fx-row:focus-within { transform: translateY(-2px); box-shadow: 0 6px 0 #1E1B4B; background: #fff; }
+.fx-row input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; outline: 0; font: 600 16px inherit; font-family: inherit; color: #1E1B4B; letter-spacing: 0.06em; }
+.fx-eye { width: 38px; height: 38px; border-radius: 10px; font-size: 18px; transition: transform 0.2s; } .fx-eye:hover { transform: scale(1.15) rotate(-8deg); }
+.fx-otp { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; }
+.fx-otp input { position: absolute; inset: 0; opacity: 0; z-index: 1; font-size: 16px; caret-color: transparent; }
+.fx-otp i { display: grid; place-items: center; height: 48px; border-radius: 12px; font: 800 20px var(--mono); font-style: normal; color: #1E1B4B; background: #DCE6FF; border: 3px solid #1E1B4B; box-shadow: 0 4px 0 #1E1B4B; transition: transform 0.15s, background 0.2s; }
+.fx-otp i.on { background: #FFE66D; animation: fxPop 0.25s; }
+.fx-otp i.cur { background: #fff; transform: translateY(-3px); }
+.fx-otp i.cur::after { content: ""; width: 2px; height: 22px; background: #1E1B4B; animation: blink 1s steps(1) infinite; }
+@keyframes fxPop { 50% { transform: translateY(-5px) scale(1.1); } }
+.fx-err { min-height: 20px; margin: 6px 0; font-size: 13.5px; font-weight: 700; color: #FFE0E0; opacity: 0; transition: opacity 0.3s; } .fx-err.show { opacity: 1; }
+.fx-go { width: 70%; height: 48px; border-radius: 999px; font: 800 17px inherit; font-family: inherit; letter-spacing: 0.04em; color: #fff; background: #1E1B4B;
+  box-shadow: 0 5px 0 #0B0A26; transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s; }
+.fx-go:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 7px 0 #0B0A26; } .fx-go:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #0B0A26; }
+.fx-go:disabled { opacity: 0.55; }
+.fx-wrap.win .fx-go { background: #22C55E; box-shadow: 0 5px 0 #15803D; opacity: 1; }
+.fx-foot { margin: 14px 0 0; font-size: 11.5px; opacity: 0.75; }
+.fx-confetti { position: absolute; inset: -40px -20px auto; height: 0; pointer-events: none; z-index: 3; }
+.fx-confetti i { position: absolute; left: var(--x); top: 0; width: 9px; height: 14px; border-radius: 2px; background: var(--c); rotate: var(--r); animation: fxConf 1.4s var(--d) cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+@keyframes fxConf { from { transform: translateY(0) scale(0.4); opacity: 1; } 30% { transform: translateY(-90px) scale(1); } to { transform: translateY(420px) rotate(540deg); opacity: 0; } }
+
+/* Le personnage */
+.bd { display: block; width: 100%; overflow: visible; }
+.bd-face { fill: #FFD6B8; stroke: #1E1B4B; stroke-width: 3.5; }
+.bd-hair { fill: #2B1E3F; }
+.bd-cheek { fill: #FF8FA3; opacity: 0.55; }
+.bd-eye { fill: #fff; stroke: #1E1B4B; stroke-width: 3; }
+.bd-pupil { fill: #1E1B4B; transition: cx 0.18s ease-out, cy 0.18s ease-out; }
+.bd-shine { fill: #fff; transition: cx 0.18s ease-out, cy 0.18s ease-out; }
+.bd-lid { fill: #FFD6B8; transform-box: fill-box; transform-origin: top; transform: scaleY(0); animation: bdBlink 4.5s infinite; }
+@keyframes bdBlink { 0%, 92%, 100% { transform: scaleY(0); } 95% { transform: scaleY(1.8); } }
+.bd-brow { fill: none; stroke: #2B1E3F; stroke-width: 4; stroke-linecap: round; transition: d 0.3s; }
+.bd-mouth { fill: none; stroke: #1E1B4B; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; transition: d 0.3s; }
+.bd-mouth.open { fill: #9F1239; }
+.bd-sleeve { fill: none; stroke: #FFB703; stroke-width: 20; stroke-linecap: round; }
+.bd-hand { fill: #FFD6B8; stroke: #1E1B4B; stroke-width: 3.5; }
+.bd-tear { fill: #60A5FA; animation: bdTear 1.2s ease-in infinite; }
+@keyframes bdTear { from { transform: translateY(0); opacity: 1; } to { transform: translateY(16px); opacity: 0; } }
+.bd-dots circle { fill: #fff; stroke: #1E1B4B; stroke-width: 2.5; animation: bdDot 1.2s infinite; } .bd-dots circle:nth-child(2) { animation-delay: 0.2s; } .bd-dots circle:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bdDot { 50% { transform: translateY(-4px); } }
+.bd-head { transform-box: fill-box; transform-origin: 50% 90%; transition: transform 0.4s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.bd-arm { transform-box: view-box; transition: transform 0.45s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.bd-arm-l { transform-origin: 58px 168px; } .bd-arm-r { transform-origin: 142px 168px; }
+/* Humeurs */
+.bd-idle .bd-arm-r { animation: bdWave 1.4s 0.6s ease-in-out 2; }
+@keyframes bdWave { 25%, 75% { transform: rotate(-22deg); } 50% { transform: rotate(8deg); } }
+.bd-idle .bd-head { animation: bdBob 3.5s ease-in-out infinite; }
+@keyframes bdBob { 50% { transform: translateY(-3px) rotate(-2deg); } }
+.bd-cover .bd-arm-l { transform: translate(2px, -5px) rotate(30deg); } .bd-cover .bd-arm-r { transform: translate(-2px, -5px) rotate(-30deg); }
+.bd-peek .bd-arm-l { transform: translate(2px, -5px) rotate(30deg); } .bd-peek .bd-arm-r { transform: rotate(12deg); }
+.bd-cover .bd-lid { animation: none; transform: scaleY(1.8); }
+.bd-look .bd-head { transform: rotate(0deg) translateY(4px); }
+.bd-think .bd-head { transform: rotate(-6deg); } .bd-think .bd-arm-r { transform: rotate(-30deg); }
+.bd-happy { animation: bdJump 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) 2; }
+.bd-happy .bd-arm-l { transform: rotate(-38deg); } .bd-happy .bd-arm-r { transform: rotate(38deg); }
+@keyframes bdJump { 40% { transform: translateY(-22px); } }
+.bd-sad .bd-head { animation: bdNo 0.5s ease-in-out 3; } .bd-sad .bd-arm-l { transform: rotate(-6deg) translateY(6px); } .bd-sad .bd-arm-r { transform: rotate(6deg) translateY(6px); }
+@keyframes bdNo { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+
+@media (max-width: 480px) {
+  .fx-buddy { width: 190px; bottom: calc(100% - 38px); }
+  .fx-bubble { left: 50%; right: auto; top: -26px; translate: -50% 0; border-radius: 16px; font-size: 12.5px; }
+  .fx-card { padding: 40px 18px 20px; } .fx-card h1 { font-size: 38px; }
+}
+@media (prefers-reduced-motion: reduce) { .fx-doodles > *, .bd *, .bd, .fx-confetti i { animation: none !important; } }
+
+.fx-row input::-ms-reveal, .fx-row input::-ms-clear { display: none; }
+.fx-eye { display: grid; place-items: center; color: #1E1B4B; } .fx-eye svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.bd-finger { fill: none; stroke: #1E1B4B; stroke-width: 2.5; stroke-linecap: round; }
