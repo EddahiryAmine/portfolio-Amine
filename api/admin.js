@@ -8,6 +8,7 @@
 import {
   DATA_PATHS, PHOTO_DIR, checkSession, clearFailures, clientIp, github, imageType, makeSession, readCookie, recordFailure,
   sameOrigin, sessionCookie, slugify, toJson, tooManyAttempts, totp, validatePhotos, validateSite, verifyPassword, verifyTotp,
+  AUTH_PATH, hashPassword, openHash, sealHash,
 } from "./_lib/admin.js";
 
 export const config = { api: { bodyParser: { sizeLimit: "4mb" } } };
@@ -36,6 +37,13 @@ export default async function handler(req, res, deps = {}) {
   const secret = env.ADMIN_SESSION_SECRET;
 
   if (!env.ADMIN_PASSWORD_HASH || !secret || secret.length < 32) return send(res, 503, { error: "not_configured" });
+  const hasGithub = !!(env.GITHUB_TOKEN && env.GITHUB_REPO) || !!deps.github;
+  // Mot de passe en vigueur : celui changé depuis /admin (chiffré dans le dépôt), sinon celui de Vercel.
+  async function currentHash() {
+    if (!hasGithub) return env.ADMIN_PASSWORD_HASH;
+    const file = await gh().readJsonOptional(AUTH_PATH); // { sha, data: { note, data: <chiffré> } }
+    return file?.data?.data ? openHash(file.data.data, secret) : env.ADMIN_PASSWORD_HASH;
+  }
 
   // ----- Connexion -----
   if (action === "login") {
@@ -45,7 +53,9 @@ export default async function handler(req, res, deps = {}) {
     if (tooManyAttempts(ip)) return send(res, 429, { error: "rate" });
     const { password, code } = req.body || {};
     await sleep(deps.noDelay ? 0 : 600); // ralentit les essais automatisés
-    const okPass = typeof password === "string" && password.length <= 200 && verifyPassword(password, env.ADMIN_PASSWORD_HASH);
+    let hash;
+    try { hash = await currentHash(); } catch { return send(res, 502, { error: "upstream" }); } // en cas de doute : on refuse
+    const okPass = typeof password === "string" && password.length <= 200 && verifyPassword(password, hash);
     const needCode = !!env.ADMIN_TOTP_SECRET;
     const okCode = !needCode || verifyTotp(env.ADMIN_TOTP_SECRET, code);
     if (!okPass || !okCode) {
@@ -89,7 +99,26 @@ export default async function handler(req, res, deps = {}) {
     return send(res, 200, { ok: true });
   }
 
+  // ----- Version actuellement en ligne (pour suivre la publication) -----
+  if (action === "version") return send(res, 200, { commit: env.VERCEL_GIT_COMMIT_SHA || null });
+
   try {
+    // ----- Changement de mot de passe : ancien mot de passe + code à 6 chiffres exigés -----
+    if (action === "password") {
+      if (req.method !== "POST" || !sameOrigin(req)) return send(res, 403, { error: "origin" });
+      const ip = clientIp(req);
+      if (tooManyAttempts(ip)) return send(res, 429, { error: "rate" });
+      const { current, code, next } = req.body || {};
+      await sleep(deps.noDelay ? 0 : 600);
+      const okCur = typeof current === "string" && current.length <= 200 && verifyPassword(current, await currentHash());
+      const okCode = !env.ADMIN_TOTP_SECRET || verifyTotp(env.ADMIN_TOTP_SECRET, code);
+      if (!okCur || !okCode) { recordFailure(ip); return send(res, 401, { error: "invalid" }); }
+      if (typeof next !== "string" || next.length < 12 || next.length > 200) return send(res, 400, { error: "weak" });
+      if (next === current) return send(res, 400, { error: "same" });
+      const sha = await gh().commit([{ path: AUTH_PATH, content: toJson({ note: "Mot de passe admin haché puis chiffré. Illisible sans la clé secrète de Vercel.", data: sealHash(hashPassword(next), secret) }) }], "admin: changement du mot de passe");
+      return send(res, 200, { ok: true, commit: sha });
+    }
+
     // ----- Lecture des données actuelles (depuis GitHub, la source de vérité) -----
     if (action === "data" && req.method === "GET") {
       const g = gh();

@@ -1,183 +1,249 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "../../components/Icons.jsx";
-import { PHOTO_TAGS, SECTIONS } from "./schema.js";
+import { SECTIONS } from "./schema.js";
+import { Field, Photos, api, label18 } from "./parts.jsx";
+import portrait from "../../assets/amine.webp";
 
 // Espace admin (/admin). Toute la sécurité est côté serveur (api/admin.js) : cette page n'est qu'une interface.
-const PHOTO_URLS = import.meta.glob("../../assets/photos/*.{jpg,jpeg,png,webp,avif}", { eager: true, query: "?url", import: "default" });
-const localPhoto = (key) => Object.entries(PHOTO_URLS).find(([p]) => p.split("/").pop().replace(/\.[^.]+$/, "") === key)?.[1];
+const NAME = "Amine";
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-async function api(action, { method = "GET", body } = {}) {
-  const r = await fetch(`/api/admin?action=${action}`, {
-    method, credentials: "same-origin", headers: body ? { "content-type": "application/json" } : undefined, body: body ? JSON.stringify(body) : undefined,
-  });
-  let data = {};
-  try { data = await r.json(); } catch { /* réponse vide */ }
-  return { status: r.status, ok: r.ok, data };
+// ---------- Fond animé (aurore + grille + particules) ----------
+function Backdrop() {
+  return (
+    <div className="ax-bg" aria-hidden="true">
+      <i className="b1" /><i className="b2" /><i className="b3" />
+      <span className="ax-grid" />
+      {Array.from({ length: 18 }, (_, k) => <b key={k} style={{ "--x": (k * 53) % 100 + "%", "--d": (k % 7) * 1.3 + "s", "--s": 6 + (k % 5) * 2 + "s" }} />)}
+    </div>
+  );
 }
 
-const asI18n = (v) => (v && typeof v === "object" && !Array.isArray(v) ? v : { fr: v ?? "", en: v ?? "" });
-const label18 = (v) => (typeof v === "object" && v ? v.fr || v.en : v) || "Sans titre";
-
-// ---------- Champ de formulaire selon son type ----------
-function Field({ def, value, onChange }) {
-  const [key, label, type, options] = def;
-  const id = useMemo(() => "f" + Math.random().toString(36).slice(2), []);
-  if (type === "bool") {
-    return (
-      <label className="adm-bool">
-        <input type="checkbox" checked={!!value} onChange={(e) => onChange(e.target.checked)} /><span className="ios-switch" aria-hidden="true" /><span>{label}</span>
-      </label>
-    );
-  }
-  if (type === "i18n" || type === "i18nArea") {
-    const v = asI18n(value), Tag = type === "i18nArea" ? "textarea" : "input";
-    return (
-      <div className="adm-field">
-        <span>{label}</span>
-        <div className="adm-i18n">
-          {["fr", "en"].map((l) => (
-            <label key={l}><b>{l.toUpperCase()}</b><Tag rows={type === "i18nArea" ? 4 : undefined} value={v[l] || ""} onChange={(e) => onChange({ ...v, [l]: e.target.value })} maxLength={5000} /></label>
-          ))}
-        </div>
-      </div>
-    );
-  }
-  if (type === "tags") {
-    const list = Array.isArray(value) ? value : [];
-    return (
-      <div className="adm-field">
-        <span>{label}</span>
-        <div className="adm-tags">
-          {list.map((t, i) => <span key={t + i}>{t}<button type="button" onClick={() => onChange(list.filter((_, k) => k !== i))} aria-label={`Retirer ${t}`}>×</button></span>)}
-          <input placeholder="Ajouter + Entrée" onKeyDown={(e) => { if (e.key === "Enter" && e.currentTarget.value.trim()) { e.preventDefault(); onChange([...list, e.currentTarget.value.trim()]); e.currentTarget.value = ""; } }} />
-        </div>
-      </div>
-    );
-  }
-  if (type === "select") {
-    return (
-      <label className="adm-field" htmlFor={id}><span>{label}</span>
-        <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || undefined)}>{options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
-      </label>
-    );
-  }
-  const bad = type === "url" && value && !/^(https:\/\/|mailto:)/.test(value);
+// ---------- Avatar avec anneau (états : idle, scan, ok, err, lock) ----------
+function Avatar({ state, size = 132 }) {
   return (
-    <label className={"adm-field" + (bad ? " bad" : "")} htmlFor={id}><span>{label}</span>
-      {type === "textarea" ? <textarea id={id} rows={4} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
-        : <input id={id} type={type === "number" ? "number" : type === "color" ? "color" : "text"} value={value ?? ""} placeholder={type === "url" ? "https://…" : ""}
-          onChange={(e) => onChange(type === "number" ? (e.target.value === "" ? 0 : Number(e.target.value)) : e.target.value || (type === "url" ? undefined : ""))} />}
-      {bad && <em>Le lien doit commencer par https://</em>}
-    </label>
+    <div className={"ax-avatar " + state} style={{ "--sz": size + "px" }}>
+      <svg className="ax-ring" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="56" className="track" />
+        <circle cx="60" cy="60" r="56" className="prog" pathLength="100" />
+        {Array.from({ length: 36 }, (_, k) => <line key={k} x1="60" y1="2" x2="60" y2={k % 3 ? 6 : 9} transform={`rotate(${k * 10} 60 60)`} className="tick" />)}
+      </svg>
+      <img src={portrait} alt="" />
+      <span className="ax-scan" aria-hidden="true" />
+      <span className="ax-badge" aria-hidden="true">
+        {state === "ok" ? <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" /></svg>
+          : state === "err" ? <svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17" /></svg>
+          : <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2" /><path className="shackle" d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>}
+      </span>
+    </div>
   );
 }
 
 // ---------- Connexion ----------
-function Login({ needCode, onDone }) {
-  const [pass, setPass] = useState(""), [code, setCode] = useState(""), [err, setErr] = useState(""), [busy, setBusy] = useState(false);
+function Login({ needCode, onDone, notice }) {
+  const [pass, setPass] = useState(""), [code, setCode] = useState(""), [show, setShow] = useState(false);
+  const [state, setState] = useState("idle"), [err, setErr] = useState(notice || "");
   const submit = async (e) => {
-    e.preventDefault(); setBusy(true); setErr("");
-    const r = await api("login", { method: "POST", body: { password: pass, code } });
-    setBusy(false); setPass("");
-    if (r.ok) return onDone();
-    setErr(r.status === 429 ? "Trop de tentatives. Réessaie dans 15 minutes." : r.status === 503 ? "L’espace admin n’est pas encore configuré (variables Vercel)." : "Identifiants incorrects.");
+    e.preventDefault(); if (state === "scan") return;
+    setErr(""); setState("scan");
+    const [r] = await Promise.all([api("login", { method: "POST", body: { password: pass, code } }), sleep(reduced() ? 0 : 1400)]);
+    if (r.ok) { setState("ok"); await sleep(reduced() ? 0 : 900); setPass(""); return onDone(); }
+    setState("err"); setPass(""); setCode("");
+    setErr(r.status === 429 ? "Trop de tentatives. Réessaie dans 15 minutes." : r.status === 503 ? "Espace admin non configuré." : r.status === 502 ? "Service momentanément indisponible." : "Accès refusé. Vérifie le mot de passe et le code.");
+    setTimeout(() => setState("idle"), 1600);
   };
+  const time = new Date().getHours(), hello = time < 5 ? "Bonsoir" : time < 18 ? "Bonjour" : "Bonsoir";
   return (
-    <div className="adm-login">
-      <form className="adm-login-card" onSubmit={submit}>
-        <span className="adm-lock" aria-hidden="true"><Icon name="card" size={26} /></span>
-        <h1>Espace admin</h1>
-        <p>Accès réservé.</p>
-        <label className="adm-field"><span>Mot de passe</span><input type="password" value={pass} onChange={(e) => setPass(e.target.value)} autoComplete="current-password" autoFocus required maxLength={200} /></label>
-        {needCode && <label className="adm-field"><span>Code à 6 chiffres</span><input inputMode="numeric" pattern="\d{6}" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))} autoComplete="one-time-code" required /></label>}
-        {err && <p className="adm-err" role="alert">{err}</p>}
-        <button className="ios-btn adm-primary" disabled={busy}>{busy ? "Vérification…" : "Se connecter"}</button>
+    <div className="ax-stage">
+      <Backdrop />
+      <form className={"ax-card" + (state === "err" ? " shake" : "")} onSubmit={submit} noValidate>
+        <Avatar state={state} />
+        <p className="ax-hello">{hello}, {NAME}</p>
+        <h1>Espace sécurisé</h1>
+        <p className="ax-sub"><span className="ax-dot" />Connexion chiffrée · double authentification</p>
+        <label className="ax-input">
+          <Icon name="card" size={17} />
+          <input type={show ? "text" : "password"} value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Mot de passe" autoComplete="current-password" autoFocus required maxLength={200} aria-label="Mot de passe" disabled={state === "scan" || state === "ok"} />
+          <button type="button" className="ax-eye" onClick={() => setShow(!show)} aria-label={show ? "Masquer" : "Afficher"}>{show ? "Masquer" : "Afficher"}</button>
+        </label>
+        {needCode && (
+          <div className="ax-otp" aria-label="Code à 6 chiffres">
+            <input inputMode="numeric" autoComplete="one-time-code" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))} aria-label="Code à 6 chiffres" disabled={state === "scan" || state === "ok"} />
+            {Array.from({ length: 6 }, (_, k) => <span key={k} className={code.length === k ? "cur" : code[k] ? "on" : ""}>{code[k] || ""}</span>)}
+          </div>
+        )}
+        <p className={"ax-err" + (err ? " show" : "")} role="alert">{err || " "}</p>
+        <button className="ax-go" disabled={state === "scan" || state === "ok" || !pass || (needCode && code.length < 6)}>
+          <span>{state === "scan" ? "Vérification…" : state === "ok" ? "Accès autorisé" : "Déverrouiller"}</span>
+          {state === "scan" ? <i className="ax-mini-spin" /> : <Icon name="arrow" size={16} />}
+        </button>
+        <p className="ax-foot">🔒 Session de 2 h · tentatives limitées · page non indexée</p>
       </form>
     </div>
   );
 }
 
-// ---------- Photos ----------
-async function prepareImage(file) {
-  const img = await createImageBitmap(file);
-  const max = 1800, s = Math.min(1, max / Math.max(img.width, img.height));
-  const c = document.createElement("canvas"); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
-  c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-  const blob = await new Promise((r) => c.toBlob(r, "image/jpeg", 0.85));
-  const b64 = await new Promise((r) => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(",")[1]); fr.readAsDataURL(blob); });
-  return { b64, ratio: +(img.width / img.height).toFixed(3), preview: URL.createObjectURL(blob), kb: Math.round(blob.size / 1024) };
+// ---------- Séquence « Bienvenue » / « À bientôt » (plein écran, façon vidéo) ----------
+function Cinematic({ kind, onEnd }) {
+  const canvas = useRef(null);
+  useEffect(() => {
+    if (reduced()) { const t = setTimeout(onEnd, 900); return () => clearTimeout(t); }
+    const c = canvas.current, x = c.getContext("2d"), dpr = Math.min(2, devicePixelRatio || 1);
+    const W = (c.width = innerWidth * dpr), H = (c.height = innerHeight * dpr);
+    const welcome = kind === "welcome", cx = W / 2, cy = H * 0.42;
+    const P = Array.from({ length: 220 }, () => {
+      const a = Math.random() * Math.PI * 2, sp = (welcome ? 2 : 0.6) + Math.random() * (welcome ? 9 : 3);
+      return { a, r: welcome ? 0 : 260 * dpr + Math.random() * 300 * dpr, sp, s: (1 + Math.random() * 2.2) * dpr, h: welcome ? 205 + Math.random() * 60 : 15 + Math.random() * 30 };
+    });
+    let raf, t0 = performance.now();
+    const tick = (now) => {
+      const t = (now - t0) / 1000;
+      x.fillStyle = welcome ? "rgba(4,6,14,0.22)" : "rgba(4,6,14,0.28)"; x.fillRect(0, 0, W, H);
+      for (const p of P) {
+        p.r += welcome ? p.sp * dpr * Math.max(0.15, 1.6 - t) : -p.sp * dpr * 0.9;
+        if (!welcome && p.r < 0) p.r = 0;
+        const px = cx + Math.cos(p.a + t * 0.3) * p.r, py = cy + Math.sin(p.a + t * 0.3) * p.r;
+        x.fillStyle = `hsla(${p.h},90%,${welcome ? 70 : 60}%,${welcome ? Math.max(0, 1 - t / 3) : Math.min(1, p.r / (200 * dpr))})`;
+        x.beginPath(); x.arc(px, py, p.s, 0, 7); x.fill();
+      }
+      if (t < 3.6) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    const end = setTimeout(onEnd, welcome ? 3300 : 3000);
+    return () => { cancelAnimationFrame(raf); clearTimeout(end); };
+  }, []);
+  const welcome = kind === "welcome";
+  const word = welcome ? NAME : "À bientôt";
+  return (
+    <div className={"ax-cine " + kind} onClick={onEnd} role="status" aria-live="polite">
+      <canvas ref={canvas} aria-hidden="true" />
+      <div className="ax-cine-in">
+        <Avatar state={welcome ? "ok" : "lock"} size={150} />
+        <small>{welcome ? "Identité vérifiée · accès autorisé" : "Session fermée · données protégées"}</small>
+        <h2>{welcome && <em>Bienvenue,&nbsp;</em>}{[...word].map((ch, i) => <span key={i} style={{ "--i": i }}>{ch === " " ? " " : ch}</span>)}</h2>
+        <p>{welcome ? "Tout est prêt. Bonne session." : `Merci ${NAME}, à la prochaine.`}</p>
+        <i className="ax-cine-bar" />
+      </div>
+      <span className="ax-skip">Toucher pour passer</span>
+    </div>
+  );
 }
 
-function Photos({ photos, setPhotos, files, flash, reload }) {
-  const [draft, setDraft] = useState(null), [busy, setBusy] = useState(""), input = useRef(null);
-  const pick = async (f) => { if (!f) return; if (!/^image\//.test(f.type)) return flash("Choisis une image.", true); setDraft({ ...(await prepareImage(f)), fr: "", en: "", tags: [] }); };
-  const upload = async () => {
-    if (!draft.fr.trim()) return flash("Ajoute un titre.", true);
-    setBusy("add");
-    const r = await api("photo-add", { method: "POST", body: { image: draft.b64, title: { fr: draft.fr, en: draft.en }, tags: draft.tags, ratio: draft.ratio } });
-    setBusy("");
-    if (!r.ok) return flash(r.data.error === "too_large" ? "Image trop lourde." : "Échec de l’envoi.", true);
-    flash("Photo ajoutée. Elle apparaîtra sur le site après la mise en ligne (≈ 1 min).");
-    setDraft(null); reload();
-  };
-  const remove = async (key) => {
-    if (busy && !busy.startsWith("confirm-")) return;
-    if (busy !== "confirm-" + key) { setBusy("confirm-" + key); setTimeout(() => setBusy((b) => (b === "confirm-" + key ? "" : b)), 3000); return; }
-    setBusy("del");
-    const r = await api("photo-delete", { method: "POST", body: { key } });
-    setBusy("");
-    if (!r.ok) return flash("Échec de la suppression.", true);
-    flash("Photo supprimée. Le site sera mis à jour dans ≈ 1 min."); reload();
-  };
-  const keys = Object.keys(photos);
+// ---------- Suivi de publication (GitHub → Vercel → en ligne) ----------
+function Tracker({ job, onClose }) {
+  const steps = ["Enregistré sur GitHub", "Construction du site", "Mise en ligne", "En ligne ✓"];
   return (
-    <div>
-      <div className={"adm-drop" + (draft ? " has" : "")} onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); pick(e.dataTransfer.files[0]); }}>
-        {!draft ? (
-          <button type="button" onClick={() => input.current.click()}><Icon name="download" size={22} /><b>Ajouter une photo</b><small>Glisse une image ici ou clique (elle sera optimisée automatiquement)</small></button>
-        ) : (
-          <div className="adm-draft">
-            <img src={draft.preview} alt="" />
-            <div>
-              <label className="adm-field"><span>Titre (FR)</span><input value={draft.fr} onChange={(e) => setDraft({ ...draft, fr: e.target.value })} maxLength={120} /></label>
-              <label className="adm-field"><span>Titre (EN)</span><input value={draft.en} onChange={(e) => setDraft({ ...draft, en: e.target.value })} maxLength={120} /></label>
-              <div className="adm-chips">{PHOTO_TAGS.map(([k, l]) => <button type="button" key={k} className={draft.tags.includes(k) ? "on" : ""} onClick={() => setDraft({ ...draft, tags: draft.tags.includes(k) ? draft.tags.filter((t) => t !== k) : [...draft.tags, k] })}>{l}</button>)}</div>
-              <small className="adm-muted">{draft.kb} Ko · format {draft.ratio > 1 ? "paysage" : "portrait"}</small>
-              <div className="adm-row-btns"><button type="button" className="ios-btn adm-primary" onClick={upload} disabled={busy === "add"}>{busy === "add" ? "Envoi…" : "Publier la photo"}</button><button type="button" className="ios-btn adm-ghost" onClick={() => setDraft(null)}>Annuler</button></div>
-            </div>
-          </div>
-        )}
-        <input ref={input} type="file" accept="image/*" hidden onChange={(e) => pick(e.target.files[0])} />
+    <div className={"ax-track" + (job.step >= 3 ? " done" : "") + (job.error ? " err" : "")} role="status">
+      <div className="ax-track-h"><b>{job.error ? "Publication interrompue" : job.step >= 3 ? "Ton site est à jour" : "Publication en cours…"}</b><button onClick={onClose} aria-label="Fermer">×</button></div>
+      <ol>{steps.map((s, i) => <li key={s} className={i < job.step ? "ok" : i === job.step ? "cur" : ""}><span>{i < job.step || job.step >= 3 ? "✓" : i + 1}</span>{s}</li>)}</ol>
+      <p>{job.error || (job.step >= 3 ? "Les visiteurs voient déjà tes modifications." : job.slow ? "Ça prend un peu plus longtemps que d’habitude…" : "Environ 1 minute. Tu peux continuer à travailler.")}</p>
+      {job.step >= 3 && <a href="/" target="_blank" rel="noopener">Voir le site ↗</a>}
+    </div>
+  );
+}
+
+// ---------- Accueil du tableau de bord ----------
+function Home({ data, go, lastPublish }) {
+  const s = data.site;
+  const stats = [
+    ["Expériences", s.experience.length, "branch", "experience"], ["Projets", s.projects.length, "folder", "projects"],
+    ["Certifications", s.certifications.length, "award", "certifications"], ["Photos", Object.keys(data.photos).length, "frame", "photos"],
+    ["Langues", s.languages.length, "globe", "languages"], ["Avis", s.testimonials.length, "chat", "testimonials"],
+  ];
+  const h = new Date().getHours(), hello = h < 5 ? "Bonsoir" : h < 18 ? "Bonjour" : "Bonsoir";
+  return (
+    <div className="ax-home">
+      <section className="ax-hero-card">
+        <img src={portrait} alt="" />
+        <div>
+          <small>{new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}</small>
+          <h2>{hello}, {NAME} 👋</h2>
+          <p>Ton portfolio en un coup d’œil. Modifie une section, puis appuie sur <b>Publier</b>.</p>
+          <div className="ax-pills"><span><i className="ax-dot" />Site en ligne</span><span>🔐 Session sécurisée</span>{lastPublish && <span>Dernière publication : {lastPublish}</span>}</div>
+        </div>
+      </section>
+      <div className="ax-stats">
+        {stats.map(([l, n, ic, id], i) => (
+          <button key={id} className="ax-stat" style={{ "--i": i }} onClick={() => go(id)}>
+            <span className={"ax-ico anim-" + ic}><Icon name={ic} size={20} /></span>
+            <b>{n}</b><small>{l}</small><span className="ax-stat-go">Modifier →</span>
+          </button>
+        ))}
       </div>
-      <p className="adm-muted">{keys.length} photos. Titres et tags modifiables ci-dessous (bouton « Publier » en haut).</p>
-      <div className="adm-pgrid">
-        {keys.map((k) => {
-          const v = photos[k], src = localPhoto(k);
-          return (
-            <div key={k} className="adm-pcard">
-              <div className="adm-pimg">{src ? <img src={src} alt="" loading="lazy" /> : <span>{files.some((f) => f.startsWith(k + ".")) ? "Nouvelle (après mise en ligne)" : "—"}</span>}</div>
-              <input value={v.title || ""} onChange={(e) => setPhotos({ ...photos, [k]: { ...v, title: e.target.value } })} aria-label="Titre FR" placeholder="Titre FR" />
-              <input value={v.title_en || ""} onChange={(e) => setPhotos({ ...photos, [k]: { ...v, title_en: e.target.value } })} aria-label="Titre EN" placeholder="Titre EN" />
-              <div className="adm-chips sm">{PHOTO_TAGS.map(([t, l]) => <button type="button" key={t} className={(v.tags || []).includes(t) ? "on" : ""} onClick={() => setPhotos({ ...photos, [k]: { ...v, tags: (v.tags || []).includes(t) ? v.tags.filter((x) => x !== t) : [...(v.tags || []), t] } })}>{l}</button>)}</div>
-              <button type="button" className={"adm-del" + (busy === "confirm-" + k ? " confirm" : "")} onClick={() => remove(k)}>{busy === "confirm-" + k ? "Confirmer la suppression" : "Supprimer"}</button>
-            </div>
-          );
-        })}
+      <section className="ax-how">
+        <h3>Comment publier</h3>
+        <ol>
+          <li><span>1</span>Modifie une section (le badge passe à « Non publié »).</li>
+          <li><span>2</span>Appuie sur <b>Publier</b> en haut à droite.</li>
+          <li><span>3</span>Suis la progression : le site est à jour en ≈ 1 minute.</li>
+        </ol>
+      </section>
+    </div>
+  );
+}
+
+// ---------- Sécurité : changement du mot de passe ----------
+function strength(p) {
+  let s = 0; if (p.length >= 12) s++; if (p.length >= 16) s++; if (/[A-Z]/.test(p) && /[a-z]/.test(p)) s++; if (/\d/.test(p)) s++; if (/[^A-Za-z0-9]/.test(p)) s++;
+  return Math.min(4, s);
+}
+function Security({ needCode, flash, onTrack }) {
+  const [f, setF] = useState({ current: "", next: "", again: "", code: "" }), [busy, setBusy] = useState(false), [show, setShow] = useState(false);
+  const st = strength(f.next), labels = ["Trop faible", "Faible", "Correct", "Fort", "Excellent"];
+  const set = (k) => (e) => setF({ ...f, [k]: k === "code" ? e.target.value.replace(/\D/g, "").slice(0, 6) : e.target.value });
+  const submit = async (e) => {
+    e.preventDefault();
+    if (f.next.length < 12) return flash("Le nouveau mot de passe doit faire au moins 12 caractères.", true);
+    if (f.next !== f.again) return flash("Les deux nouveaux mots de passe sont différents.", true);
+    setBusy(true);
+    const r = await api("password", { method: "POST", body: { current: f.current, next: f.next, code: f.code } });
+    setBusy(false);
+    if (r.ok) { setF({ current: "", next: "", again: "", code: "" }); flash("Mot de passe changé. Utilise le nouveau dès ta prochaine connexion."); onTrack(r.data.commit); return; }
+    flash(r.status === 401 ? "Ancien mot de passe ou code incorrect." : r.status === 429 ? "Trop de tentatives, réessaie plus tard." : r.data.error === "same" ? "Choisis un mot de passe différent de l’actuel." : "Échec du changement.", true);
+  };
+  return (
+    <div className="ax-sec">
+      <form className="adm-card ax-sec-card" onSubmit={submit}>
+        <div className="ax-sec-h"><span className="ax-ico anim-card big"><Icon name="card" size={22} /></span><div><h3>Changer le mot de passe</h3><p>Ton ancien mot de passe et le code à 6 chiffres sont demandés.</p></div></div>
+        <label className="adm-field"><span>Mot de passe actuel</span><input type={show ? "text" : "password"} value={f.current} onChange={set("current")} autoComplete="current-password" required /></label>
+        <label className="adm-field"><span>Nouveau mot de passe</span><input type={show ? "text" : "password"} value={f.next} onChange={set("next")} autoComplete="new-password" required minLength={12} /></label>
+        <div className={"ax-meter s" + st}><i /><i /><i /><i /><small>{f.next ? labels[st] : "12 caractères minimum, mélange lettres, chiffres et symboles"}</small></div>
+        <label className="adm-field"><span>Confirme le nouveau mot de passe</span><input type={show ? "text" : "password"} value={f.again} onChange={set("again")} autoComplete="new-password" required /></label>
+        {needCode && <label className="adm-field"><span>Code à 6 chiffres</span><input inputMode="numeric" value={f.code} onChange={set("code")} autoComplete="one-time-code" required /></label>}
+        <label className="adm-bool"><input type="checkbox" checked={show} onChange={(e) => setShow(e.target.checked)} /><span className="ios-switch" aria-hidden="true" /><span>Afficher les mots de passe</span></label>
+        <button className="ios-btn adm-primary" disabled={busy}>{busy ? "Enregistrement…" : "Changer le mot de passe"}</button>
+      </form>
+      <div className="adm-card ax-sec-card ax-sec-info">
+        <h3>Protections actives</h3>
+        <ul>
+          <li><span>🔑</span>Mot de passe haché (scrypt), jamais stocké en clair</li>
+          <li><span>📱</span>Double authentification par code à 6 chiffres</li>
+          <li><span>🍪</span>Session signée, cookie sécurisé, expiration 2 h</li>
+          <li><span>🛑</span>Blocage après 5 essais ratés</li>
+          <li><span>🧱</span>Requêtes externes refusées, données vérifiées</li>
+          <li><span>🙈</span>Page invisible pour Google</li>
+        </ul>
       </div>
     </div>
   );
 }
 
 // ---------- Tableau de bord ----------
+const NAV = [{ id: "home", label: "Accueil", icon: "grid" }, ...SECTIONS, { id: "security", label: "Sécurité", icon: "card" }];
+
 export default function Admin() {
-  const [state, setState] = useState("loading"); // loading | login | ready | error
+  const [state, setState] = useState("loading"); // loading | login | welcome | ready | goodbye | error
   const [needCode, setNeedCode] = useState(false);
-  const [data, setData] = useState(null); // { site, photos, siteSha, photosSha, files }
+  const [data, setData] = useState(null);
   const [orig, setOrig] = useState("");
-  const [tab, setTab] = useState("profile");
+  const [tab, setTab] = useState("home");
   const [open, setOpen] = useState(0);
   const [msg, setMsg] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [job, setJob] = useState(null);
+  const [lastPublish, setLastPublish] = useState("");
+  const [notice, setNotice] = useState("");
 
   useEffect(() => {
     document.title = "Admin · Portfolio";
@@ -188,96 +254,125 @@ export default function Admin() {
   const flash = (text, err) => { setMsg({ text, err }); setTimeout(() => setMsg(null), 5000); };
   async function check() {
     const r = await api("session");
-    if (r.status === 503 || (r.status === 404)) { setState("error"); return; }
+    if (r.status === 503 || r.status === 404) { setState("error"); return; }
     setNeedCode(!!r.data.needCode);
-    if (r.data.authenticated) load(); else setState("login");
+    if (r.data.authenticated) { await load(); setState("ready"); } else setState("login");
   }
   async function load() {
-    setState("loading");
     const r = await api("data");
-    if (r.status === 401) return setState("login");
-    if (!r.ok) { setState("error"); return; }
-    setData(r.data); setOrig(JSON.stringify([r.data.site, r.data.photos])); setState("ready");
+    if (r.status === 401) { setState("login"); return false; }
+    if (!r.ok) { setState("error"); return false; }
+    setData(r.data); setOrig(JSON.stringify([r.data.site, r.data.photos]));
+    return true;
   }
+  const afterLogin = async () => { setNotice(""); const ok = await load(); if (ok) setState("welcome"); };
   const dirty = data && JSON.stringify([data.site, data.photos]) !== orig;
   useEffect(() => {
     const warn = (e) => { if (dirty) { e.preventDefault(); e.returnValue = ""; } };
     addEventListener("beforeunload", warn); return () => removeEventListener("beforeunload", warn);
   }, [dirty]);
 
+  // Suit la mise en ligne : attend que la version déployée corresponde au commit publié.
+  async function track(commit) {
+    setJob({ step: 1, commit });
+    const t0 = Date.now();
+    for (;;) {
+      await sleep(5000);
+      const r = await api("version");
+      const elapsed = Date.now() - t0;
+      if (r.ok && r.data.commit && commit && r.data.commit === commit) { setJob({ step: 3, commit }); setLastPublish(new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })); return; }
+      if (r.ok && !r.data.commit && elapsed > 75000) { setJob({ step: 3, commit }); return; } // version non exposée : on estime
+      if (elapsed > 30000) setJob((j) => ({ ...j, step: 2, slow: elapsed > 150000 }));
+      if (elapsed > 300000) { setJob((j) => ({ ...j, error: "La mise en ligne n’a pas été confirmée. Vérifie l’onglet Deployments de Vercel." })); return; }
+    }
+  }
   const save = async () => {
     setSaving(true);
     const r = await api("save", { method: "POST", body: { site: data.site, photos: data.photos, siteSha: data.siteSha, photosSha: data.photosSha } });
     setSaving(false);
-    if (r.ok) { flash("Publié ! Le site sera à jour dans environ 1 minute."); load(); return; }
+    if (r.ok) { await load(); track(r.data.commit); return; }
     if (r.status === 409) return flash("Le contenu a changé entre-temps. Recharge la page puis refais tes modifications.", true);
-    if (r.status === 401) { setState("login"); return; }
+    if (r.status === 401) { setNotice("Session expirée, reconnecte-toi."); setState("login"); return; }
     flash(r.data.detail ? `Refusé : ${r.data.detail}` : "Échec de la publication.", true);
   };
-  const logout = async () => { await api("logout", { method: "POST" }); setData(null); setState("login"); };
+  const logout = async () => { await api("logout", { method: "POST" }); setState("goodbye"); };
 
-  if (state === "loading") return <div className="adm-login"><div className="adm-spin" aria-label="Chargement" /></div>;
-  if (state === "error") return <div className="adm-login"><div className="adm-login-card"><h1>Espace admin</h1><p>Indisponible. L’espace admin fonctionne une fois en ligne et configuré (voir README, section Admin).</p><a className="ios-btn adm-ghost" href="/">Retour au site</a></div></div>;
-  if (state === "login") return <Login needCode={needCode} onDone={load} />;
+  if (state === "loading") return <div className="ax-stage"><Backdrop /><div className="adm-spin" aria-label="Chargement" /></div>;
+  if (state === "error") return <div className="ax-stage"><Backdrop /><div className="ax-card"><h1>Espace admin</h1><p className="ax-sub">Indisponible pour le moment (configuration ou service).</p><a className="ax-go" href="/">Retour au site</a></div></div>;
+  if (state === "login") return <Login needCode={needCode} onDone={afterLogin} notice={notice} />;
+  if (state === "goodbye") return <Cinematic kind="goodbye" onEnd={() => { setData(null); setTab("home"); setState("login"); }} />;
 
-  const sec = SECTIONS.find((s) => s.id === tab);
+  const sec = NAV.find((s) => s.id === tab);
   const site = data.site;
   const setSite = (s) => setData({ ...data, site: s });
   const list = sec.kind === "list" ? site[sec.id] : null;
   const setItem = (i, item) => { const l = [...list]; l[i] = item; setSite({ ...site, [sec.id]: l }); };
   const move = (i, d) => { const l = [...list]; const j = i + d; if (j < 0 || j >= l.length) return; [l[i], l[j]] = [l[j], l[i]]; setSite({ ...site, [sec.id]: l }); setOpen(j); };
+  const go = (id) => { setTab(id); setOpen(0); };
 
   return (
-    <div className="adm">
-      <aside className="adm-side">
-        <div className="adm-brand"><span>A</span><b>Admin</b></div>
-        <nav>{SECTIONS.map((s) => <button key={s.id} className={tab === s.id ? "on" : ""} onClick={() => { setTab(s.id); setOpen(0); }}><Icon name={s.icon} size={17} />{s.label}</button>)}</nav>
-        <div className="adm-side-foot"><a href="/" target="_blank" rel="noopener">Voir le site ↗</a><button onClick={logout}>Se déconnecter</button></div>
-      </aside>
-      <main className="adm-main">
-        <header className="adm-top">
-          <h1>{sec.label}</h1>
-          <span className={"adm-status" + (dirty ? " dirty" : "")}>{dirty ? "Modifications non publiées" : "À jour"}</span>
-          <button className="ios-btn adm-primary" onClick={save} disabled={!dirty || saving}>{saving ? "Publication…" : "Publier"}</button>
-        </header>
-        {sec.note && <p className="adm-note">{sec.note}</p>}
+    <>
+      <div className={"adm ax-dash" + (state === "welcome" ? " behind" : "")}>
+        <aside className="adm-side">
+          <div className="adm-brand"><img src={portrait} alt="" /><span><b>{NAME}</b><small>Administrateur</small></span></div>
+          <nav>{NAV.map((s, i) => (
+            <button key={s.id} className={tab === s.id ? "on" : ""} onClick={() => go(s.id)} style={{ "--i": i }}>
+              <span className={"ax-ico anim-" + s.icon}><Icon name={s.icon} size={17} /></span>{s.label}
+              {s.id !== "home" && s.id !== "security" && s.kind === "list" && <small>{site[s.id].length}</small>}
+            </button>
+          ))}</nav>
+          <div className="adm-side-foot"><a href="/" target="_blank" rel="noopener">Voir le site ↗</a><button onClick={logout}><Icon name="close" size={14} /> Se déconnecter</button></div>
+        </aside>
+        <main className="adm-main" key={tab}>
+          <header className="adm-top">
+            <h1><span className={"ax-ico anim-" + sec.icon}><Icon name={sec.icon} size={20} /></span>{sec.label}</h1>
+            <span className={"adm-status" + (dirty ? " dirty" : "")}>{dirty ? "● Non publié" : "✓ À jour"}</span>
+            <button className={"ios-btn adm-primary ax-publish" + (dirty ? " pulse" : "")} onClick={save} disabled={!dirty || saving}>{saving ? "Envoi…" : "Publier"}</button>
+          </header>
+          {sec.note && <p className="adm-note">{sec.note}</p>}
 
-        {sec.kind === "object" && (
-          <div className="adm-card adm-grid2">
-            {sec.fields.map((def) => {
-              const root = def[0].startsWith("$"), key = root ? def[0].slice(1) : def[0];
-              const value = root ? site[key] : site.profile[key];
-              return <Field key={def[0]} def={def} value={value} onChange={(v) => setSite(root ? { ...site, [key]: v } : { ...site, profile: { ...site.profile, [key]: v } })} />;
-            })}
-          </div>
-        )}
+          {tab === "home" && <Home data={data} go={go} lastPublish={lastPublish} />}
+          {tab === "security" && <Security needCode={needCode} flash={flash} onTrack={() => {}} />}
 
-        {sec.kind === "list" && (
-          <>
-            {list.map((item, i) => (
-              <div key={i} className={"adm-card adm-item" + (open === i ? " open" : "")}>
-                <button className="adm-item-h" onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i}>
-                  <span className="adm-n">{i + 1}</span><b>{label18(sec.title(item))}</b><span className="adm-chev">⌄</span>
-                </button>
-                {open === i && (
-                  <div className="adm-item-b">
-                    <div className="adm-grid2">{sec.fields.map((def) => <Field key={def[0]} def={def} value={item[def[0]]} onChange={(v) => { const n = { ...item }; if (v === undefined) delete n[def[0]]; else n[def[0]] = v; setItem(i, n); }} />)}</div>
-                    <div className="adm-row-btns">
-                      <button className="ios-btn adm-ghost" onClick={() => move(i, -1)} disabled={i === 0}>↑ Monter</button>
-                      <button className="ios-btn adm-ghost" onClick={() => move(i, 1)} disabled={i === list.length - 1}>↓ Descendre</button>
-                      <button className="ios-btn adm-danger" onClick={() => { setSite({ ...site, [sec.id]: list.filter((_, k) => k !== i) }); setOpen(-1); }}>Supprimer</button>
+          {sec.kind === "object" && (
+            <div className="adm-card adm-grid2 ax-in">
+              {sec.fields.map((def) => {
+                const root = def[0].startsWith("$"), key = root ? def[0].slice(1) : def[0];
+                const value = root ? site[key] : site.profile[key];
+                return <Field key={def[0]} def={def} value={value} onChange={(v) => setSite(root ? { ...site, [key]: v } : { ...site, profile: { ...site.profile, [key]: v } })} />;
+              })}
+            </div>
+          )}
+
+          {sec.kind === "list" && (
+            <>
+              {list.map((item, i) => (
+                <div key={i} className={"adm-card adm-item ax-in" + (open === i ? " open" : "")} style={{ "--i": i }}>
+                  <button className="adm-item-h" onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i}>
+                    <span className="adm-n">{i + 1}</span><b>{label18(sec.title(item))}</b><span className="adm-chev">⌄</span>
+                  </button>
+                  {open === i && (
+                    <div className="adm-item-b">
+                      <div className="adm-grid2">{sec.fields.map((def) => <Field key={def[0]} def={def} value={item[def[0]]} onChange={(v) => { const n = { ...item }; if (v === undefined) delete n[def[0]]; else n[def[0]] = v; setItem(i, n); }} />)}</div>
+                      <div className="adm-row-btns">
+                        <button className="ios-btn adm-ghost" onClick={() => move(i, -1)} disabled={i === 0}>↑ Monter</button>
+                        <button className="ios-btn adm-ghost" onClick={() => move(i, 1)} disabled={i === list.length - 1}>↓ Descendre</button>
+                        <button className="ios-btn adm-danger" onClick={() => { setSite({ ...site, [sec.id]: list.filter((_, k) => k !== i) }); setOpen(-1); }}>Supprimer</button>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            ))}
-            <button className="adm-add" onClick={() => { setSite({ ...site, [sec.id]: [...list, structuredClone(sec.blank)] }); setOpen(list.length); }}>+ Ajouter</button>
-          </>
-        )}
+                  )}
+                </div>
+              ))}
+              <button className="adm-add" onClick={() => { setSite({ ...site, [sec.id]: [...list, structuredClone(sec.blank)] }); setOpen(list.length); }}>+ Ajouter</button>
+            </>
+          )}
 
-        {sec.kind === "photos" && <Photos photos={data.photos} setPhotos={(p) => setData({ ...data, photos: p })} files={data.files} flash={flash} reload={load} />}
-      </main>
-      {msg && <div className={"adm-toast" + (msg.err ? " err" : "")} role="status">{msg.text}</div>}
-    </div>
+          {sec.kind === "photos" && <Photos photos={data.photos} setPhotos={(p) => setData({ ...data, photos: p })} files={data.files} flash={flash} reload={async () => { await load(); }} onPublished={track} />}
+        </main>
+        {msg && <div className={"adm-toast" + (msg.err ? " err" : "")} role="status">{msg.text}</div>}
+        {job && <Tracker job={job} onClose={() => setJob(null)} />}
+      </div>
+      {state === "welcome" && <Cinematic kind="welcome" onEnd={() => setState("ready")} />}
+    </>
   );
 }

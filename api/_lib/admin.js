@@ -143,13 +143,16 @@ export function github(env = process.env) {
       headers: { authorization: `Bearer ${token}`, accept: "application/vnd.github+json", "user-agent": "portfolio-admin", "x-github-api-version": "2022-11-28", ...(opts.body ? { "content-type": "application/json" } : {}) },
       signal: AbortSignal.timeout(20000),
     });
-    if (!r.ok) throw new Error(`GitHub ${r.status} ${path.split("?")[0]}`);
+    if (!r.ok) { const e = new Error(`GitHub ${r.status} ${path.split("?")[0]}`); e.status = r.status; throw e; }
     return r.status === 204 ? null : r.json();
   };
   return {
     async readJson(path) {
       const f = await api(`/contents/${path}?ref=${encodeURIComponent(branch)}`);
       return { sha: f.sha, data: JSON.parse(Buffer.from(f.content, "base64").toString("utf8")) };
+    },
+    async readJsonOptional(path) {
+      try { return await this.readJson(path); } catch (e) { if (e.status === 404) return null; throw e; }
     },
     async list(dir) {
       const items = await api(`/contents/${dir}?ref=${encodeURIComponent(branch)}`);
@@ -174,3 +177,18 @@ export function github(env = process.env) {
   };
 }
 export const toJson = (o) => JSON.stringify(o, null, 2) + "\n";
+
+// ---------- Mot de passe modifié depuis /admin : haché puis chiffré (AES-256-GCM) avec ADMIN_SESSION_SECRET ----------
+// Le fichier peut être public : sans la clé secrète (qui ne quitte jamais Vercel), il est illisible.
+export const AUTH_PATH = "src/data/admin-auth.json";
+const authKey = (secret) => crypto.createHash("sha256").update("admin-auth:" + secret).digest();
+export function sealHash(hash, secret) {
+  const iv = crypto.randomBytes(12), c = crypto.createCipheriv("aes-256-gcm", authKey(secret), iv);
+  const data = Buffer.concat([c.update(hash, "utf8"), c.final()]);
+  return { v: 1, iv: iv.toString("base64"), tag: c.getAuthTag().toString("base64"), data: data.toString("base64"), updated: new Date().toISOString() };
+}
+export function openHash(sealed, secret) {
+  const d = crypto.createDecipheriv("aes-256-gcm", authKey(secret), Buffer.from(sealed.iv, "base64"));
+  d.setAuthTag(Buffer.from(sealed.tag, "base64"));
+  return Buffer.concat([d.update(Buffer.from(sealed.data, "base64")), d.final()]).toString("utf8");
+}
