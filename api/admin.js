@@ -80,7 +80,13 @@ export default async function handler(req, res, deps = {}) {
 
   // ----- Diagnostic de configuration : uniquement « format correct ou non », aucune valeur révélée -----
   if (action === "check") {
+    // Test en lecture seule : le jeton GitHub peut-il lire les données du dépôt ?
+    let githubAccess = false;
+    try { githubAccess = !!(await gh().readJson(DATA_PATHS.site)).sha; } catch { githubAccess = false; }
     return send(res, 200, {
+      githubAccess,
+      versionExposed: !!env.VERCEL_GIT_COMMIT_SHA,
+      deployedCommit: (env.VERCEL_GIT_COMMIT_SHA || "").slice(0, 7) || null,
       passwordHash: !!env.ADMIN_PASSWORD_HASH,
       sessionSecret: secret.length >= 32,
       totpSecret: !env.ADMIN_TOTP_SECRET || /^[A-Z2-7]{16,64}$/.test(env.ADMIN_TOTP_SECRET),
