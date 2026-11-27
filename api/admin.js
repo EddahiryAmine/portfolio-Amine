@@ -7,7 +7,7 @@
 //   GITHUB_REPO (obligatoire)          : ex. EddahiryAmine/portfolio-Amine ; GITHUB_BRANCH (facultatif, défaut main)
 import {
   DATA_PATHS, PHOTO_DIR, checkSession, clearFailures, clientIp, github, imageType, makeSession, readCookie, recordFailure,
-  sameOrigin, sessionCookie, slugify, toJson, tooManyAttempts, validatePhotos, validateSite, verifyPassword, verifyTotp,
+  sameOrigin, sessionCookie, slugify, toJson, tooManyAttempts, totp, validatePhotos, validateSite, verifyPassword, verifyTotp,
 } from "./_lib/admin.js";
 
 export const config = { api: { bodyParser: { sizeLimit: "4mb" } } };
@@ -48,7 +48,16 @@ export default async function handler(req, res, deps = {}) {
     const okPass = typeof password === "string" && password.length <= 200 && verifyPassword(password, env.ADMIN_PASSWORD_HASH);
     const needCode = !!env.ADMIN_TOTP_SECRET;
     const okCode = !needCode || verifyTotp(env.ADMIN_TOTP_SECRET, code);
-    if (!okPass || !okCode) { recordFailure(ip); return send(res, 401, { error: "invalid", needCode }); }
+    if (!okPass || !okCode) {
+      recordFailure(ip);
+      // Journal privé (visible seulement dans Vercel → Logs) : quel facteur a échoué, et décalage d'horloge du code.
+      let drift = null;
+      if (needCode && /^\d{6}$/.test(String(code || "")) && !okCode) {
+        for (let w = -20; w <= 20 && drift === null; w++) if (totp(env.ADMIN_TOTP_SECRET, Date.now() + w * 30000) === String(code)) drift = w * 30;
+      }
+      console.warn(JSON.stringify({ event: "admin_login_failed", passwordOk: okPass, codeOk: okCode, codeFormatOk: /^\d{6}$/.test(String(code || "")), clockDriftSeconds: drift }));
+      return send(res, 401, { error: "invalid", needCode });
+    }
     clearFailures(ip);
     res.setHeader("Set-Cookie", sessionCookie(makeSession(secret)));
     return send(res, 200, { ok: true });
