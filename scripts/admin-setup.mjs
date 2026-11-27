@@ -3,7 +3,7 @@
 // Rien n'est enregistré sur le disque.
 import crypto from "node:crypto";
 import readline from "node:readline";
-import { hashPassword, totp } from "../api/_lib/admin.js";
+import { hashPassword, newTotpSecret, totp } from "../api/_lib/admin.js";
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 const ask = (q) => new Promise((r) => rl.question(q, r));
@@ -14,8 +14,7 @@ const again = await ask("Confirme le mot de passe : ");
 rl.close();
 if (pass !== again) { console.error("\n✗ Les deux mots de passe sont différents."); process.exit(1); }
 
-const B32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-const totpSecret = [...crypto.randomBytes(20)].map((b) => B32[b % 32]).join("");
+const totpSecret = newTotpSecret();
 const otpauth = `otpauth://totp/Portfolio%20Amine:admin?secret=${totpSecret}&issuer=Portfolio%20Amine`;
 
 console.log(`

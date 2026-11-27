@@ -1,11 +1,12 @@
 // Réinitialise l'accès admin SANS copier-coller : demande le mot de passe, génère les secrets
 // et les enregistre directement dans Vercel (Production), puis redéploie.
 // Usage (dans le dossier du portfolio) : node scripts/admin-reset.mjs
+//   node scripts/admin-reset.mjs --code-only  → ne change que la clé du code à 6 chiffres (garde le mot de passe)
 // Rien n'est enregistré sur le disque. Le jeton GitHub déjà présent dans Vercel n'est pas touché.
 import crypto from "node:crypto";
 import readline from "node:readline";
 import { spawnSync } from "node:child_process";
-import { hashPassword, totp } from "../api/_lib/admin.js";
+import { hashPassword, newTotpSecret, totp } from "../api/_lib/admin.js";
 
 const VERCEL = ["--yes", "vercel@65.12.0"];
 const npx = process.platform === "win32" ? "npx.cmd" : "npx";
@@ -20,14 +21,14 @@ function askHidden(q) {
   });
 }
 
-const pass = await askHidden("Nouveau mot de passe admin (12 caractères minimum) : ");
+const codeOnly = process.argv.includes("--code-only");
+const pass = codeOnly ? "x".repeat(12) : await askHidden("Nouveau mot de passe admin (12 caractères minimum) : ");
 if (pass.length < 12) { console.error("✗ Trop court."); process.exit(1); }
-const again = await askHidden("Confirme le mot de passe : ");
+const again = codeOnly ? pass : await askHidden("Confirme le mot de passe : ");
 if (pass !== again) { console.error("✗ Les deux mots de passe sont différents."); process.exit(1); }
 
-const B32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-const totpSecret = [...crypto.randomBytes(20)].map((b) => B32[b % 32]).join("");
-const vars = {
+const totpSecret = newTotpSecret();
+const vars = codeOnly ? { ADMIN_TOTP_SECRET: totpSecret } : {
   ADMIN_PASSWORD_HASH: hashPassword(pass),
   ADMIN_SESSION_SECRET: crypto.randomBytes(48).toString("base64url"),
   ADMIN_TOTP_SECRET: totpSecret,

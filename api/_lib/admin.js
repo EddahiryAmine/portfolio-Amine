@@ -26,6 +26,13 @@ export function verifyPassword(password, stored) {
 
 // ---------- Code à 6 chiffres (TOTP, RFC 6238, compatible Google Authenticator) ----------
 const B32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+// Clé TOTP standard : 20 octets aléatoires encodés en base32 = 32 caractères (compatible avec toutes les applis).
+export function newTotpSecret() {
+  const bytes = crypto.randomBytes(20); let bits = "", out = "";
+  for (const b of bytes) bits += b.toString(2).padStart(8, "0");
+  for (let i = 0; i < bits.length; i += 5) out += B32[parseInt(bits.slice(i, i + 5), 2)];
+  return out;
+}
 export function base32Decode(s) {
   let bits = "", out = [];
   for (const ch of s.replace(/=+$/, "").toUpperCase().replace(/\s/g, "")) { const v = B32.indexOf(ch); if (v < 0) throw new Error("base32"); bits += v.toString(2).padStart(5, "0"); }
